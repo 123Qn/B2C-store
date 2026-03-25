@@ -6,3 +6,4 @@ export async function BlogDetail({ post }: { post: Post }) {
 
   return <article data-test-id={`blog-post-${post.id}`}>Detail</article>;
 }
+//test
