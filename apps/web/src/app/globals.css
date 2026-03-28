@@ -18,7 +18,7 @@
 html[data-theme="dark"] {
   --background: theme("colors.gray.900");
   --foreground: #ededed;
-  --text: theme("colors.gray.50");
+  --text: theme("colors.white");
   --textHover: theme("colors.gray.300");
   --text-secondary: theme("colors.gray.400");
   --text-secondaryHover: theme("colors.gray.500");
@@ -26,6 +26,7 @@ html[data-theme="dark"] {
 
 html {
   background: var(--background);
+  color: var(--text);
 }
 
 @theme inline {
@@ -38,13 +39,4 @@ html {
 }
 body {
   min-height: 100vh;
-}
-body.light {
-  background-color: white;
-  color: black;
-}
-
-body.dark {
-  background-color: #0f172a;
-  color: white;
 }
