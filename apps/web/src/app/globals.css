@@ -36,3 +36,15 @@ html {
   --color-wsu: var(--wsu);
   --color-wsu-light: var(--wsu-light);
 }
+body {
+  min-height: 100vh;
+}
+body.light {
+  background-color: white;
+  color: black;
+}
+
+body.dark {
+  background-color: #0f172a;
+  color: white;
+}
