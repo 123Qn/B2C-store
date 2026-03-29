@@ -27,8 +27,11 @@ export function TopMenu({ query }: { query?: string }) {
   return (
     <div>
       <form action="#" method="GET" className="grid flex-1 grid-cols-1">
-        <input />
-      </form>
+  <input
+    placeholder="Search"     
+    onChange={handleSearch}  
+  />
+</form>
       <div className="flex items-center gap-x-6">
         <ThemeSwitch />
       </div>

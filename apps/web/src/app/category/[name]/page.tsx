@@ -1,16 +1,20 @@
 import { AppLayout } from "@/components/Layout/AppLayout";
 import { Main } from "@/components/Main";
+import { posts } from "@repo/db/data";
 
-export default async function Page({
+export default function Page({
   params,
 }: {
-  params: Promise<{ name: string }>;
+  params: { name: string };
 }) {
-  const { name } = await params;
+  const { name } = params;
 
+ const  filteredPosts = posts.filter(
+  (p) => p.active && p.category.toLowerCase() === name
+);
   return (
     <AppLayout>
-      <Main posts={[]} />
+      <Main posts={filteredPosts} />
     </AppLayout>
   );
 }

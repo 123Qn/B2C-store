@@ -14,5 +14,13 @@ export function SummaryItem({
   // TODO: Implement the summary item
   // must show the number of posts in that category and the name
   // if if is selected it must show in different color/background
-  return <li>Item</li>;
+ 
+  return (
+    <li>
+      <a href={link} title={title}>
+        {name}
+      </a>
+      <span data-testid="post-count">{count}</span>
+    </li>
+  );
 }
