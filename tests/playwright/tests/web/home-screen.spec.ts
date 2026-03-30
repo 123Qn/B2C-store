@@ -31,7 +31,7 @@ test.describe("HOME SCREEN", () => {
     async ({ page }) => {
       await page.goto("/");
 
-      await expect(await page.locator("article").count()).toBe(3);
+      await expect(await page.locator("article").count()).toBe(5);
     },
   );
 
