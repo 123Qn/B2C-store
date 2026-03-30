@@ -6,17 +6,19 @@ import { SummaryItem } from "./SummaryItem";
 export function CategoryList({ posts }: { posts: Post[] }) {
   // TODO: Implement proper category list
   return (
-    <>
+    <div>
+
       {categories(posts).map((item) => (
         <SummaryItem
           key={item.name}
+          name={item.name}
           count={item.count}
-          name={`Category / ${item.name}`}
           isSelected={false}
           link={`/category/${toUrlPath(item.name)}`}
           title={`Category / ${item.name}`}
+          showCount={false}
         />
       ))}
-    </>
+    </div>
   );
 }

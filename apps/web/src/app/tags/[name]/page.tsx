@@ -9,11 +9,18 @@ export default function Page({
 }) {
   const { name } = params;
 
-  const filteredPosts = posts.filter(
-    (p) => p.active && p.category.toLowerCase() === name
-  );
+  const filteredPosts = posts.filter((p) => {
+    if (!p.active) return false;
+
+    const tagList = p.tags
+      .split(",")
+      .map((t) => t.trim().toLowerCase());
+
+    return tagList.includes(name.toLowerCase());
+  });
+
   return (
-    <AppLayout>
+    <AppLayout query={name}>
       <Main posts={filteredPosts} />
     </AppLayout>
   );

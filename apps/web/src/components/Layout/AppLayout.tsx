@@ -9,12 +9,21 @@ export async function AppLayout({
   query,
 }: PropsWithChildren<{ query?: string }>) {
   return (
-    <>
-      <LeftMenu />
-      <Content>
-        <TopMenu query={query} />
-        {children}
-      </Content>
-    </>
+    <div className="flex h-screen w-screen overflow-hidden  gap-4">
+
+
+      <div className="w-64 h-full overflow-y-auto scroll-smooth ml-3">
+        <LeftMenu />
+      </div>
+
+
+      <div className="flex-1 h-full overflow-y-auto ml-3">
+        <Content>
+          <TopMenu query={query} />
+          {children}
+        </Content>
+      </div>
+
+    </div>
   );
 }

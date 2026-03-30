@@ -22,6 +22,7 @@ html[data-theme="dark"] {
   --textHover: theme("colors.gray.300");
   --text-secondary: theme("colors.gray.400");
   --text-secondaryHover: theme("colors.gray.500");
+  --text-color: rgb(255, 255, 255);
 }
 
 html {
@@ -37,6 +38,7 @@ html {
   --color-wsu: var(--wsu);
   --color-wsu-light: var(--wsu-light);
 }
+
 body {
   min-height: 100vh;
 }

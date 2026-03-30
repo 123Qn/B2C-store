@@ -1,26 +1,44 @@
+import Link from "next/link";
+
 export function SummaryItem({
   name,
   link,
   count,
   isSelected,
   title,
+  showCount = true,
 }: {
   name: string;
   link: string;
   count: number;
   isSelected: boolean;
   title?: string;
+  showCount?: boolean;
 }) {
-  // TODO: Implement the summary item
-  // must show the number of posts in that category and the name
-  // if if is selected it must show in different color/background
- 
   return (
     <li>
-      <a href={link} title={title}>
-        {name}
-      </a>
-      <span data-testid="post-count">{count}</span>
+      <Link
+        href={link}
+        title={title}
+        className={`flex items-center justify-between px-3 py-2 rounded-md transition
+          ${isSelected
+            ? "bg-gray-200 dark:bg-gray-700 font-medium"
+            : "hover:bg-gray-100 dark:hover:bg-gray-800"
+          }`}
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-gray-400">🏷️</span>
+          <span>{name}</span>
+        </div>
+
+        <span
+          data-testid="post-count"
+          data-test-id="post-count"
+          className={`text-sm text-gray-500 ${!showCount ? "invisible" : ""}`}
+        >
+          {count}
+        </span>
+      </Link>
     </li>
   );
 }

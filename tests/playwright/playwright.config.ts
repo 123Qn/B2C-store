@@ -45,7 +45,7 @@ export default defineConfig({
     trace: "on-first-retry",
 
     /* I use custom test id attribute */
-    testIdAttribute: "data-test-id",
+    testIdAttribute: "data-testid",
 
     /* Screenshot only on failure */
     screenshot: "only-on-failure",
