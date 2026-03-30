@@ -1,7 +1,26 @@
-export function history(posts: { date: Date; active: boolean }[]): string[] {
-  // Implement per specification
-  // Return the ordered list of "month, year" strings sorted from most recent to oldes
-  // consider only active posts
+export function history(posts: { date: Date; active: boolean }[]) {
+  const map = new Map<string, { month: number; year: number; count: number }>();
 
-  return [];
+  for (const p of posts) {
+    if (!p.active) continue;
+
+    const d = new Date(p.date);
+    const month = d.getMonth() + 1;
+    const year = d.getFullYear();
+
+    const key = `${year}-${month}`;
+
+    if (!map.has(key)) {
+      map.set(key, {
+        month,
+        year,
+        count: 1,
+      });
+    }
+  }
+
+  return Array.from(map.values()).sort((a, b) => {
+    if (b.year !== a.year) return b.year - a.year;
+    return b.month - a.month;
+  });
 }

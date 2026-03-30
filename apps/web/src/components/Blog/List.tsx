@@ -6,19 +6,11 @@ export function BlogList({ posts }: { posts: Post[] }) {
     return <div>0 Posts</div>;
   }
 
-return (
+  return (
     <div className="py-6">
-      {posts.map((post) => {
-        const cleanTitle = post.title.replace(/[^\w\s]/g, "");
-
-        return (
-          <div key={post.id}>
-            <div>{cleanTitle}</div>
-
-            <BlogListItem post={post} />
-          </div>
-        );
-      })}
+      {posts.map((post) => (
+        <BlogListItem key={post.id} post={post} />
+      ))}
     </div>
   );
 }
