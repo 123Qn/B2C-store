@@ -41,7 +41,7 @@ export function BlogListItem({ post }: { post: Post }) {
           {post.title}
         </Link>
 
-        <p className="text-gray-600 dark:text-gray-400 mt-2 line-clamp-3">
+        <p className="text-gray-500 dark:text-gray-400 mt-2 line-clamp-3">
           {post.description}
         </p>
 
