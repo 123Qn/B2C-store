@@ -2,8 +2,10 @@
   "name": "assignment-cms",
   "private": true,
   "scripts": {
+    
     "build": "turbo build",
     "dev": "turbo dev",
+    "start": "pnpm --filter @repo/web start",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
