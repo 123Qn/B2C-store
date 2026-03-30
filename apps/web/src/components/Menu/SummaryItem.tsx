@@ -16,7 +16,6 @@ export function SummaryItem({
   showCount?: boolean;
 }) {
    return (
-
     <li>
       <Link href={link} legacyBehavior>
         <a
