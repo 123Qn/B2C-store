@@ -2,12 +2,12 @@ import { AppLayout } from "@/components/Layout/AppLayout";
 import { Main } from "@/components/Main";
 import { posts } from "@repo/db/data";
 
-export default function Page({
+export default async function Page({
   params,
 }: {
-  params: { name: string };
+   params: Promise<{ name: string }>;
 }) {
-  const { name } = params;
+  const { name } = await params;
 
   const filteredPosts = posts.filter((p) => {
     if (!p.active) return false;
