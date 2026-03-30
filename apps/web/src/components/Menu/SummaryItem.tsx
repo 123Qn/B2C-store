@@ -17,19 +17,18 @@ export function SummaryItem({
 }) {
    return (
     <li>
-      <Link href={link} legacyBehavior>
-        <a
-          title={title}
-          className={`flex items-center justify-between px-3 py-2 ${
-            isSelected ? "selected" : ""
-          }`}
-        >
-          <span>{name}</span>
+      <Link
+        href={link}
+        title={title}
+        className={`flex items-center justify-between px-3 py-2 ${
+          isSelected ? "selected" : ""
+        }`}
+      >
+        <span>{name}</span>
 
-          <span data-testid="post-count" data-test-id="post-count">
-            {showCount ? count : ""}
-          </span>
-        </a>
+        <span data-testid="post-count" data-test-id="post-count">
+          {showCount ? count : ""}
+        </span>
       </Link>
     </li>
   );
