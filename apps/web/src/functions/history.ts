@@ -1,26 +1,28 @@
 export function history(posts: { date: Date; active: boolean }[]) {
-  const map = new Map<string, { month: number; year: number; count: number }>();
+  const map: Record<string, number> = {};
 
   for (const p of posts) {
     if (!p.active) continue;
 
-    const d = new Date(p.date);
-    const month = d.getMonth() + 1;
-    const year = d.getFullYear();
+    const date = new Date(p.date);
+    const year = date.getFullYear();
+    const month = date.getMonth();
 
     const key = `${year}-${month}`;
 
-    if (!map.has(key)) {
-      map.set(key, {
-        month,
-        year,
-        count: 1,
-      });
-    }
+    map[key] = (map[key] || 0) + 1;
   }
 
-  return Array.from(map.values()).sort((a, b) => {
-    if (b.year !== a.year) return b.year - a.year;
-    return b.month - a.month;
+return Object.entries(map)
+  .map(([key, count]) => {
+    const [year, month] = key.split("-").map(Number);
+    return { year: year ?? 0, month: month ?? 0, count };
+  })
+  .sort((a, b) => {
+    if (a.year === b.year) {
+      return b.month - a.month;
+    }
+
+    return b.year - a.year;
   });
 }

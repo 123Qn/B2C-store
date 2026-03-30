@@ -83,7 +83,7 @@ test.describe("HOME SCREEN", () => {
       // HOME SCREEN > User must see the list of blog post tags, where each tag points to UI showing only posts of that category
 
       await checkItem(page, "Tag / Back-End", "/tags/back-end", 1);
-      await checkItem(page, "Tag / Front-End", "/tags/front-end", 1);
+      await checkItem(page, "Tag / Front-End", "/tags/front-end", 2);
       await checkItem(page, "Tag / Optimisation", "/tags/optimisation", 1);
       await checkItem(page, "Tag / Dev Tools", "/tags/dev-tools", 1);
 

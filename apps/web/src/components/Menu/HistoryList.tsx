@@ -3,7 +3,6 @@ import { SummaryItem } from "./SummaryItem";
 import { type Post } from "@repo/db/data";
 
 const months = [
-  "",
   "January",
   "February",
   "March",
@@ -34,7 +33,7 @@ export async function HistoryList({
       <h3>History</h3>
       {historyItems.map((item) => {
         const name = `${months[item.month]}, ${item.year}`;
-        const link = `/history/${item.year}/${item.month}`;
+        const link = `/history/${item.year}/${item.month+1}`;
 
         const isSelected =
           selectedYear === item.year.toString() &&
@@ -45,7 +44,7 @@ export async function HistoryList({
           <SummaryItem
             key={link}
             name={name}
-            link={`/history/${item.year}/${item.month}`}
+            link={link}
             count={item.count}
             isSelected={isSelected}
             title={`History / ${name}`}
