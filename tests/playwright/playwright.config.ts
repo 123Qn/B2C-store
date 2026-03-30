@@ -110,10 +110,10 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: "pnpm dev",          // your dev server
-    url: "http://localhost:3001",
-    reuseExistingServer: true,
-    timeout: 120 * 1000,
-  },
+webServer: {
+  command: "pnpm --filter @repo/web start",
+  url: "http://localhost:3001",
+  reuseExistingServer: false,
+  timeout: 120 * 1000,
+}
 });
