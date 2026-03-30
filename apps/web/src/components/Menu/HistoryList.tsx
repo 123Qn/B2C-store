@@ -32,25 +32,24 @@ export async function HistoryList({
     <div>
       <h3>History</h3>
       {historyItems.map((item) => {
-        const name = `${months[item.month]}, ${item.year}`;
-        const link = `/history/${item.year}/${item.month+1}`;
+  const name = `${months[item.month - 1]}, ${item.year}`; 
+  const link = `/history/${item.year}/${item.month}`;
 
-        const isSelected =
-          selectedYear === item.year.toString() &&
-          selectedMonth === item.month.toString();
+  const isSelected =
+    selectedYear === item.year.toString() &&
+    selectedMonth === item.month.toString();
 
-        return (
-
-          <SummaryItem
-            key={link}
-            name={name}
-            link={link}
-            count={item.count}
-            isSelected={isSelected}
-            title={`History / ${name}`}
-          />
-        );
-      })}
+  return (
+    <SummaryItem
+      key={link}
+      name={name}
+      link={link}
+      count={item.count}
+      isSelected={isSelected}
+      title={`History / ${name}`}
+    />
+  );
+})}
     </div>
   );
 }

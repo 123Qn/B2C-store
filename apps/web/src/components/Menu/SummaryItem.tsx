@@ -15,29 +15,22 @@ export function SummaryItem({
   title?: string;
   showCount?: boolean;
 }) {
-  return (
-    <li>
-      <Link
-        href={link}
-        title={title}
-        className={`flex items-center justify-between px-3 py-2 rounded-md transition
-          ${isSelected
-            ? "bg-gray-200 dark:bg-gray-700 font-medium"
-            : "hover:bg-gray-100 dark:hover:bg-gray-800"
-          }`}
-      >
-        <div className="flex items-center gap-2">
-          <span className="text-gray-400">🏷️</span>
-          <span>{name}</span>
-        </div>
+   return (
 
-        <span
-          data-testid="post-count"
-          data-test-id="post-count"
-          className={`text-sm text-gray-500 ${!showCount ? "invisible" : ""}`}
+    <li>
+      <Link href={link} legacyBehavior>
+        <a
+          title={title}
+          className={`flex items-center justify-between px-3 py-2 ${
+            isSelected ? "selected" : ""
+          }`}
         >
-          {count}
-        </span>
+          <span>{name}</span>
+
+          <span data-testid="post-count" data-test-id="post-count">
+            {showCount ? count : ""}
+          </span>
+        </a>
       </Link>
     </li>
   );

@@ -6,7 +6,7 @@ export function history(posts: { date: Date; active: boolean }[]) {
 
     const date = new Date(p.date);
     const year = date.getFullYear();
-    const month = date.getMonth();
+    const month = date.getMonth()+1;
 
     const key = `${year}-${month}`;
 
