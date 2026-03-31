@@ -9,15 +9,16 @@ export default async function Page({
 }) {
   const { name } = await params;
 
-  const filteredPosts = posts.filter((p) => {
-    if (!p.active) return false;
+ const filteredPosts = posts.filter((p) => {
+  if (!p.active) return false;
+  if (!p.tags) return false;
 
-    const tagList = p.tags
-      .split(",")
-      .map((t) => t.trim().toLowerCase());
+  const tagList = p.tags
+    .split(",")
+    .map((t) => t.trim().toLowerCase());
 
-    return tagList.includes(name.toLowerCase());
-  });
+  return tagList.includes(name.toLowerCase());
+});
 
   return (
     <AppLayout query={name}>
