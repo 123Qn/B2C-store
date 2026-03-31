@@ -11,7 +11,7 @@ test.describe("TAG SCREEN", () => {
 
       // TAG SCREEN > Displays posts with the tag url (e.g. /tags/dev-tools)
 
-      const articles = await page.locator('[data-test-id^="blog-post-"]');
+      const articles = await page.locator('[data-testid^="blog-post-"]');
       await expect(articles).toHaveCount(1);
 
       await expect(page.getByTestId("blog-post-3")).toBeVisible();
@@ -29,7 +29,7 @@ test.describe("TAG SCREEN", () => {
     async ({ page }) => {
       await page.goto("/tags/front-end");
 
-      const articles = await page.locator('[data-test-id^="blog-post-"]');
+      const articles = await page.locator('[data-testid^="blog-post-"]');
       await expect(articles).toHaveCount(2);
 
       await expect(page.getByTestId("blog-post-2")).toBeVisible();
@@ -54,7 +54,7 @@ test.describe("TAG SCREEN", () => {
 
       // TAG SCREEN > Displays "0 Posts" when search does no posts have that tag
 
-      const articles = await page.locator('[data-test-id^="blog-post-"]');
+      const articles = await page.locator('[data-testid^="blog-post-"]');
       await expect(articles).toHaveCount(0);
 
       await expect(page.getByText("0 Posts")).toBeVisible();

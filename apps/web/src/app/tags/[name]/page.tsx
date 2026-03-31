@@ -14,12 +14,11 @@ export default async function Page({
   if (!p.tags) return false;
 
   const tagList = p.tags
-    .split(",")
-    .map((t) => t.trim().toLowerCase());
+  .split(",")
+  .map((t) => t.trim().toLowerCase().replace(/\s+/g, "-"));
 
-  return tagList.includes(name.toLowerCase());
-});
-
+return tagList.includes(name.toLowerCase());
+ });
   return (
     <AppLayout query={name}>
       <Main posts={filteredPosts} />
