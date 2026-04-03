@@ -113,7 +113,7 @@ export default defineConfig({
 webServer: {
   command: "pnpm --filter @repo/web start",
   url: "http://localhost:3001",
-  reuseExistingServer: false,
+  reuseExistingServer: true,
   timeout: 120 * 1000,
 }
 });
