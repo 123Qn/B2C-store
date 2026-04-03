@@ -2,7 +2,6 @@ import type { Post } from "@repo/db/data";
 import Link from "next/link";
 
 export function BlogListItem({ post }: { post: Post }) {
-  const cleanTitle = post.title.replace(/[^\w\s,]/g, "");
 
   return (
     <article

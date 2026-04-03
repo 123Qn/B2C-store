@@ -15,9 +15,9 @@ const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 // 1. Create Theme Provider
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-    const [theme, setTheme] = useState<Theme>('light');
+  const [theme, setTheme] = useState<Theme>('light');
 
-    const toggleTheme = () => {
+  const toggleTheme = () => {
   const newTheme = theme === "light" ? "dark" : "light";
 
   setTheme(newTheme);

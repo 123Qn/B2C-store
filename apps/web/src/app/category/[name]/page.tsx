@@ -7,6 +7,7 @@ export default async function Page({
 }: {
   params: Promise<{ name: string }>;
 }) {
+// dyrout
   const { name } = await params;
 
   const filteredPosts = posts.filter(

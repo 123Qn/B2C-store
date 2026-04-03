@@ -1,5 +1,5 @@
 import type { Post } from "@repo/db/data";
-import { marked } from "marked";
+import { marked } from "marked";//md-hml
 
 export async function BlogDetail({ post }: { post: Post }) {
   const content = await marked.parse(post.content);
