@@ -49,10 +49,10 @@ export default function Home() {
     .some((c) => c.trim().startsWith("auth_token="));
 
   if (hasAuth) {
-    // Playwright / real login → stay logged in
+    // ✅ Playwright / real login → stay logged in
     setLoggedIn(true);
   } else {
-    // No cookie → logout
+    // ✅ No cookie → logout
     setLoggedIn(false);
   }
 
@@ -76,6 +76,7 @@ function handleLogout() {
 }
 
   // -------- LOGIN SCREEN --------
+  // Always render login on server + first client render to avoid hydration mismatch
   if (!mounted || !loggedIn) {
     return (
       <main>

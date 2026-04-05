@@ -18,7 +18,7 @@ test.describe("ADMIN LIST SCREEN", () => {
     async ({ userPage }) => {
       await userPage.goto("/");
 
-      await expect(await userPage.locator("article").count()).toBe(4);
+      await expect(await userPage.locator("article").count()).toBe(3);
     },
   );
 
@@ -43,7 +43,7 @@ test.describe("ADMIN LIST SCREEN", () => {
       ).toBeVisible();
 
       await userPage.getByLabel("Filter by Content:").clear();
-      await expect(await userPage.locator("article").count()).toBe(4);
+      await expect(await userPage.locator("article").count()).toBe(3);
     },
   );
 
@@ -134,42 +134,33 @@ test.describe("ADMIN LIST SCREEN", () => {
       expect(await articles[2].innerText()).toContain(
         "No front end framework is the best",
       );
-      expect(await articles[3].innerText()).toContain(
-        "Visual Basic is the future",
-      );
-
+      
       // title-desc
       await userPage.getByLabel("Sort By:").selectOption("title-desc");
       articles = await userPage.locator("article").all();
 
-      expect(await articles[3].innerText()).toContain(
+      expect(await articles[2].innerText()).toContain(
         "Better front ends with Fatboy Slim",
       );
-      expect(await articles[2].innerText()).toContain(
+      expect(await articles[1].innerText()).toContain(
         "Boost your conversion rate",
       );
-      expect(await articles[1].innerText()).toContain(
-        "No front end framework is the best",
-      );
       expect(await articles[0].innerText()).toContain(
-        "Visual Basic is the future",
+        "No front end framework is the best",
       );
 
       // title-asc
       await userPage.getByLabel("Sort By:").selectOption("date-asc");
       articles = await userPage.locator("article").all();
 
-      expect(await articles[1].innerText()).toContain(
+      expect(await articles[0].innerText()).toContain(
         "Better front ends with Fatboy Slim",
       );
-      expect(await articles[2].innerText()).toContain(
+      expect(await articles[1].innerText()).toContain(
         "Boost your conversion rate",
       );
-      expect(await articles[3].innerText()).toContain(
+      expect(await articles[ 2].innerText()).toContain(
         "No front end framework is the best",
-      );
-      expect(await articles[0].innerText()).toContain(
-        "Visual Basic is the future",
       );
 
       // title-desc
@@ -184,9 +175,6 @@ test.describe("ADMIN LIST SCREEN", () => {
       );
       expect(await articles[0].innerText()).toContain(
         "No front end framework is the best",
-      );
-      expect(await articles[3].innerText()).toContain(
-        "Visual Basic is the future",
       );
     },
   );
