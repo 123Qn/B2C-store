@@ -1,5 +1,5 @@
 import type { Post } from "@repo/db/data";
-import Link from "next/link";
+import Link from "next/link.js";
 
 export function BlogListItem({ post }: { post: Post }) {
 

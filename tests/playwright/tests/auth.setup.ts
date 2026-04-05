@@ -14,8 +14,8 @@ setup(
     const content = {
       cookies: [
         {
-          name: "password",
-          value: "123",
+          name: "auth_token",
+          value: "valid",
           domain: "localhost",
           secure: false,
           expires: -1,

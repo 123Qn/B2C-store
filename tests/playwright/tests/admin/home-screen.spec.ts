@@ -34,7 +34,7 @@ test.describe("ADMIN HOME SCREEN", () => {
       await page.getByLabel("Password", { exact: true }).fill("123");
       await page.getByText("Sign In", { exact: true }).click();
 
-      await expect(page.getByText("Admin of Full Stack Blog")).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Admin of Full Stack Blog" })).toBeVisible();
 
       // HOME SCREEN > Use a cookie to remember the signed-in state.
       const cookies = await page.context().cookies();

@@ -62,9 +62,9 @@ export default defineConfig({
       testDir: "./tests/admin",
       use: {
         ...devices["Desktop Chrome"],
-        baseURL: "http://localhost:3001",
+        baseURL: "http://localhost:3002",
       },
-      dependencies: process.env.CI ? ["setup"] : [],
+      dependencies: process.env.CI ? ["setup"] : ["setup"],
     },
     {
       name: "chromium",
@@ -73,7 +73,7 @@ export default defineConfig({
         ...devices["Desktop Chrome"],
         baseURL: "http://localhost:3001",
       },
-      dependencies: process.env.CI ? ["setup"] : [],
+      dependencies: process.env.CI ? ["setup"] : ["setup"],
     },
 
     // {
@@ -110,10 +110,21 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-webServer: {
-  command: "pnpm --filter @repo/web start",
-  url: "http://localhost:3001",
-  reuseExistingServer: true,
-  timeout: 120 * 1000,
-}
+webServer: [
+ 
+  {
+    command: "pnpm --filter @repo/admin start:e2e",  // adjust filter name to match your package
+    url: "http://localhost:3002",
+    reuseExistingServer: true,
+    timeout: 120 * 1000,
+    cwd: path.resolve("../../"),
+  },
+   {
+    command: "pnpm --filter @repo/web start",
+    url: "http://localhost:3001",
+    reuseExistingServer: true,
+    timeout: 120 * 1000,
+    cwd: path.resolve("../../"),
+  },
+],
 });

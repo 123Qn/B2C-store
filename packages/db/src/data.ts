@@ -101,7 +101,7 @@ export const posts: Post[] = [
     tags: "Programming,Mainframes",
     views: 22,
     likes: 1,
-    active: false,
+    active: true,
   },
   {
     id: 5,

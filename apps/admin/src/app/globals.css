@@ -37,3 +37,6 @@ html {
   --color-wsu: var(--wsu);
   --color-wsu-light: var(--wsu-light);
 }
+#__next-route-announcer__ {
+  display: none !important;
+}

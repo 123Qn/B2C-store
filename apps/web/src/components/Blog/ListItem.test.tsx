@@ -1,7 +1,21 @@
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
-import { post1 } from "./List.test";
 import { BlogListItem } from "./ListItem";
+
+const post1 = {
+  id: 1,
+  urlId: "hello-world",
+  title: "Hello, World",
+  content: "Test content",
+  description: "Test description",
+  imageUrl: "",
+  date: new Date("2024-10-01"),
+  category: "Cat",
+  views: 200,
+  likes: 30,
+  tags: "Hello, World",
+  active: true,
+};
 
 test("render blog post data", async () => {
   const { getByText } = render(<BlogListItem post={post1} />);

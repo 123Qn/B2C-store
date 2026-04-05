@@ -29,7 +29,9 @@ export function LeftMenu() {
 
           <TagList selectedTag="" posts={posts} />
 
-          <li>Admin</li>
+          <li>
+  <Link href="http://localhost:3002">Admin</Link>
+</li>
         </ul>
       </nav>
     </div>
