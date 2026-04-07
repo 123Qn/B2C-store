@@ -234,7 +234,7 @@ test.describe("ADMIN LIST SCREEN", () => {
 
       // LIST SCREEN > Clicking on the "Create Post" button takes the user to the CREATE SCREEN
       await userPage.locator('a:has-text("Create Post")').click();
-      await expect(userPage).toHaveURL("/posts/create");
+      await expect(userPage).toHaveURL("/post/create");
     },
   );
 

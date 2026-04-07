@@ -2,173 +2,218 @@
 
 import { posts as allPosts } from "@repo/db/data";
 import { useParams } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
-
-type Post = {
-  id: number;
-  urlId: string;
-  title: string;
-  content: string;
-  description: string;
-  imageUrl: string;
-  date: Date;
-  category: string;
-  views: number;
-  likes: number;
-  tags: string;
-  active: boolean;
-};
-
-function isLoggedIn() {
-  if (typeof document === "undefined") return false;
-  return document.cookie.split(";").some((c) => c.trim().startsWith("auth_token="));
-}
-
-function validate(form: Partial<Post>) {
-  const errors: Record<string, string> = {};
-  if (!form.title?.trim()) errors.title = "Title is required";
-  if (!form.description?.trim()) errors.description = "Description is required";
-  else if (form.description.length > 200)
-    errors.description = "Description is too long. Maximum is 200 characters";
-  if (!form.content?.trim()) errors.content = "Content is required";
-  if (!form.imageUrl?.trim()) errors.imageUrl = "Image URL is required";
-  else {
-    try { new URL(form.imageUrl); } catch { errors.imageUrl = "This is not a valid URL"; }
-  }
-  if (!form.tags?.trim()) errors.tags = "At least one tag is required";
-  return errors;
-}
-
-export default function PostPage() {
+import Link from "next/link";
+export default function ModifyPage() {
   const params = useParams();
-  const urlId = params?.urlId as string;
+  const urlId = params?.urlId?.toString();
 
-  const [loggedIn, setLoggedIn] = useState(isLoggedIn);
-  const [form, setForm] = useState<Partial<Post>>({
-    title: "", description: "", content: "", imageUrl: "", tags: "", category: "",
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  const [form, setForm] = useState<any>({});
+  const [errors, setErrors] = useState<any>({});
   const [showErrors, setShowErrors] = useState(false);
-  const [preview, setPreview] = useState(false);
-  const [cursorPos, setCursorPos] = useState(0);
   const [success, setSuccess] = useState(false);
-  const contentRef = useRef<HTMLTextAreaElement>(null);
+
+  const [preview, setPreview] = useState(false);
+  const contentRef = useRef<HTMLTextAreaElement | null>(null);
+  const cursorPos = useRef(0);
+
+  useEffect(() => {
+    const hasAuth = document.cookie
+      .split(";")
+      .some((c) => c.trim().startsWith("auth_token="));
+
+    setLoggedIn(hasAuth);
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const post = allPosts.find((p) => p.urlId === urlId);
-    if (post) {
-      setForm({
-        title: post.title,
-        description: post.description,
-        content: post.content,
-        imageUrl: post.imageUrl,
-        tags: post.tags,
-        category: post.category,
-      });
-    }
+    if (post) setForm(post);
   }, [urlId]);
 
-  useEffect(() => {
-    if (!preview && contentRef.current) {
-      contentRef.current.focus();
-      contentRef.current.setSelectionRange(cursorPos, cursorPos);
-    }
-  }, [preview]);
+  function validate() {
+    const e: any = {};
 
-  if (!loggedIn) {
-    return (
-      <main>
-        <h1>Login</h1>
-        <p>Sign in to your account</p>
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          const pw = (e.currentTarget.elements.namedItem("password") as HTMLInputElement).value;
-          if (pw === "123") { document.cookie = "auth_token=valid; path=/"; setLoggedIn(true); }
-        }}>
-          <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" required />
-          <button type="submit">Sign In</button>
-        </form>
-      </main>
-    );
-  }
+    if (!form.title) e.title = "Title is required";
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-    if (showErrors) {
-      setErrors(validate({ ...form, [name]: value }));
-    }
+    
+    if (!form.content) e.content = "Content is required";
+
+    if (!form.imageUrl) e.imageUrl = "Image URL is required";
+    else if (!form.imageUrl.startsWith("http"))
+      e.imageUrl = "This is not a valid URL";
+
+    if (!form.tags) e.tags = "At least one tag is required";
+
+    return e;
   }
 
   function handleSave() {
-    const newErrors = validate(form);
-    setErrors(newErrors);
+    const e = validate();
+    setErrors(e);
     setShowErrors(true);
-    if (Object.keys(newErrors).length > 0) return;
+    if (Object.keys(e).length > 0) return;
     setSuccess(true);
   }
 
   function handlePreview() {
     if (!preview && contentRef.current) {
-      setCursorPos(contentRef.current.selectionStart ?? 0);
+      cursorPos.current = contentRef.current.selectionStart;
     }
-    setPreview((p) => !p);
+    setPreview((prev) => !prev);
   }
 
-  const hasErrors = Object.keys(errors).length > 0;
+  useEffect(() => {
+    if (!preview && contentRef.current) {
+      contentRef.current.focus();
+      contentRef.current.setSelectionRange(
+        cursorPos.current,
+        cursorPos.current
+      );
+    }
+  }, [preview]);
+
+  if (!mounted) return null;
+
+  if (!loggedIn) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="bg-white p-6 rounded-xl shadow w-full max-w-md text-center">
+          <h1 className="text-xl font-bold mb-2">Login</h1>
+          <p className="text-gray-600">Sign in to your account</p>
+          <Link href="/">Home</Link>
+        </div>
+      </main>
+    );
+  }
 
   return (
-    <main>
-      <h1>Edit Post</h1>
+    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+      <div className="w-full max-w-2xl bg-white p-6 rounded-xl shadow">
 
-      {success && <p>Post updated successfully</p>}
-      {showErrors && hasErrors && <p>Please fix the errors before saving</p>}
+        <h1 className="text-2xl font-bold mb-6 text-gray-800">
+          Modify Post
+        </h1>
 
-      <div>
-        <label htmlFor="title">Title</label>
-        <input id="title" name="title" value={form.title ?? ""} onChange={handleChange} />
-        {errors.title && <p>{errors.title}</p>}
-      </div>
+        {showErrors && Object.keys(errors).length > 0 && (
+          <p className="mb-4 text-red-500">
+            Please fix the errors before saving
+          </p>
+        )}
 
-      <div>
-        <label htmlFor="description">Description</label>
-        <input id="description" name="description" value={form.description ?? ""} onChange={handleChange} />
-        {errors.description && <p>{errors.description}</p>}
-      </div>
+        {success && (
+          <p className="mb-4 text-green-600">
+            Post updated successfully
+          </p>
+        )}
 
-      <div>
-        <label htmlFor="content">Content</label>
+        {form.imageUrl && (
+          <img
+            data-testid="image-preview"
+            src={form.imageUrl}
+            className="w-full h-64 object-cover rounded mb-4"
+          />
+        )}
+
+        <label htmlFor="title" className="block text-sm font-medium mb-1">
+          Title
+        </label>
+        <input
+          id="title"
+          value={form.title || ""}
+          onChange={(e) =>
+            setForm({ ...form, title: e.target.value })
+          }
+          className="w-full border rounded-lg px-3 py-2 mb-2"
+        />
+        {errors.title && <p className="text-red-500">{errors.title}</p>}
+
+        <label htmlFor="description" className="block text-sm font-medium mb-1">
+          Description
+        </label>
+        <input
+          id="description"
+          value={form.description || ""}
+          onChange={(e) =>
+            setForm({ ...form, description: e.target.value })
+          }
+          className="w-full border rounded-lg px-3 py-2 mb-2"
+        />
+        {errors.description && (
+          <p className="text-red-500">{errors.description}</p>
+        )}
+
+        <label htmlFor="content" className="block text-sm font-medium mb-1">
+          Content
+        </label>
+
         {preview ? (
-          <div data-testid="content-preview">
-            <ReactMarkdown>{form.content ?? ""}</ReactMarkdown>
+          <div
+            data-testid="content-preview"
+            className="border p-3 rounded mb-2 bg-gray-50"
+          >
+            <ReactMarkdown>{form.content || ""}</ReactMarkdown>
           </div>
         ) : (
-          <textarea id="content" name="content" ref={contentRef} value={form.content ?? ""} onChange={handleChange} />
+          <textarea
+            id="content"
+            ref={contentRef}
+            value={form.content || ""}
+            onChange={(e) =>
+              setForm({ ...form, content: e.target.value })
+            }
+            className="w-full border rounded-lg px-3 py-2 mb-2 min-h-[120px]"
+          />
         )}
-        {errors.content && <p>{errors.content}</p>}
-        <button type="button" onClick={handlePreview}>
+
+        {errors.content && <p className="text-red-500">{errors.content}</p>}
+
+        <button
+          onClick={handlePreview}
+          className="mb-4 px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+        >
           {preview ? "Close Preview" : "Preview"}
         </button>
-      </div>
 
-      <div>
-        <label htmlFor="imageUrl">Image URL</label>
-        <input id="imageUrl" name="imageUrl" value={form.imageUrl ?? ""} onChange={handleChange} />
-        {errors.imageUrl && <p>{errors.imageUrl}</p>}
-        {form.imageUrl && (
-          <img data-testid="image-preview" src={form.imageUrl} alt="preview" />
+        <label htmlFor="imageUrl" className="block text-sm font-medium mb-1">
+          Image URL
+        </label>
+        <input
+          id="imageUrl"
+          value={form.imageUrl || ""}
+          onChange={(e) =>
+            setForm({ ...form, imageUrl: e.target.value })
+          }
+          className="w-full border rounded-lg px-3 py-2 mb-2"
+        />
+        {errors.imageUrl && (
+          <p className="text-red-500">{errors.imageUrl}</p>
         )}
-      </div>
 
-      <div>
-        <label htmlFor="tags">Tags</label>
-        <input id="tags" name="tags" value={form.tags ?? ""} onChange={handleChange} />
-        {errors.tags && <p>{errors.tags}</p>}
-      </div>
+        <label htmlFor="tags" className="block text-sm font-medium mb-1">
+          Tags
+        </label>
+        <input
+          id="tags"
+          value={form.tags || ""}
+          onChange={(e) =>
+            setForm({ ...form, tags: e.target.value })
+          }
+          className="w-full border rounded-lg px-3 py-2 mb-2"
+        />
+        {errors.tags && <p className="text-red-500">{errors.tags}</p>}
 
-      <button type="button" onClick={handleSave}>Save</button>
+        <button
+          onClick={handleSave}
+          className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
+        >
+          Save
+        </button>
+      </div>
     </main>
   );
 }
