@@ -1,12 +1,14 @@
-import { seed } from "@repo/db/seed";
+
 import { expect, test } from "./fixtures";
 
 test.beforeAll(async () => {
+  const { seed } = await import("@repo/db/seed");
   await seed();
 });
 
 test.describe("ADMIN LIST SCREEN", () => {
   test.beforeAll(async () => {
+    const { seed } = await import("@repo/db/seed");
     await seed();
   });
 
@@ -244,6 +246,7 @@ test.describe("ADMIN LIST SCREEN", () => {
       tag: "@a3",
     },
     async ({ userPage }) => {
+      const { seed } = await import("@repo/db/seed");
       await seed();
       await userPage.goto("/");
 

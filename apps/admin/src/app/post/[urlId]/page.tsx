@@ -40,7 +40,11 @@ export default function ModifyPage() {
 
     if (!form.title) e.title = "Title is required";
 
-    
+    if (!form.description) {
+  e.description = "Description is required";
+} else if (form.description.length > 200) {
+  e.description = "Description is too long. Maximum is 200 characters";
+}
     if (!form.content) e.content = "Content is required";
 
     if (!form.imageUrl) e.imageUrl = "Image URL is required";

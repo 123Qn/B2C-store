@@ -1,7 +1,8 @@
-import { seed } from "@repo/db/seed";
+
 import { expect, test, type Page } from "./fixtures";
 
 test.beforeAll(async () => {
+  const { seed } = await import("@repo/db/seed");
   await seed();
 });
 

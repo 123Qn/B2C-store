@@ -1,7 +1,8 @@
-import { seed } from "@repo/db/seed";
+
 import { expect, test } from "./fixtures";
 
 test.beforeEach(async () => {
+  const { seed } = await import("@repo/db/seed");
   await seed();
 });
 
@@ -125,6 +126,7 @@ test.describe("ADMIN UPDATE SCREEN", () => {
       tag: "@a3",
     },
     async ({ userPage }) => {
+      const { seed } = await import("@repo/db/seed");
       await seed();
       await userPage.goto("/post/no-front-end-framework-is-the-best");
 
@@ -162,6 +164,7 @@ test.describe("ADMIN UPDATE SCREEN", () => {
       tag: "@a3",
     },
     async ({ userPage }) => {
+      const { seed } = await import("@repo/db/seed");
       await seed();
       await userPage.goto("/posts/create");
 
