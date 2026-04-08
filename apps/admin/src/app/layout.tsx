@@ -17,15 +17,20 @@ export const metadata: Metadata = {
   description: "Administration of Full Stack Blog",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            const observer = new MutationObserver(() => {
+              const el = document.getElementById('__next-route-announcer__');
+              if (el) { el.remove(); observer.disconnect(); }
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+          `
+        }} />
       </body>
     </html>
   );
