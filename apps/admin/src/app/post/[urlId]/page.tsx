@@ -5,84 +5,66 @@ import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Link from "next/link";
+
 export default function ModifyPage() {
-  const params = useParams();
-  const urlId = params?.urlId?.toString();
-
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { urlId } = useParams() as { urlId?: string };
   const [mounted, setMounted] = useState(false);
-
+  const [loggedIn, setLoggedIn] = useState(false);
   const [form, setForm] = useState<any>({});
   const [errors, setErrors] = useState<any>({});
   const [showErrors, setShowErrors] = useState(false);
   const [success, setSuccess] = useState(false);
-
   const [preview, setPreview] = useState(false);
   const contentRef = useRef<HTMLTextAreaElement | null>(null);
   const cursorPos = useRef(0);
-
+//check Auth
   useEffect(() => {
-    const hasAuth = document.cookie
-      .split(";")
-      .some((c) => c.trim().startsWith("auth_token="));
-
-    setLoggedIn(hasAuth);
+    setLoggedIn(document.cookie.includes("auth_token="));
     setMounted(true);
   }, []);
-
+//load post
   useEffect(() => {
     const post = allPosts.find((p) => p.urlId === urlId);
     if (post) setForm(post);
   }, [urlId]);
 
   function validate() {
-    const e: any = {};
-
-    if (!form.title) e.title = "Title is required";
-
-    if (!form.description) {
-  e.description = "Description is required";
-} else if (form.description.length > 200) {
-  e.description = "Description is too long. Maximum is 200 characters";
-}
-    if (!form.content) e.content = "Content is required";
-
-    if (!form.imageUrl) e.imageUrl = "Image URL is required";
-    else if (!form.imageUrl.startsWith("http"))
-      e.imageUrl = "This is not a valid URL";
-
-    if (!form.tags) e.tags = "At least one tag is required";
-
-    return e;
+    return {
+      ...( !form.title && { title: "Title is required" }),
+      ...( !form.description && { description: "Description is required" }),
+      ...( form.description && form.description.length > 200 && {
+        description: "Description is too long. Maximum is 200 characters",
+      }),
+      ...( !form.content && { content: "Content is required" }),
+      ...( !form.imageUrl && { imageUrl: "Image URL is required" }),
+      ...( form.imageUrl && !form.imageUrl.startsWith("http") && {
+        imageUrl: "This is not a valid URL",
+      }),
+      ...( !form.tags && { tags: "At least one tag is required" }),
+    };
   }
-
   function handleSave() {
     const e = validate();
     setErrors(e);
     setShowErrors(true);
-    if (Object.keys(e).length > 0) return;
-    setSuccess(true);
+    setSuccess(Object.keys(e).length === 0);
   }
-
   function handlePreview() {
     if (!preview && contentRef.current) {
       cursorPos.current = contentRef.current.selectionStart;
     }
-    setPreview((prev) => !prev);
+    setPreview(!preview);
   }
-
   useEffect(() => {
     if (!preview && contentRef.current) {
       contentRef.current.focus();
-      contentRef.current.setSelectionRange(
-        cursorPos.current,
-        cursorPos.current
-      );
+      contentRef.current.setSelectionRange(cursorPos.current, cursorPos.current);
     }
   }, [preview]);
 
   if (!mounted) return null;
 
+//require login when not
   if (!loggedIn) {
     return (
       <main className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -94,27 +76,23 @@ export default function ModifyPage() {
       </main>
     );
   }
-
+  //Main Modify form
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <div className="w-full max-w-2xl bg-white p-6 rounded-xl shadow">
-
         <h1 className="text-2xl font-bold mb-6 text-gray-800">
           Modify Post
         </h1>
-
         {showErrors && Object.keys(errors).length > 0 && (
           <p className="mb-4 text-red-500">
             Please fix the errors before saving
           </p>
         )}
-
         {success && (
           <p className="mb-4 text-green-600">
             Post updated successfully
           </p>
         )}
-
         {form.imageUrl && (
           <img
             data-testid="image-preview"
@@ -122,16 +100,14 @@ export default function ModifyPage() {
             className="w-full h-64 object-cover rounded mb-4"
           />
         )}
-
+       
         <label htmlFor="title" className="block text-sm font-medium mb-1">
           Title
         </label>
         <input
           id="title"
           value={form.title || ""}
-          onChange={(e) =>
-            setForm({ ...form, title: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
           className="w-full border rounded-lg px-3 py-2 mb-2"
         />
         {errors.title && <p className="text-red-500">{errors.title}</p>}
@@ -142,9 +118,7 @@ export default function ModifyPage() {
         <input
           id="description"
           value={form.description || ""}
-          onChange={(e) =>
-            setForm({ ...form, description: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
           className="w-full border rounded-lg px-3 py-2 mb-2"
         />
         {errors.description && (
@@ -167,9 +141,7 @@ export default function ModifyPage() {
             id="content"
             ref={contentRef}
             value={form.content || ""}
-            onChange={(e) =>
-              setForm({ ...form, content: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, content: e.target.value })}
             className="w-full border rounded-lg px-3 py-2 mb-2 min-h-[120px]"
           />
         )}
@@ -189,9 +161,7 @@ export default function ModifyPage() {
         <input
           id="imageUrl"
           value={form.imageUrl || ""}
-          onChange={(e) =>
-            setForm({ ...form, imageUrl: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
           className="w-full border rounded-lg px-3 py-2 mb-2"
         />
         {errors.imageUrl && (
@@ -204,9 +174,7 @@ export default function ModifyPage() {
         <input
           id="tags"
           value={form.tags || ""}
-          onChange={(e) =>
-            setForm({ ...form, tags: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, tags: e.target.value })}
           className="w-full border rounded-lg px-3 py-2 mb-2"
         />
         {errors.tags && <p className="text-red-500">{errors.tags}</p>}
