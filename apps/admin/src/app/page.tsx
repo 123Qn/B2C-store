@@ -37,7 +37,7 @@ function formatTags(tags: string) {
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [posts, setPosts] = useState<Post[]>(allPosts.filter((p) => p.active));
+  const [posts, setPosts] = useState<Post[]>(allPosts);
   const [filterContent, setFilterContent] = useState("");
   const [filterTag, setFilterTag] = useState("");
   const [filterDate, setFilterDate] = useState("");
@@ -197,7 +197,7 @@ export default function Home() {
         {/* ACTION BAR */}
         <div className="flex justify-between items-center mb-6">
           <Link
-            href="/post/create"
+            href="/posts/create"
             className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
           >
             + Create Post
@@ -281,7 +281,7 @@ export default function Home() {
 
                 {/* TOP */}
                 <div>
-                  <Link href={`/post/${post.urlId}`}>
+                  <Link href={`/posts/${post.urlId}`}>
                     <h2 className="text-xl font-semibold hover:underline">
                       {post.title}
                     </h2>

@@ -228,7 +228,7 @@ test.describe("ADMIN LIST SCREEN", () => {
       // LIST SCREEN > Clicking on the title takes the user to the MODIFY SCREEN, allowing the user to modify the current post
       await userPage.getByText("No front end framework is the best").click();
       await expect(userPage).toHaveURL(
-        "/post/no-front-end-framework-is-the-best",
+        "/posts/no-front-end-framework-is-the-best",
       );
     },
   );
