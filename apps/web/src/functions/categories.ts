@@ -7,7 +7,8 @@ export function categories(
 //ftsig
 {
   return posts
-    .filter((p) => p.active) 
+    .filter((p) => p.active)//1
+     
     .sort((a, b) => a.category.localeCompare(b.category))
     .reduce(
       (acc, post) => { //2
