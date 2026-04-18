@@ -7,7 +7,7 @@
 # Test info
 
 - Name: tests\playwright\tests\admin\update-screen.spec.ts >> ADMIN UPDATE SCREEN >> Save Button
-- Location: tests\playwright\tests\admin\update-screen.spec.ts:274:3
+- Location: tests\playwright\tests\admin\update-screen.spec.ts:277:7
 
 # Error details
 

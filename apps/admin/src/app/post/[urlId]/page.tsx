@@ -17,12 +17,12 @@ export default function ModifyPage() {
   const [preview, setPreview] = useState(false);
   const contentRef = useRef<HTMLTextAreaElement | null>(null);
   const cursorPos = useRef(0);
-//check Auth
+
   useEffect(() => {
     setLoggedIn(document.cookie.includes("auth_token="));
     setMounted(true);
   }, []);
-//load post
+
   useEffect(() => {
     const post = allPosts.find((p) => p.urlId === urlId);
     if (post) setForm(post);

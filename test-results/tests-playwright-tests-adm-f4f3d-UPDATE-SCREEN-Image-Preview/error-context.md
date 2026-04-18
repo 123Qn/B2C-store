@@ -7,7 +7,7 @@
 # Test info
 
 - Name: tests\playwright\tests\admin\update-screen.spec.ts >> ADMIN UPDATE SCREEN >> Image Preview
-- Location: tests\playwright\tests\admin\update-screen.spec.ts:255:3
+- Location: tests\playwright\tests\admin\update-screen.spec.ts:258:7
 
 # Error details
 

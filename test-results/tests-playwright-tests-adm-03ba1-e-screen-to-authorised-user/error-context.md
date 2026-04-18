@@ -7,7 +7,7 @@
 # Test info
 
 - Name: tests\playwright\tests\admin\home-screen.spec.ts >> ADMIN HOME SCREEN >> Shows home screen to authorised user
-- Location: tests\playwright\tests\admin\home-screen.spec.ts:57:3
+- Location: tests\playwright\tests\admin\home-screen.spec.ts:58:7
 
 # Error details
 

@@ -7,7 +7,7 @@
 # Test info
 
 - Name: tests\playwright\tests\admin\list-screen.spec.ts >> ADMIN LIST SCREEN >> Combine Filters
-- Location: tests\playwright\tests\admin\list-screen.spec.ts:94:3
+- Location: tests\playwright\tests\admin\list-screen.spec.ts:96:7
 
 # Error details
 

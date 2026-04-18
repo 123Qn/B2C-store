@@ -1,14 +1,12 @@
-
+import { seed } from "@repo/db/seed";
 import { expect, test } from "./fixtures";
 
 test.beforeAll(async () => {
-  const { seed } = await import("@repo/db/seed");
   await seed();
 });
 
 test.describe("ADMIN LIST SCREEN", () => {
   test.beforeAll(async () => {
-    const { seed } = await import("@repo/db/seed");
     await seed();
   });
 
@@ -20,7 +18,7 @@ test.describe("ADMIN LIST SCREEN", () => {
     async ({ userPage }) => {
       await userPage.goto("/");
 
-      await expect(await userPage.locator("article").count()).toBe(3);
+      await expect(await userPage.locator("article").count()).toBe(4);
     },
   );
 
@@ -45,7 +43,7 @@ test.describe("ADMIN LIST SCREEN", () => {
       ).toBeVisible();
 
       await userPage.getByLabel("Filter by Content:").clear();
-      await expect(await userPage.locator("article").count()).toBe(3);
+      await expect(await userPage.locator("article").count()).toBe(4);
     },
   );
 
@@ -136,33 +134,42 @@ test.describe("ADMIN LIST SCREEN", () => {
       expect(await articles[2].innerText()).toContain(
         "No front end framework is the best",
       );
-      
+      expect(await articles[3].innerText()).toContain(
+        "Visual Basic is the future",
+      );
+
       // title-desc
       await userPage.getByLabel("Sort By:").selectOption("title-desc");
       articles = await userPage.locator("article").all();
 
-      expect(await articles[2].innerText()).toContain(
+      expect(await articles[3].innerText()).toContain(
         "Better front ends with Fatboy Slim",
       );
-      expect(await articles[1].innerText()).toContain(
+      expect(await articles[2].innerText()).toContain(
         "Boost your conversion rate",
       );
-      expect(await articles[0].innerText()).toContain(
+      expect(await articles[1].innerText()).toContain(
         "No front end framework is the best",
+      );
+      expect(await articles[0].innerText()).toContain(
+        "Visual Basic is the future",
       );
 
       // title-asc
       await userPage.getByLabel("Sort By:").selectOption("date-asc");
       articles = await userPage.locator("article").all();
 
-      expect(await articles[0].innerText()).toContain(
+      expect(await articles[1].innerText()).toContain(
         "Better front ends with Fatboy Slim",
       );
-      expect(await articles[1].innerText()).toContain(
+      expect(await articles[2].innerText()).toContain(
         "Boost your conversion rate",
       );
-      expect(await articles[ 2].innerText()).toContain(
+      expect(await articles[3].innerText()).toContain(
         "No front end framework is the best",
+      );
+      expect(await articles[0].innerText()).toContain(
+        "Visual Basic is the future",
       );
 
       // title-desc
@@ -177,6 +184,9 @@ test.describe("ADMIN LIST SCREEN", () => {
       );
       expect(await articles[0].innerText()).toContain(
         "No front end framework is the best",
+      );
+      expect(await articles[3].innerText()).toContain(
+        "Visual Basic is the future",
       );
     },
   );
@@ -236,7 +246,7 @@ test.describe("ADMIN LIST SCREEN", () => {
 
       // LIST SCREEN > Clicking on the "Create Post" button takes the user to the CREATE SCREEN
       await userPage.locator('a:has-text("Create Post")').click();
-      await expect(userPage).toHaveURL("/post/create");
+      await expect(userPage).toHaveURL("/posts/create");
     },
   );
 
@@ -246,7 +256,6 @@ test.describe("ADMIN LIST SCREEN", () => {
       tag: "@a3",
     },
     async ({ userPage }) => {
-      const { seed } = await import("@repo/db/seed");
       await seed();
       await userPage.goto("/");
 

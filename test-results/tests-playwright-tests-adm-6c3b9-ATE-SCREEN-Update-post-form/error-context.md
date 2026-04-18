@@ -7,7 +7,7 @@
 # Test info
 
 - Name: tests\playwright\tests\admin\update-screen.spec.ts >> ADMIN UPDATE SCREEN >> Update post form
-- Location: tests\playwright\tests\admin\update-screen.spec.ts:24:3
+- Location: tests\playwright\tests\admin\update-screen.spec.ts:25:7
 
 # Error details
 

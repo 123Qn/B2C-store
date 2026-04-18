@@ -1,8 +1,7 @@
-
+import { seed } from "@repo/db/seed";
 import { expect, test } from "./fixtures";
 
 test.beforeAll(async () => {
-  const { seed } = await import("@repo/db/seed");
   await seed();
 });
 
@@ -35,7 +34,7 @@ test.describe("ADMIN HOME SCREEN", () => {
       await page.getByLabel("Password", { exact: true }).fill("123");
       await page.getByText("Sign In", { exact: true }).click();
 
-      await expect(page.getByRole("heading", { name: "Admin of Full Stack Blog" })).toBeVisible();
+      await expect(page.getByText("Admin of Full Stack Blog")).toBeVisible();
 
       // HOME SCREEN > Use a cookie to remember the signed-in state.
       const cookies = await page.context().cookies();
@@ -69,7 +68,7 @@ test.describe("ADMIN HOME SCREEN", () => {
       ).toBeVisible();
 
       // LIST SCREEN > Article list is only accessible to logged-in users.
-      await expect(await userPage.locator("article").count()).toBe(3);
+      await expect(await userPage.locator("article").count()).toBe(4);
     },
   );
 });

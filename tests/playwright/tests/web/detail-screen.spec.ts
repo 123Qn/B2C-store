@@ -1,9 +1,8 @@
-
+import { seed } from "@repo/db/seed";
 import { expect, test } from "./fixtures";
 
 test.describe("DETAIL SCREEN", () => {
   test.beforeEach(async () => {
-    const { seed } = await import("@repo/db/seed");
     await seed();
   });
 

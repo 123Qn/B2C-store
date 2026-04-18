@@ -51,7 +51,7 @@ export default function Home() {
     if (hasAuth) {
       setLoggedIn(true);
     } else {
-      // No cookie → logout
+      
       setLoggedIn(false);
     }
 
@@ -64,7 +64,7 @@ export default function Home() {
     const password = (form.elements.namedItem("password") as HTMLInputElement).value;
 
     if (password === "123") {
-      document.cookie = "auth_token=valid; path=/"; // required for tests
+      document.cookie = "auth_token=valid; path=/";
       setLoggedIn(true);
     }
   }
@@ -123,6 +123,9 @@ export default function Home() {
     );
   }
 
+
+
+
   function getFiltered() {
     let result = [...posts];
 
@@ -161,6 +164,13 @@ export default function Home() {
   }
 
   const filtered = getFiltered();
+
+
+
+
+
+
+
 
   // -------- ADMIN SCREEN --------
   return (

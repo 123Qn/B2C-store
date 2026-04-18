@@ -7,7 +7,7 @@
 # Test info
 
 - Name: tests\playwright\tests\admin\list-screen.spec.ts >> ADMIN LIST SCREEN >> Move to create post screen
-- Location: tests\playwright\tests\admin\list-screen.spec.ts:236:3
+- Location: tests\playwright\tests\admin\list-screen.spec.ts:226:7
 
 # Error details
 

@@ -7,7 +7,7 @@
 # Test info
 
 - Name: tests\playwright\tests\admin\list-screen.spec.ts >> ADMIN LIST SCREEN >> Show all posts
-- Location: tests\playwright\tests\admin\list-screen.spec.ts:13:3
+- Location: tests\playwright\tests\admin\list-screen.spec.ts:15:7
 
 # Error details
 
