@@ -2,6 +2,7 @@
   "name": "@repo/playwright",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start:web": "pnpm --filter web start --port 3001",
     "start:admin": "pnpm --filter admin start --port 3002",

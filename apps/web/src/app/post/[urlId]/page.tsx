@@ -15,9 +15,13 @@ export default async function Page({
     (p) => p.urlId === urlId && p.active
   );
 
+  const postWithIncrementedViews = post 
+    ? { ...post, views: post.views + 1 } 
+    : undefined;
+
   return (
     <AppLayout>
-      {post ? <BlogDetail post={post} /> : <div>Not found</div>}
+      {postWithIncrementedViews ? <BlogDetail post={postWithIncrementedViews} /> : <div>Not found</div>}
     </AppLayout>
   );
 }
