@@ -204,7 +204,7 @@ test.describe("ADMIN UPDATE SCREEN", () => {
       tag: "@a2",
     },
     async ({ userPage }) => {
-      await userPage.goto("/post/no-front-end-framework-is-the-best");
+      await userPage.goto("/posts/no-front-end-framework-is-the-best");
 
       // UPDATE SCREEN > Under the Description is a "Preview" button that replaces the text area with a rendered markdown string and changes the title to "Close Preview".
       await userPage.getByText("Preview").focus();
@@ -223,7 +223,7 @@ test.describe("ADMIN UPDATE SCREEN", () => {
       tag: "@a2",
     },
     async ({ userPage }) => {
-      await userPage.goto("/post/no-front-end-framework-is-the-best");
+      await userPage.goto("/posts/no-front-end-framework-is-the-best");
 
       // UPDATE SCREEN > When the preview is closed, the cursor must be in the same position as before opening the preview.
 
@@ -258,7 +258,7 @@ test.describe("ADMIN UPDATE SCREEN", () => {
       tag: "@a2",
     },
     async ({ userPage }) => {
-      await userPage.goto("/post/no-front-end-framework-is-the-best");
+      await userPage.goto("/posts/no-front-end-framework-is-the-best");
 
       // UPDATE SCREEN > Under the image input is an image preview;
 
@@ -277,7 +277,7 @@ test.describe("ADMIN UPDATE SCREEN", () => {
       tag: "@a2",
     },
     async ({ userPage }) => {
-      await userPage.goto("/post/no-front-end-framework-is-the-best");
+      await userPage.goto("/posts/no-front-end-framework-is-the-best");
 
       // UPDATE SCREEN > User can click on the "Save" button that displays an error ui if one of the fields is not specified or valid.
 
