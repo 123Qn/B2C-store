@@ -45,7 +45,6 @@ test.describe("DETAIL SCREEN", () => {
     },
     async ({ page }) => {
       // BACKEND / CLIENT > Each visit of the page increases the post "views" count by one
-
       await page.goto("/post/boost-your-conversion-rate");
       await expect(page.getByText("321 views")).toBeVisible();
       await page.goto("/post/boost-your-conversion-rate");
@@ -60,7 +59,6 @@ test.describe("DETAIL SCREEN", () => {
     },
     async ({ page }) => {
       // BACKEND / CLIENT > User can "like" the post on the detail screen, NOT on the list
-
       await page.goto("/post/boost-your-conversion-rate");
       await expect(page.getByText("3 likes")).toBeVisible();
       await page.getByTestId("like-button").click();
