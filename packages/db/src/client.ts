@@ -6,20 +6,15 @@ declare global {
 }
 
 export const createClient = () => {
-  if (global.prisma) {
-    return global.prisma;
+  if (globalThis.prisma) {
+    globalThis.prisma.$disconnect();
+    globalThis.prisma = undefined;
   }
 
   const URL = env.DATABASE_URL;
-
-  const prisma = new PrismaClient({
-    datasourceUrl: URL,
-  });
-
-  console.log("Connected to database");
-  console.log(URL);
-
-  global.prisma = prisma;
+  const prisma = new PrismaClient({ datasourceUrl: URL });
+  
+  globalThis.prisma = prisma;
   return prisma;
 };
 

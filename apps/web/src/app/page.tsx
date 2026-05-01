@@ -1,21 +1,19 @@
-import { client } from "@repo/db/client";
 import { AppLayout } from "../components/Layout/AppLayout";
 import { Main } from "../components/Main";
+import { client } from "@repo/db/client";
 import styles from "./page.module.css";
 
-export default async function Home() {
-  const prisma = client.db;
+export const dynamic = "force-dynamic";
 
-  const rawPosts = await prisma.post.findMany({
+export default async function Home() {
+   console.log("DB URL:", process.env.DATABASE_URL)
+  const raw = await client.db.post.findMany({
     where: { active: true },
     orderBy: { date: "desc" },
-    include: { Likes: true }
+    include: { _count: { select: { Likes: true } } },  
   });
 
-  const posts = rawPosts.map(p => ({
-    ...p,
-    likes: p.Likes.length
-  }));
+  const posts = raw.map((p) => ({ ...p, likes: p._count.Likes }));
 
   return (
     <AppLayout>
