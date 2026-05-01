@@ -1,6 +1,8 @@
 import { AppLayout } from "@/components/Layout/AppLayout";
 import { Main } from "@/components/Main";
-import { posts } from "@repo/db/data";
+import { client } from "@repo/db/client";
+
+export const dynamic = "force-dynamic";
 
 export default async function Page({
   searchParams,
@@ -9,17 +11,22 @@ export default async function Page({
 }) {
   const { q } = await searchParams;
 
-  const filteredPosts = posts.filter((p) =>
-    p.active &&
-    (
-      p.title.toLowerCase().includes(q.toLowerCase()) ||
-      p.description.toLowerCase().includes(q.toLowerCase())
-    )
-  );
+  const raw = await client.db.post.findMany({
+    where: {
+      active: true,
+      OR: [
+        { title: { contains: q } },
+        { description: { contains: q } },
+      ],
+    },
+    include: { _count: { select: { Likes: true } } },
+  });
+
+  const posts = raw.map((p) => ({ ...p, likes: p._count.Likes }));
 
   return (
     <AppLayout query={q}>
-      <Main posts={filteredPosts} />
+      <Main posts={posts} />
     </AppLayout>
   );
 }
