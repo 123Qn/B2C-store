@@ -1,27 +1,32 @@
 import { AppLayout } from "@/components/Layout/AppLayout";
 import { Main } from "@/components/Main";
-import { posts } from "@repo/db/data";
+import { client } from "@repo/db/client";
+
+export const dynamic = "force-dynamic";
 
 export default async function Page({
   params,
 }: {
-   params: Promise<{ name: string }>;
+  params: Promise<{ name: string }>;
 }) {
   const { name } = await params;
 
- const filteredPosts = posts.filter((p) => {
-  if (!p.active) return false;
-  if (!p.tags) return false;
+  const raw = await client.db.post.findMany({
+    where: { active: true },
+    include: { _count: { select: { Likes: true } } },
+  });
 
-  const tagList = p.tags
-  .split(",")
-  .map((t) => t.trim().toLowerCase().replace(/\s+/g, "-"));
+  const posts = raw
+    .filter((p) => {
+      if (!p.tags) return false;
+      const tagList = p.tags.split(",").map((t) => t.trim().toLowerCase().replace(/\s+/g, "-"));
+      return tagList.includes(name.toLowerCase());
+    })
+    .map((p) => ({ ...p, likes: p._count.Likes }));
 
-return tagList.includes(name.toLowerCase());
- });
   return (
     <AppLayout query={name}>
-      <Main posts={filteredPosts} />
+      <Main posts={posts} />
     </AppLayout>
   );
 }

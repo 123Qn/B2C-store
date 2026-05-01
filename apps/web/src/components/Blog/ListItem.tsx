@@ -2,7 +2,7 @@ import type { Post } from "@repo/db/data";
 import Link from "next/link";
 
 export function BlogListItem({ post }: { post: Post }) {
-
+console.log("IMAGE:", post.imageUrl);
   return (
     <article
       data-testid={`blog-post-${post.id}`}
@@ -14,6 +14,7 @@ export function BlogListItem({ post }: { post: Post }) {
         alt={post.title}
         className="w-48 h-48 object-cover rounded-xl flex-shrink-0"
       />
+
 
 
       <div className="flex flex-col flex-1 justify-between">
@@ -46,9 +47,9 @@ export function BlogListItem({ post }: { post: Post }) {
 
 
         <div className="flex flex-wrap gap-2 mt-3 text-sm text-gray-500">
-          {post.tags.split(",").map((tag) => (
-            <span key={tag}>#{tag.trim()}</span>
-          ))}
+          {(post.tags ?? "").split(",").map((tag) => (
+  <span key={tag}>#{tag.trim()}</span>
+))}
         </div>
 
 
