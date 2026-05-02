@@ -25,14 +25,21 @@ export default function LoginScreen() {
   }
 
   return (
-    <main>
-      <h1>Sign in to your account</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="password">Password</label>
-        <input id="password" name="password" type="password" />
-        {error && <p>{error}</p>}
-        <button type="submit">Sign In</button>
-      </form>
-    </main>
+    <>
+      <main className="login-wrapper">
+        <div className="login-card">
+          <p className="login-eyebrow">Admin Portal</p>
+          <h1>Sign in to your account</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="login-field">
+              <label htmlFor="password">Password</label>
+              <input id="password" name="password" type="password" />
+            </div>
+            {error && <p className="login-error">{error}</p>}
+            <button type="submit" className="login-btn">Sign In</button>
+          </form>
+        </div>
+      </main>
+    </>
   );
 }

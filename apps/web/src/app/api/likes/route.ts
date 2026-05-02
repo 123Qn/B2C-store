@@ -1,4 +1,3 @@
-// apps/web/src/app/api/likes/route.ts
 import { client } from "@repo/db/client";
 import { headers } from "next/headers";
 

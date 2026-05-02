@@ -2,7 +2,6 @@ import type { Post } from "@repo/db/data";
 import Link from "next/link";
 
 export function BlogListItem({ post }: { post: Post }) {
-console.log("IMAGE:", post.imageUrl);
   return (
     <article
       data-testid={`blog-post-${post.id}`}
@@ -48,8 +47,8 @@ console.log("IMAGE:", post.imageUrl);
 
         <div className="flex flex-wrap gap-2 mt-3 text-sm text-gray-500">
           {(post.tags ?? "").split(",").map((tag) => (
-  <span key={tag}>#{tag.trim()}</span>
-))}
+            <span key={tag}>#{tag.trim()}</span>
+          ))}
         </div>
 
 
