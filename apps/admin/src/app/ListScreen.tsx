@@ -80,51 +80,79 @@ export default function ListScreen({ initialPosts }: { initialPosts: Post[] }) {
   const filtered = getFiltered();
 
   return (
-    <main>
-      <h1>Admin of Full Stack Blog</h1>
-      <button onClick={handleLogout}>Logout</button>
-      <Link href="/posts/create">+ Create Post</Link>
+    <>
+      <main className="list-main">
+        <header className="list-header">
+          <h1>Admin of Full Stack Blog</h1>
+          <div className="header-actions">
+            <Link href="/posts/create" className="btn-create">+ Create Post</Link>
+            <button onClick={handleLogout} className="btn-logout">Logout</button>
+          </div>
+        </header>
 
-      <div>
-        <label htmlFor="filter-content">Filter by Content:</label>
-        <input id="filter-content" type="text" value={filterContent} onChange={e => setFilterContent(e.target.value)} />
+        <div className="list-filters">
+          <div className="filter-group">
+            <label htmlFor="filter-content">Filter by Content:</label>
+            <input id="filter-content" type="text" value={filterContent} onChange={e => setFilterContent(e.target.value)} placeholder="Search title or content..." />
+          </div>
 
-        <label htmlFor="filter-tag">Filter by Tag:</label>
-        <input id="filter-tag" type="text" value={filterTag} onChange={e => setFilterTag(e.target.value)} />
+          <div className="filter-group">
+            <label htmlFor="filter-tag">Filter by Tag:</label>
+            <input id="filter-tag" type="text" value={filterTag} onChange={e => setFilterTag(e.target.value)} placeholder="e.g. React" />
+          </div>
 
-        <label htmlFor="filter-date">Filter by Date Created:</label>
-        <input id="filter-date" type="date" value={filterDate} onChange={e => setFilterDate(e.target.value)} />
+          <div className="filter-group">
+            <label htmlFor="filter-date">Filter by Date Created:</label>
+            <input id="filter-date" type="date" value={filterDate} onChange={e => setFilterDate(e.target.value)} />
+          </div>
 
-        <label htmlFor="sort-by">Sort By:</label>
-        <select id="sort-by" value={sortBy} onChange={e => setSortBy(e.target.value)}>
-          <option value="date-desc">Newest</option>
-          <option value="date-asc">Oldest</option>
-          <option value="title-asc">A-Z</option>
-          <option value="title-desc">Z-A</option>
-        </select>
-      </div>
+          <div className="filter-group">
+            <label htmlFor="sort-by">Sort By:</label>
+            <select id="sort-by" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+              <option value="date-desc">Newest</option>
+              <option value="date-asc">Oldest</option>
+              <option value="title-asc">A-Z</option>
+              <option value="title-desc">Z-A</option>
+            </select>
+          </div>
+        </div>
 
-      <div>
-        {filtered.map(post => (
-    <article key={post.id}>
-  <img src={post.imageUrl} alt={post.title} />
-  
-  <Link href={`/post/${post.urlId}`}>
-    <h2>{post.title}</h2>
-  </Link>
+        <div className="list-count">
+          Showing <span>{filtered.length}</span> of <span>{posts.length}</span> posts
+        </div>
 
-  <p>{post.category}</p>
-  <p>{post.tags.split(",").map(t => `#${t.trim()}`).join(", ")}</p>
-  <p>Posted on {new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
-  <button
-    data-testid={`toggle-active-${post.id}`}
-    onClick={() => handleToggleActive(post)}
-  >
-    {post.active ? "Active" : "Inactive"}
-  </button>
-</article>
-        ))}
-      </div>
-    </main>
+        <div className="list-grid">
+          {filtered.length === 0 && (
+            <div className="list-empty">No posts match your filters.</div>
+          )}
+          {filtered.map(post => (
+            <article key={post.id}>
+              <img className="article-img" src={post.imageUrl} alt={post.title} />
+
+              <div className="article-body">
+                <Link href={`/post/${post.urlId}`}>
+                  <h2>{post.title}</h2>
+                </Link>
+                <div className="article-meta">
+                  <span className="article-category">{post.category}</span>
+                  <span className="article-tags">{post.tags.split(",").map(t => `#${t.trim()}`).join(", ")}</span>
+                  <span className="article-date">Posted on {new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                </div>
+              </div>
+
+              <div className="article-actions">
+                <button
+                  data-testid={`toggle-active-${post.id}`}
+                  className={`btn-toggle ${post.active ? "active" : "inactive"}`}
+                  onClick={() => handleToggleActive(post)}
+                >
+                  {post.active ? "Active" : "Inactive"}
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+      </main>
+    </>
   );
 }

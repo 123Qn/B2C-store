@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef,useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { marked } from "marked";
 
 type Post = {
@@ -63,73 +63,90 @@ export default function UpdateForm({ post }: { post: Post }) {
   }
 
   async function handlePreview() {
-  if (!showPreview) {
-    cursorRef.current = contentRef.current?.selectionStart ?? 0;
-    const html = await marked.parse(content);
-    setPreview(html);
-    setShowPreview(true);
-  } else {
-    setShowPreview(false);
+    if (!showPreview) {
+      cursorRef.current = contentRef.current?.selectionStart ?? 0;
+      const html = await marked.parse(content);
+      setPreview(html);
+      setShowPreview(true);
+    } else {
+      setShowPreview(false);
+    }
   }
-}
 
+  useEffect(() => {
+    if (!showPreview && contentRef.current) {
+      contentRef.current.focus();
+      contentRef.current.setSelectionRange(cursorRef.current, cursorRef.current);
+    }
+  }, [showPreview]);
 
-useEffect(() => {
-  if (!showPreview && contentRef.current) {
-    contentRef.current.focus();
-    contentRef.current.setSelectionRange(cursorRef.current, cursorRef.current);
-  }
-}, [showPreview]);
   const hasErrors = Object.keys(errors).length > 0;
 
   return (
-    <main>
-      <h1>Edit Post</h1>
-      {success && <p>Post updated successfully</p>}
-      {hasErrors && <p>Please fix the errors before saving</p>}
+    <main className="form-main">
+      <header className="form-header">
+        <div>
+          <p className="form-eyebrow">Admin — Editing</p>
+          <h1>Edit Post</h1>
+        </div>
+      </header>
 
-      <div>
-        <label htmlFor="title">Title</label>
-        <input id="title" value={title} onChange={e => setTitle(e.target.value)} />
-        {errors.title && <p>{errors.title}</p>}
+      <div className="form-body">
+        {success && <p className="form-alert success">Post updated successfully</p>}
+        {hasErrors && <p className="form-alert error">Please fix the errors before saving</p>}
+
+        <div className="form-row">
+          <div className="form-field">
+            <label htmlFor="title">Title</label>
+            <input id="title" value={title} onChange={e => setTitle(e.target.value)} />
+            {errors.title && <p className="field-error">{errors.title}</p>}
+          </div>
+          <div className="form-field">
+            <label htmlFor="category">Category</label>
+            <input id="category" value={category} onChange={e => setCategory(e.target.value)} />
+          </div>
+        </div>
+
+        <div className="form-field">
+          <label htmlFor="description">Description</label>
+          <textarea id="description" value={description} onChange={e => setDescription(e.target.value)} />
+          {errors.description && <p className="field-error">{errors.description}</p>}
+        </div>
+
+        <div className="form-field">
+          <div className="content-toolbar">
+            <label htmlFor="content">Content</label>
+            <button className="btn-preview" onClick={handlePreview}>{showPreview ? "Close Preview" : "Preview"}</button>
+          </div>
+          {showPreview ? (
+            <div data-testid="content-preview" className="content-preview" dangerouslySetInnerHTML={{ __html: preview }} />
+          ) : (
+            <textarea id="content" className="content-area" ref={contentRef} value={content} onChange={e => setContent(e.target.value)} />
+          )}
+          {errors.content && <p className="field-error">{errors.content}</p>}
+        </div>
+
+        <div className="form-field">
+          <label htmlFor="imageUrl">Image URL</label>
+          <input id="imageUrl" value={imageUrl} onChange={e => setImageUrl(e.target.value)} />
+          {errors.imageUrl && <p className="field-error">{errors.imageUrl}</p>}
+          {imageUrl && (
+            <div className="image-preview-box">
+              <img data-testid="image-preview" src={imageUrl} alt="preview" />
+            </div>
+          )}
+        </div>
+
+        <div className="form-field">
+          <label htmlFor="tags">Tags</label>
+          <input id="tags" value={tags} onChange={e => setTags(e.target.value)} />
+          {errors.tags && <p className="field-error">{errors.tags}</p>}
+        </div>
+
+        <div className="form-footer">
+          <button className="btn-save" onClick={handleSave}>Save</button>
+        </div>
       </div>
-
-      <div>
-        <label htmlFor="category">Category</label>
-        <input id="category" value={category} onChange={e => setCategory(e.target.value)} />
-      </div>
-
-      <div>
-        <label htmlFor="description">Description</label>
-        <textarea id="description" value={description} onChange={e => setDescription(e.target.value)} />
-        {errors.description && <p>{errors.description}</p>}
-      </div>
-
-      <div>
-        <label htmlFor="content">Content</label>
-        <button onClick={handlePreview}>{showPreview ? "Close Preview" : "Preview"}</button>
-        {showPreview ? (
-          <div data-testid="content-preview" dangerouslySetInnerHTML={{ __html: preview }} />
-        ) : (
-          <textarea id="content" ref={contentRef} value={content} onChange={e => setContent(e.target.value)} />
-        )}
-        {errors.content && <p>{errors.content}</p>}
-      </div>
-
-      <div>
-        <label htmlFor="imageUrl">Image URL</label>
-        <input id="imageUrl" value={imageUrl} onChange={e => setImageUrl(e.target.value)} />
-        {errors.imageUrl && <p>{errors.imageUrl}</p>}
-        {imageUrl && <img data-testid="image-preview" src={imageUrl} alt="preview" />}
-      </div>
-
-      <div>
-        <label htmlFor="tags">Tags</label>
-        <input id="tags" value={tags} onChange={e => setTags(e.target.value)} />
-        {errors.tags && <p>{errors.tags}</p>}
-      </div>
-
-      <button onClick={handleSave}>Save</button>
     </main>
   );
 }
