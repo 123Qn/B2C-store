@@ -17,17 +17,19 @@ model Post {
   description String
   content     String
   imageUrl    String
-  tags        String
+  tags        String   // comma-separated: "React,Node"
   category    String
   date        DateTime @default(now())
   views       Int      @default(0)
   active      Boolean  @default(true)
+
   Likes       Like[]
 }
 
 model Like {
   postId Int
   userIP String
+
   Post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@id([postId, userIP])
