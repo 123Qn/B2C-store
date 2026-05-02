@@ -1,5 +1,5 @@
 import { AppLayout } from "@/components/Layout/AppLayout";
-import { posts } from "@repo/db/data";
+import { client } from "@repo/db/client";
 import { BlogDetail } from "@/components/Blog/Detail";
 
 export const dynamic = "force-dynamic";
@@ -11,17 +11,29 @@ export default async function Page({
 }) {
   const { urlId } = await params;
 
-  const post = posts.find(
-    (p) => p.urlId === urlId && p.active
-  );
+  // increment views in DB
+  await client.db.post.update({
+    where: { urlId },
+    data: { views: { increment: 1 } },
+  });
 
-  const postWithIncrementedViews = post 
-    ? { ...post, views: post.views + 1 } 
+  // fetch post with like count
+  const post = await client.db.post.findUnique({
+    where: { urlId, active: true },
+    include: { _count: { select: { Likes: true } } },
+  });
+
+  const postWithLikes = post
+    ? { ...post, likes: post._count.Likes }
     : undefined;
 
   return (
     <AppLayout>
-      {postWithIncrementedViews ? <BlogDetail post={postWithIncrementedViews} /> : <div>Not found</div>}
+      {postWithLikes ? (
+        <BlogDetail post={postWithLikes} />
+      ) : (
+        <div>Not found</div>
+      )}
     </AppLayout>
   );
 }

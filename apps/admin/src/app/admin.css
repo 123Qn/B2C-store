@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600&display=swap');
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root {
+  --bg: #1e1f24;
+  --card: #2a2b31;
+  --border: #3a3b42;
+
+  --primary: #6366f1;
+
+  --text: #e4e4e7;
+  --muted: #9ca3af;
+  --error: #f87171;
+}
+
+/* reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+}
+
+/* ───────── LOGIN ───────── */
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 40px;
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.login-eyebrow {
+  font-size: 12px;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.login-card h1 {
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.login-field label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.login-field input {
+  padding: 12px;
+  background: #1a1b1f;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+}
+
+.login-btn {
+  margin-top: 15px;
+  padding: 12px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.login-error {
+  color: var(--error);
+  font-size: 13px;
+}
+
+/* ───────── LIST ───────── */
+.list-header {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-create {
+  background: var(--primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.btn-logout {
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.list-filters {
+  padding: 20px 40px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-group input,
+.filter-group select {
+  padding: 10px;
+  background: #1a1b1f;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+}
+
+.list-grid {
+  padding: 20px 40px;
+  display: grid;
+  gap: 16px;
+}
+
+/* card */
+article {
+  display: grid;
+  grid-template-columns: 150px 1fr auto;
+  background: var(--card);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.article-img {
+  width: 150px;
+  height: 120px;
+  object-fit: cover;
+}
+
+.article-body {
+  padding: 16px;
+}
+
+.article-body h2 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.article-meta {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.article-actions {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+}
+
+.btn-toggle {
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-toggle.active {
+  background: rgba(34,197,94,0.15);
+  color: #22c55e;
+}
+
+.btn-toggle.inactive {
+  background: rgba(248,113,113,0.15);
+  color: #f87171;
+}
+
+/* ───────── FORM ───────── */
+.form-header {
+  padding: 20px 40px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+.form-body {
+  max-width: 800px;
+  margin: auto;
+  padding: 30px;
+  background: var(--card);
+  margin-top: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field input,
+.form-field textarea {
+  padding: 12px;
+  background: #1a1b1f;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+}
+
+.field-error {
+  font-size: 12px;
+  color: var(--error);
+}
+
+.btn-preview {
+  font-size: 12px;
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+}
+
+.content-preview {
+  padding: 16px;
+  background: #1a1b1f;
+  border-radius: 8px;
+}
+
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-save {
+  padding: 12px 20px;
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+}
