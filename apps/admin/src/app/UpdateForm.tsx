@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef,useEffect } from "react";
 import { marked } from "marked";
 
 type Post = {
@@ -22,13 +22,13 @@ type Errors = {
   tags?: string;
 };
 
-export default function PostForm({ post }: { post?: Post }) {
-  const [title, setTitle] = useState(post?.title ?? "");
-  const [description, setDescription] = useState(post?.description ?? "");
-  const [content, setContent] = useState(post?.content ?? "");
-  const [imageUrl, setImageUrl] = useState(post?.imageUrl ?? "");
-  const [tags, setTags] = useState(post?.tags ?? "");
-  const [category, setCategory] = useState(post?.category ?? "");
+export default function UpdateForm({ post }: { post: Post }) {
+  const [title, setTitle] = useState(post.title);
+  const [description, setDescription] = useState(post.description);
+  const [content, setContent] = useState(post.content);
+  const [imageUrl, setImageUrl] = useState(post.imageUrl);
+  const [tags, setTags] = useState(post.tags);
+  const [category, setCategory] = useState(post.category);
   const [errors, setErrors] = useState<Errors>({});
   const [showPreview, setShowPreview] = useState(false);
   const [preview, setPreview] = useState("");
@@ -43,9 +43,7 @@ export default function PostForm({ post }: { post?: Post }) {
     else if (description.length > 200) e.description = "Description is too long. Maximum is 200 characters";
     if (!content.trim()) e.content = "Content is required";
     if (!imageUrl.trim()) e.imageUrl = "Image URL is required";
-    else {
-      try { new URL(imageUrl); } catch { e.imageUrl = "This is not a valid URL"; }
-    }
+    else { try { new URL(imageUrl); } catch { e.imageUrl = "This is not a valid URL"; } }
     if (!tags.trim()) e.tags = "At least one tag is required";
     return e;
   }
@@ -55,11 +53,8 @@ export default function PostForm({ post }: { post?: Post }) {
     setErrors(e);
     if (Object.keys(e).length > 0) return;
 
-    const method = post?.id ? "PATCH" : "POST";
-    const url = post?.id ? `/api/posts/${post.id}` : "/api/posts";
-
-    const res = await fetch(url, {
-      method,
+    const res = await fetch(`/api/posts/${post.id}`, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title, description, content, imageUrl, tags, category }),
     });
@@ -68,28 +63,28 @@ export default function PostForm({ post }: { post?: Post }) {
   }
 
   async function handlePreview() {
-    if (!showPreview) {
-      cursorRef.current = contentRef.current?.selectionStart ?? 0;
-      const html = await marked.parse(content);
-      setPreview(html);
-      setShowPreview(true);
-    } else {
-      setShowPreview(false);
-      setTimeout(() => {
-        if (contentRef.current) {
-          contentRef.current.focus();
-          contentRef.current.setSelectionRange(cursorRef.current, cursorRef.current);
-        }
-      }, 0);
-    }
+  if (!showPreview) {
+    cursorRef.current = contentRef.current?.selectionStart ?? 0;
+    const html = await marked.parse(content);
+    setPreview(html);
+    setShowPreview(true);
+  } else {
+    setShowPreview(false);
   }
+}
 
+
+useEffect(() => {
+  if (!showPreview && contentRef.current) {
+    contentRef.current.focus();
+    contentRef.current.setSelectionRange(cursorRef.current, cursorRef.current);
+  }
+}, [showPreview]);
   const hasErrors = Object.keys(errors).length > 0;
 
   return (
     <main>
-      <h1>{post?.id ? "Edit Post" : "Create Post"}</h1>
-
+      <h1>Edit Post</h1>
       {success && <p>Post updated successfully</p>}
       {hasErrors && <p>Please fix the errors before saving</p>}
 

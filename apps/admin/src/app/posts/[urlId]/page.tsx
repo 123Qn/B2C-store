@@ -1,7 +1,7 @@
 import { isLoggedIn } from "../../../utils/auth";
 import { client } from "@repo/db/client";
 import LoginScreen from "../../LoginScreen";
-import PostForm from "../../PostForm";
+import UpdateForm from "../../UpdateForm";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -18,5 +18,5 @@ export default async function Page({
   const post = await client.db.post.findUnique({ where: { urlId } });
   if (!post) redirect("/");
 
-  return <PostForm post={post} />;
+  return <UpdateForm post={post} />;
 }
