@@ -106,21 +106,23 @@ export default function ListScreen({ initialPosts }: { initialPosts: Post[] }) {
 
       <div>
         {filtered.map(post => (
-          <article key={post.id}>
-            <img src={post.imageUrl} alt={post.title} />
-            <Link href={`/posts/${post.urlId}`}>
-              <h2>{post.title}</h2>
-            </Link>
-            <p>{post.category}</p>
-            <p>{post.tags.split(",").map(t => `#${t.trim()}`).join(", ")}</p>
-            <p>Posted on {new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
-            <button
-              data-testid={`toggle-active-${post.id}`}
-              onClick={() => handleToggleActive(post)}
-            >
-              {post.active ? "Active" : "Inactive"}
-            </button>
-          </article>
+    <article key={post.id}>
+  <img src={post.imageUrl} alt={post.title} />
+  
+  <Link href={`/post/${post.urlId}`}>
+    <h2>{post.title}</h2>
+  </Link>
+
+  <p>{post.category}</p>
+  <p>{post.tags.split(",").map(t => `#${t.trim()}`).join(", ")}</p>
+  <p>Posted on {new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
+  <button
+    data-testid={`toggle-active-${post.id}`}
+    onClick={() => handleToggleActive(post)}
+  >
+    {post.active ? "Active" : "Inactive"}
+  </button>
+</article>
         ))}
       </div>
     </main>
