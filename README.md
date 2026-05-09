@@ -1,5 +1,8 @@
 # Assignment 2 - Blog - Client App
 
+/*Note*/
+Resend api for guest checkout 
+
 The goal of this assignment is to implement all the client side functionality.
 Example implementation is in the image below.
 
