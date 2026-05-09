@@ -1,32 +1,57 @@
 import { AppLayout } from "@/components/Layout/AppLayout";
-import { Main } from "@/components/Main";
-import { client } from "@repo/db/client";
 
-export const dynamic = "force-dynamic";
+import ProductList from "@/components/Product/List";
 
-export default async function Page({
+import { products } from "@repo/db/data";
+
+export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q: string }>;
+  searchParams: Promise<{ q?: string }>;
 }) {
-  const { q } = await searchParams;
 
-  const raw = await client.db.post.findMany({
-    where: {
-      active: true,
-      OR: [
-        { title: { contains: q } },
-        { description: { contains: q } },
-      ],
-    },
-    include: { _count: { select: { Likes: true } } },
+  const { q = "" } = await searchParams;
+
+  const filteredProducts = products.filter((product) => {
+
+    return (
+      product.name
+        .toLowerCase()
+        .includes(q.toLowerCase())
+
+      ||
+
+      product.category
+        .toLowerCase()
+        .includes(q.toLowerCase())
+
+      ||
+
+      product.brand
+        .toLowerCase()
+        .includes(q.toLowerCase())
+    );
   });
 
-  const posts = raw.map((p) => ({ ...p, likes: p._count.Likes }));
-
   return (
-    <AppLayout query={q}>
-      <Main posts={posts} />
+    <AppLayout>
+
+      <div className="p-6">
+
+        <h1 className="text-4xl font-bold mb-8">
+
+          Search:
+          {" "}
+          {q}
+
+        </h1>
+
+        <ProductList
+          products={filteredProducts}
+        />
+
+      </div>
+
     </AppLayout>
   );
 }

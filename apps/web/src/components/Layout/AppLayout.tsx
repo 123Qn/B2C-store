@@ -1,28 +1,31 @@
 import type { PropsWithChildren } from "react";
-import { Content } from "../Content";
+
 import { LeftMenu } from "../Menu/LeftMenu";
 import { TopMenu } from "./TopMenu";
-import { ThemeProvider } from "../Themes/ThemeContext";
 
 export async function AppLayout({
   children,
-  query,
-}: PropsWithChildren<{ query?: string }>) {
+}: PropsWithChildren) {
   return (
-    <div className="flex h-screen w-screen overflow-hidden  gap-4">
+    <div className="w-full min-h-screen">
 
+      {/* Navbar */}
+      <TopMenu />
 
-      <div className="w-64 h-full overflow-y-auto scroll-smooth ml-3">
+     
+
+      {/* Content Area */}
+      <main className="flex w-full">
+
+        {/* Sidebar */}
         <LeftMenu />
-      </div>
 
-
-      <div className="flex-1 h-full overflow-y-auto ml-3">
-        <Content>
-          <TopMenu query={query} />
+        {/* Main Content */}
+        <div className="flex-1 p-6">
           {children}
-        </Content>
-      </div>
+        </div>
+
+      </main>
 
     </div>
   );

@@ -1,106 +1,192 @@
-export type Post = {
+export type Product = {
   id: number;
+
   urlId: string;
-  title: string;
-  content: string;
+gender: string;
+  name: string;
+  brand: string;
   description: string;
+
   imageUrl: string;
-  date: Date;
+
   category: string;
-  views: number;
-  likes: number;
-  tags: string;
+
+  price: number;
+
+  stock: number;
+
+  sold: number;
+
   active: boolean;
 };
 
-const content = `
-  # Title 1
-
-  Illo **sint voluptas**. Error voluptates culpa eligendi. 
-  Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. 
-  Sed exercitationem placeat consectetur nulla deserunt vel 
-  iusto corrupti dicta laboris incididunt.
-
-  ## Subtitle 1
-
-  Illo sint *voluptas*. Error voluptates culpa eligendi. 
-  Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. 
-  Sed exercitationem placeat consectetur nulla deserunt vel 
-  iusto corrupti dicta laboris incididunt.
-`;
-
-const description = `Illo sint voluptas. Error voluptates culpa eligendi. 
-Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. 
-Sed exercitationem placeat consectetur nulla deserunt vel 
-iusto corrupti dicta laboris incididunt.`;
-
-export const posts: Post[] = [
+export const products: Product[] = [
   {
     id: 1,
-    title: "Boost your conversion rate",
-    urlId: "boost-your-conversion-rate",
-    description,
-    content: content + " ... post1",
+
+    urlId: "black-oversized-hoodie",
+
+    name: "Black Oversized Hoodie",
+    brand: "Urban-Style",
+gender: "Women",
+    description:
+      "Premium oversized hoodie designed for everyday street fashion and comfort.",
+
     imageUrl:
-      "https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&auto=format&fit=crop&w=3603&q=80",
-    date: new Date("Apr 18, 2022"),
-    category: "Node",
-    tags: "Back-End,Databases",
-    views: 320,
-    likes: 3,
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop",
+
+    category: "Fashion",
+
+    price: 79,
+
+    stock: 14,
+
+    sold: 120,
+
     active: true,
   },
+
   {
     id: 2,
-    title: "Better front ends with Fatboy Slim",
-    urlId: "better-front-ends-with-fatboy-slim",
-    description: `Illo sint voluptas. Error voluptates culpa eligendi. 
-       Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. 
-       Sed exercitationem placeat consectetur nulla deserunt vel 
-       iusto corrupti dicta laboris incididunt.`,
-    content: content + " ... post2",
+
+    urlId: "white-minimal-sneakers",
+    brand: "Puma",
+    name: "White Minimal Sneakers",
+gender: "Men",
+    description:
+      "Clean and modern sneakers perfect for casual and lifestyle outfits.",
+
     imageUrl:
-      "https://plus.unsplash.com/premium_photo-1661342428515-5ca8cee4385a?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3",
-    date: new Date("Mar 16, 2020"),
-    category: "React",
-    tags: "Front-End,Optimisation",
-    views: 10,
-    likes: 1,
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
+
+    category: "Shoes",
+
+    price: 120,
+
+    stock: 8,
+
+    sold: 250,
+
     active: true,
   },
+
   {
     id: 3,
-    title: "No front end framework is the best",
-    urlId: "no-front-end-framework-is-the-best",
-    description: `Illo sint voluptas. Error voluptates culpa eligendi. 
-       Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. 
-       Sed exercitationem placeat consectetur nulla deserunt vel 
-       iusto corrupti dicta laboris incididunt.`,
-    content: content + " ... post3",
+
+    urlId: "Black-Oversized-Hoodie",
+gender: "Men",
+    name: "Black Oversized Hoodie",
+ brand: "Ikea",
+    description:
+      "Minimalist home decor lamp with warm lighting and premium finish.",
+
     imageUrl:
-      "https://plus.unsplash.com/premium_photo-1661517706036-a48d5fc8f2f5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-    date: new Date("Dec 16, 2024"),
-    category: "React",
-    tags: "Front-End,Dev Tools",
-    views: 22,
-    likes: 2,
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
+
+    category: "Hat",
+
+    price: 49,
+
+    stock: 20,
+
+    sold: 88,
+
     active: true,
   },
+
   {
     id: 4,
-    title: "Visual Basic is the future",
-    urlId: "visual-basic-is-the-future",
-    description: `Illo sint voluptas. Error voluptates culpa eligendi. 
-       Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. 
-       Sed exercitationem placeat consectetur nulla deserunt vel 
-       iusto corrupti dicta laboris incididunt.`,
-    content: content + " ... post4",
-    imageUrl: "https://m.media-amazon.com/images/I/51NqEfmmBTL.jpg",
-    date: new Date("Dec 16, 2012"),
-    category: "React",
-    tags: "Programming,Mainframes",
-    views: 22,
-    likes: 1,
-    active: false,
-  }
+gender: "Men",
+    urlId: "beige-trench-coat",
+brand: "Zara",
+    name: "Beige Trench Coat",
+
+    description:
+      "Elegant trench coat inspired by timeless modern fashion aesthetics.",
+
+    imageUrl:
+      "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop",
+
+    category: "Accessories",
+
+    price: 149,
+
+    stock: 5,
+
+    sold: 61,
+
+    active: true,
+  },
+
+  {
+    id: 5,
+
+    urlId: "wireless-headphones-pro",
+brand: "Sony",
+    name: "Wireless Headphones Pro",
+    gender: "Men",
+
+    description:
+      "High-quality wireless headphones with immersive surround sound.",
+
+    imageUrl:
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop",
+
+    category: "Hat",
+
+    price: 199,
+
+    stock: 11,
+
+    sold: 173,
+
+    active: true,
+  },
+
+  {
+    id: 6,
+brand: "Ikea",
+    urlId: "minimal-wood-chair",
+
+    name: "Minimal Wood Chair",
+
+    description:
+      "Scandinavian-inspired wooden chair designed for modern interiors.",
+
+    imageUrl:
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
+
+    category: "Shoes",
+
+    price: 89,
+gender: "Men",
+    stock: 7,
+
+    sold: 42,
+
+    active: true,
+  },
+    {
+    id: 7,
+brand: "Ikea",
+    urlId: "minimal-wood-chair",
+
+    name: "Minimal Wood Chair",
+
+    description:
+      "Scandinavian-inspired wooden chair designed for modern interiors.",
+
+    imageUrl:
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
+
+    category: "Shoes",
+
+    price: 89,
+gender: "Men",
+    stock: 7,
+
+    sold: 42,
+
+    active: true,
+  },
 ];

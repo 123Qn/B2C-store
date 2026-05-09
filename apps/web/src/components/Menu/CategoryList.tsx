@@ -1,31 +1,29 @@
-import { categories } from "@/functions/categories";
-import type { Post } from "@repo/db/data";
-import { toUrlPath } from "@repo/utils/url";
-import { SummaryItem } from "./SummaryItem";
+import Link from "next/link";
+import { products } from "@repo/db/data";
 
-export function CategoryList({ posts }: { posts: Post[] }) {
-  const cats = categories(posts);
-  
-  // Bypass test always appear
-  for (const name of ["Mongo", "DevOps"]) {
-    if (!cats.find((c) => c.name === name)) {
-      cats.push({ name, count: 0 });
-    }
-  }
+export function CategoryList() {
+
+  const categories = [
+    ...new Set(products.map((product) => product.category)),
+  ];
 
   return (
-    <div>
-      {cats.map((item) => (
-        <SummaryItem
-          key={item.name}
-          name={item.name}
-          count={item.count}
-          isSelected={false}
-          link={`/category/${toUrlPath(item.name)}`}
-          title={`Category / ${item.name}`}
-          showCount={false}
-        />
+    <div className="flex flex-col gap-3">
+
+      {categories.map((category) => (
+        <Link
+          key={category}
+          href={`/category/${category.toLowerCase()}`}
+          className="
+            text-gray-700
+            hover:text-black
+            transition
+          "
+        >
+          {category}
+        </Link>
       ))}
+
     </div>
   );
 }
