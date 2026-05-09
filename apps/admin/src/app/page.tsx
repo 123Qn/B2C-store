@@ -1,20 +1,17 @@
-import { isLoggedIn } from "../utils/auth";
-import LoginScreen from "./LoginScreen";
-import ListScreen from "./ListScreen";
-import { client } from "@repo/db/client";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
+export default async function AdminHomePage() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("auth_token")?.value;
 
-export default async function Home() {
-  const loggedIn = await isLoggedIn();
-  if (!loggedIn) return <LoginScreen />;
+  if (token !== "admin") {
+    redirect("/login");
+  }
 
-  const raw = await client.db.post.findMany({
-    orderBy: { date: "desc" },
-    include: { _count: { select: { Likes: true } } },
-  });
-
-  const posts = raw.map(p => ({ ...p, likes: p._count.Likes }));
-
-  return <ListScreen initialPosts={posts} />;
+  return (
+    <main className="p-6">
+      <h1>Admin of Full Stack Blog</h1>
+    </main>
+  );
 }
