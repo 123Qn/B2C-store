@@ -12,24 +12,40 @@ export function Main({
   className?: string;
 }) {
 
-  const [gender, setGender] = useState("All");
+  const [gender, setGender] =
+    useState("All");
 
-  const filteredProducts = products.filter((product) => {
+  const [category, setCategory] =
+    useState("All");
 
-    return gender === "All"
-      ? true
-      : product.gender === gender;
+  const filteredProducts =
+    products.filter((product) => {
 
-  });
+      const genderMatch =
+        gender === "All"
+          ? true
+          : product.gender === gender;
+
+      const categoryMatch =
+        category === "All"
+          ? true
+          : product.category === category;
+
+      return (
+        genderMatch &&
+        categoryMatch
+      );
+    });
 
   return (
     <main className={className}>
 
-      {/* Top Filter */}
+      {/* Filters */}
       <section className="px-6 pt-8">
 
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-4">
 
+          {/* Gender */}
           <select
             value={gender}
             onChange={(e) =>
@@ -44,7 +60,7 @@ export function Main({
           >
 
             <option value="All">
-              All
+              All Gender
             </option>
 
             <option value="Men">
@@ -61,6 +77,42 @@ export function Main({
 
             <option value="Kids">
               Kids
+            </option>
+
+          </select>
+
+          {/* Category */}
+          <select
+            value={category}
+            onChange={(e) =>
+              setCategory(e.target.value)
+            }
+            className="
+              border
+              rounded-xl
+              px-4 py-2
+              bg-white
+            "
+          >
+
+            <option value="All">
+              All Category
+            </option>
+
+            <option value="Shirt">
+              Shirt
+            </option>
+
+            <option value="Hoodie">
+              Hoodie
+            </option>
+
+            <option value="Pants">
+              Pants
+            </option>
+
+            <option value="Shoes">
+              Shoes
             </option>
 
           </select>
