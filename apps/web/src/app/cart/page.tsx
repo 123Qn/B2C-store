@@ -185,7 +185,10 @@ export default function CartPage() {
 
                                     <button
                                         onClick={() =>
-                                            decreaseQuantity(item.id)
+                                            decreaseQuantity(
+  item.id,
+  item.selectedSize
+)
                                         }
                                         className="
                                             w-12
@@ -207,10 +210,29 @@ export default function CartPage() {
                                     >
                                         {item.quantity}
                                     </span>
+                                    {/*size*/}
+                                    <div className="flex items-center mt-2 space-x-2">
+                                        <div className="mt-2">
+  <span
+    className="
+      px-3
+      py-1
+      bg-gray-100
+      rounded-lg
+      text-sm
+    "
+  >
+    Size: {item.selectedSize}
+  </span>
+</div>
+                                    </div>
 
                                     <button
                                         onClick={() =>
-                                            increaseQuantity(item.id)
+                                            increaseQuantity(
+  item.id,
+  item.selectedSize
+)
                                         }
                                         className="
                                             w-12
@@ -242,7 +264,10 @@ export default function CartPage() {
                                 {/* Remove */}
                                 <button
                                     onClick={() =>
-                                        removeFromCart(item.id)
+                                        removeFromCart(
+  item.id,
+  item.selectedSize
+)
                                     }
                                     className="
                                         text-gray-400

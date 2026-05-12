@@ -2,12 +2,15 @@
 import { useCart } from "../Cart/Cart";
 import type { Product } from "@repo/db/data";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 export function ProductDetail({
   product,
 }: {
   product: Product;
 }) {
 const { addToCart } = useCart();
+const [selectedSize, setSelectedSize] =
+  useState(product.size[0]);
 const router = useRouter();
   return (
     <div className="max-w-7xl mx-auto px-8 py-12">
@@ -45,6 +48,35 @@ const router = useRouter();
             {product.description}
           </p>
 
+{/*size*/}
+          <div className="flex items-center mt-2 space-x-2 mb-8">
+            {product.size.map((size) => (
+
+  <button
+    key={size}
+
+    onClick={() => setSelectedSize(size)}
+
+    className={`
+      px-4
+      py-2
+      border
+      rounded-xl
+      transition
+
+      ${
+        selectedSize === size
+          ? "bg-black text-white border-black"
+          : "border-gray-300 text-gray-600 hover:border-black"
+      }
+    `}
+  >
+    {size}
+  </button>
+
+))}
+          </div>
+
           <div className="flex items-center gap-6 mb-8">
 
             <span className="text-4xl font-bold">
@@ -75,7 +107,7 @@ const router = useRouter();
 <button
   onClick={() => {
 
-  addToCart(product);
+  addToCart(product, selectedSize);
 
   router.push("/cart");
 
