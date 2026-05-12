@@ -10,18 +10,25 @@ import type { Product } from "@repo/db/data";
 
 type CartItem = Product & {
   quantity: number;
+  selectedSize: string;
 };
 
 type CartContextType = {
   cart: CartItem[];
 
-  addToCart: (product: Product) => void;
+  addToCart: (
+  product: Product,
+  selectedSize: string
+) => void;
 
-  removeFromCart: (id: number) => void;
+  removeFromCart: (
+  id: number,
+  selectedSize: string
+) => void;
 
-  increaseQuantity: (id: number) => void;
+  increaseQuantity: (id: number, selectedSize: string) => void;
 
-  decreaseQuantity: (id: number) => void;
+  decreaseQuantity: (id: number, selectedSize: string) => void;
 
   totalPrice: number;
 };
@@ -38,51 +45,70 @@ export function CartProvider({
   const [cart, setCart] = useState<CartItem[]>([]);
 
   // ADD ITEM
-  function addToCart(product: Product) {
+  function addToCart(
+  product: Product,
+  selectedSize: string
+) {
 
-    setCart((prev) => {
+  setCart((prev) => {
 
-      const existing = prev.find(
-        (item) => item.id === product.id
+    const existing = prev.find(
+      (item) =>
+        item.id === product.id &&
+        item.selectedSize === selectedSize
+    );
+
+    // already exists
+    if (existing) {
+
+      return prev.map((item) =>
+
+        item.id === product.id &&
+        item.selectedSize === selectedSize
+
+          ? {
+              ...item,
+              quantity: item.quantity + 1,
+            }
+
+          : item
       );
+    }
 
-      // already in cart
-      if (existing) {
-        return prev.map((item) =>
-          item.id === product.id
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-              }
-            : item
-        );
-      }
-
-      // new item
-      return [
-        ...prev,
-        {
-          ...product,
-          quantity: 1,
-        },
-      ];
-    });
-  }
+    // new item
+    return [
+      ...prev,
+      {
+        ...product,
+        quantity: 1,
+        selectedSize,
+      },
+    ];
+  });
+}
 
   // REMOVE ITEM
-  function removeFromCart(id: number) {
+  function removeFromCart(
+  id: number,
+  selectedSize: string
+) {
 
-    setCart((prev) =>
-      prev.filter((item) => item.id !== id)
-    );
-  }
+  setCart((prev) =>
+    prev.filter(
+      (item) => !(
+        item.id === id &&
+        item.selectedSize === selectedSize
+      )
+    )
+  );
+}
 
   // INCREASE
-  function increaseQuantity(id: number) {
+  function increaseQuantity(id: number, selectedSize: string) {
 
     setCart((prev) =>
       prev.map((item) =>
-        item.id === id
+        item.id === id && item.selectedSize === selectedSize
           ? {
               ...item,
               quantity: item.quantity + 1,
@@ -93,11 +119,11 @@ export function CartProvider({
   }
 
   // DECREASE
-  function decreaseQuantity(id: number) {
+  function decreaseQuantity(id: number, selectedSize: string) {
 
     setCart((prev) =>
       prev.map((item) =>
-        item.id === id
+        item.id === id && item.selectedSize === selectedSize
           ? {
               ...item,
               quantity: item.quantity - 1,

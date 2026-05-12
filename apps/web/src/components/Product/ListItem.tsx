@@ -1,14 +1,13 @@
 "use client";
 import type { Product } from "@repo/db/data";
 import Link from "next/link";
-import { useCart } from "../Cart/Cart";
 import { useState } from "react";
 export function ProductListItem({
   product,
 }: {
   product: Product;
 }) {
-  const { addToCart } = useCart();
+
   const [added, setAdded] = useState(false);
   return (
     <article
@@ -60,7 +59,25 @@ export function ProductListItem({
         >
           {product.name}
         </Link>
-
+        {/*size*/}
+        <div className="flex items-center mt-2 space-x-2">
+          {product.size.map((size) => (
+            <span 
+              key={size}
+              className="
+                px-2
+                py-1
+                border
+                border-gray-300
+                rounded
+                text-sm
+                text-gray-600
+              "
+            >
+              {size}
+            </span>
+          ))}
+        </div>
         {/* Description */}
         <p className="text-gray-500 text-sm mt-2 line-clamp-2">
           {product.description}
@@ -79,51 +96,8 @@ export function ProductListItem({
 
         </div>
 
-        {/* Add To Cart */}
-        <button
-          onClick={() => {
-
-            addToCart(product);
-
-            setAdded(true);
-
-            setTimeout(() => {
-              setAdded(false);
-            }, 2000);
-
-          }}
-          className="
-    w-full
-    mt-5
-    bg-black
-    text-white
-    py-3
-    rounded-xl
-    hover:bg-gray-800
-    transition
-  "
-        >
-          Add To Cart
-        </button>
-
-        {
-          added && (
-            <div
-              className="
-        mt-3
-        bg-green-500
-        text-white
-        py-2
-        rounded-xl
-        text-center
-        font-medium
-      "
-            >
-              Item Added To Cart
-            </div>
-          )
-        }
       </div>
+
     </article>
   );
 }

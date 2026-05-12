@@ -2,11 +2,11 @@ export type Product = {
   id: number;
 
   urlId: string;
-gender: string;
+  gender: string;
   name: string;
   brand: string;
   description: string;
-
+  size : string[];
   imageUrl: string;
 
   category: string;
@@ -28,10 +28,10 @@ export const products: Product[] = [
 
     name: "Black Oversized Hoodie",
     brand: "Urban-Style",
-gender: "Women",
+    gender: "Women",
     description:
       "Premium oversized hoodie designed for everyday street fashion and comfort.",
-
+    size : ["S","M","L","XL"],
     imageUrl:
       "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop",
 
@@ -55,7 +55,7 @@ gender: "Women",
 gender: "Men",
     description:
       "Clean and modern sneakers perfect for casual and lifestyle outfits.",
-
+    size : ["40","41","42","43","44"],
     imageUrl:
       "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop",
 
@@ -79,7 +79,7 @@ gender: "Men",
  brand: "Ikea",
     description:
       "Minimalist home decor lamp with warm lighting and premium finish.",
-
+    size : ["S","M","L","XL"],
     imageUrl:
       "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
 
@@ -100,7 +100,7 @@ gender: "Men",
     urlId: "beige-trench-coat",
 brand: "Zara",
     name: "Beige Trench Coat",
-
+size : ["S","M","L","XL"],
     description:
       "Elegant trench coat inspired by timeless modern fashion aesthetics.",
 
@@ -125,7 +125,7 @@ brand: "Zara",
 brand: "Sony",
     name: "Wireless Headphones Pro",
     gender: "Men",
-
+size : ["S","M","L","XL"],
     description:
       "High-quality wireless headphones with immersive surround sound.",
 
@@ -149,7 +149,7 @@ brand: "Ikea",
     urlId: "minimal-wood-chair",
 
     name: "Minimal Wood Chair",
-
+size : ["S","M","L","XL"],
     description:
       "Scandinavian-inspired wooden chair designed for modern interiors.",
 
@@ -170,7 +170,7 @@ gender: "Men",
     id: 7,
 brand: "Ikea",
     urlId: "minimal-wood-chair",
-
+size : ["S","M","L","XL"],
     name: "Minimal Wood Chair",
 
     description:
