@@ -8,7 +8,7 @@ import Image from "next/image";
 import logo from "../../../public/wsulogo.png";
 import heroImage from "../../asset/image/hero.webp";
 
-import { useCart } from "../Cart/Cart";
+import { useCart } from "../Cart/CartContext";
 
 import { products } from "@repo/db/data";
 

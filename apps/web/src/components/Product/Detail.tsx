@@ -1,5 +1,5 @@
 "use client";
-import { useCart } from "../Cart/Cart";
+import { useCart } from "../Cart/CartContext";
 import type { Product } from "@repo/db/data";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,10 +8,10 @@ export function ProductDetail({
 }: {
   product: Product;
 }) {
-const { addToCart } = useCart();
-const [selectedSize, setSelectedSize] =
-  useState(product.size[0]);
-const router = useRouter();
+  const { addToCart } = useCart();
+  const [selectedSize, setSelectedSize] =
+    useState(product.size[0]);
+  const router = useRouter();
   return (
     <div className="max-w-7xl mx-auto px-8 py-12">
 
@@ -48,33 +48,32 @@ const router = useRouter();
             {product.description}
           </p>
 
-{/*size*/}
+          {/*size*/}
           <div className="flex items-center mt-2 space-x-2 mb-8">
             {product.size.map((size) => (
 
-  <button
-    key={size}
+              <button
+                key={size}
 
-    onClick={() => setSelectedSize(size)}
+                onClick={() => setSelectedSize(size)}
 
-    className={`
+                className={`
       px-4
       py-2
       border
       rounded-xl
       transition
 
-      ${
-        selectedSize === size
-          ? "bg-black text-white border-black"
-          : "border-gray-300 text-gray-600 hover:border-black"
-      }
+      ${selectedSize === size
+                    ? "bg-black text-white border-black"
+                    : "border-gray-300 text-gray-600 hover:border-black"
+                  }
     `}
-  >
-    {size}
-  </button>
+              >
+                {size}
+              </button>
 
-))}
+            ))}
           </div>
 
           <div className="flex items-center gap-6 mb-8">
@@ -104,15 +103,15 @@ const router = useRouter();
           {/* Buttons */}
           <div className="flex gap-4">
 
-<button
-  onClick={() => {
+            <button
+              onClick={() => {
 
-  addToCart(product, selectedSize);
+                addToCart(product, selectedSize);
 
-  router.push("/cart");
+                router.push("/cart");
 
-}}
-  className="
+              }}
+              className="
     px-8 py-4
     bg-black
     text-white
@@ -120,9 +119,9 @@ const router = useRouter();
     hover:bg-gray-800
     transition
   "
->
-  Add To Cart
-</button>
+            >
+              Add To Cart
+            </button>
           </div>
 
         </div>

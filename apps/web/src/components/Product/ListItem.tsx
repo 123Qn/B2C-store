@@ -62,7 +62,7 @@ export function ProductListItem({
         {/*size*/}
         <div className="flex items-center mt-2 space-x-2">
           {product.size.map((size) => (
-            <span 
+            <span
               key={size}
               className="
                 px-2

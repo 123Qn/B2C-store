@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
-import { CartProvider } from "@/components/Cart/Cart";
+import { CartProvider } from "@/components/Cart/CartContext";
 
 import "./globals.css";
 
