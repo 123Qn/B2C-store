@@ -18,17 +18,35 @@ export function Main({
   const [category, setCategory] =
     useState("All");
 
+  // Dynamic categories
+  const categories = [
+
+    "All",
+
+    ...new Set(
+      products.map(
+        (product) => product.category
+      )
+    ),
+  ];
+
   const filteredProducts =
     products.filter((product) => {
 
       const genderMatch =
+
         gender === "All"
+
           ? true
+
           : product.gender === gender;
 
       const categoryMatch =
+
         category === "All"
+
           ? true
+
           : product.category === category;
 
       return (
@@ -38,6 +56,7 @@ export function Main({
     });
 
   return (
+
     <main className={className}>
 
       {/* Filters */}
@@ -51,12 +70,7 @@ export function Main({
             onChange={(e) =>
               setGender(e.target.value)
             }
-            className="
-              border
-              rounded-xl
-              px-4 py-2
-              bg-white
-            "
+            className="border rounded-xl px-4 py-2 bg-white"
           >
 
             <option value="All">
@@ -87,33 +101,19 @@ export function Main({
             onChange={(e) =>
               setCategory(e.target.value)
             }
-            className="
-              border
-              rounded-xl
-              px-4 py-2
-              bg-white
-            "
+            className="border rounded-xl px-4 py-2 bg-white"
           >
 
-            <option value="All">
-              All Category
-            </option>
+            {categories.map((cat) => (
 
-            <option value="Shirt">
-              Shirt
-            </option>
+              <option
+                key={cat}
+                value={cat}
+              >
+                {cat}
+              </option>
 
-            <option value="Hoodie">
-              Hoodie
-            </option>
-
-            <option value="Pants">
-              Pants
-            </option>
-
-            <option value="Shoes">
-              Shoes
-            </option>
+            ))}
 
           </select>
 
@@ -121,7 +121,7 @@ export function Main({
 
       </section>
 
-      {/* Product Section */}
+      {/* Products */}
       <section className="px-6 py-12">
 
         <ProductList

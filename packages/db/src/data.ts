@@ -24,18 +24,18 @@ export const products: Product[] = [
   {
     id: 1,
 
-    urlId: "black-oversized-hoodie",
+    urlId: "flag-embroidery-terry-quarter-zip-jumper",
 
-    name: "Black Oversized Hoodie",
-    brand: "Urban-Style",
-    gender: "Women",
+    name: "Flag Embroidery Terry Quarter-Zip Jumper",
+    brand: "Tommy-Hilfiger",
+    gender: "Men",
     description:
-      "Premium oversized hoodie designed for everyday street fashion and comfort.",
+      "Cozy and stylish quarter-zip jumper with embroidered flag design.",
     size : ["S","M","L","XL"],
     imageUrl:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop",
+      "https://pvh-brands.imgix.net/catalog/product/media/MW0MW43115_Z00_main.jpg?w=713&h=950&crop=edges&fit=crop&auto=compress&auto=format",
 
-    category: "Fashion",
+    category: "Hoodies",
 
     price: 79,
 
@@ -76,14 +76,14 @@ gender: "Men",
     urlId: "Black-Oversized-Hoodie",
 gender: "Men",
     name: "Black Oversized Hoodie",
- brand: "Ikea",
+ brand: "Local-Brand",
     description:
-      "Minimalist home decor lamp with warm lighting and premium finish.",
+      "Refresh your wardrobe with the Preview Textured Blazer, designed to help you look sharp and feel comfortable all day. The clever blend of polyester, viscose, and elastane delivers just the right amount of stretch, making this jacket a pleasure to wear from morning meetings to evening gatherings. The tailored fit flatters your shape, while the structured lapels and long sleeves give a polished edge. With useful front and chest pockets, a smooth lining, and secure twin button closure, this blazer is as practical as it is stylish. Ready to add a dash of charm to your look? Choose this blazer and step out feeling your best.",
     size : ["S","M","L","XL"],
     imageUrl:
-      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
+      "https://assets.target.com.au/transform/217401b8-6a32-4a90-ad34-a560dd563d38/415_72078402_2-415T7207?io=transform%3Afit%2Cwidth%3A1400%2Cheight%3A1600&quality=90&output=webp",
 
-    category: "Hat",
+    category: "Blazers",
 
     price: 49,
 
@@ -96,18 +96,18 @@ gender: "Men",
 
   {
     id: 4,
-gender: "Men",
+gender: "Women",
     urlId: "beige-trench-coat",
-brand: "Zara",
-    name: "Beige Trench Coat",
+brand: "Local-Brand",
+    name: "Bailey Mini Dress",
 size : ["S","M","L","XL"],
     description:
-      "Elegant trench coat inspired by timeless modern fashion aesthetics.",
+      "Bailey is a soft ivory base adorned with intricate red floral motifs, blending delicate linework with bold botanical detail. The Bailey Mini Dress features a V-neckline with a tie-front bodice, complete with blouson sleeves. Designed for daytime occasions that transition effortlessly into the evening. ",
 
     imageUrl:
-      "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop",
+      "https://www.kivari.com.au/cdn/shop/files/Bailey-Mini-Dress-ghost.jpg?v=1777324609&width=1000",
 
-    category: "Accessories",
+    category: "Dresses",
 
     price: 149,
 
@@ -122,19 +122,19 @@ size : ["S","M","L","XL"],
     id: 5,
 
     urlId: "wireless-headphones-pro",
-brand: "Sony",
-    name: "Wireless Headphones Pro",
-    gender: "Men",
-size : ["S","M","L","XL"],
+brand: "Tommy-Hilfiger",
+    name: "Girls 3-7 Pointelle Cable Knit Relaxed Jumper",
+    gender: "kids",
+size : ["3-4","5-6","7-8"],
     description:
-      "High-quality wireless headphones with immersive surround sound.",
+      "This pure cotton jumper is knitted with a pointelle texture and classic cable pattern, making it a cosy choice for unseasonal days.",
 
     imageUrl:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop",
+      "https://pvh-brands.imgix.net/catalog/product/media/KG0KG09223A_TIE_main.jpg?w=713&h=950&crop=edges&fit=crop&auto=compress&auto=format",
 
-    category: "Hat",
+    category: "jumpers",
 
-    price: 199,
+    price: 999,
 
     stock: 11,
 
@@ -145,18 +145,18 @@ size : ["S","M","L","XL"],
 
   {
     id: 6,
-brand: "Ikea",
-    urlId: "minimal-wood-chair",
+brand: "CROCs",
+    urlId: "classic-belt-bag",
 
-    name: "Minimal Wood Chair",
-size : ["S","M","L","XL"],
+    name: "Classic Belt Bag",
+size : ["Black","White","Pink"],
     description:
-      "Scandinavian-inspired wooden chair designed for modern interiors.",
+      "The Classic Belt Bag from Crocs is a stylish and functional accessory designed to keep your essentials close at hand. Made from durable materials, this belt bag features a spacious main compartment with a secure zipper closure, perfect for storing your phone, wallet, keys, and other small items. The adjustable strap allows for a comfortable fit around your waist or across your body, making it ideal for on-the-go activities. With its sleek design and iconic Crocs branding, the Classic Belt Bag is a must-have accessory for those who value both fashion and practicality.",
 
     imageUrl:
-      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
+      "https://media.crocs.com/images/f_auto%2Cq_auto%2Cw_900%2Ch_900%2Cc_pad%2Cb_transparent/products/211701_001_ALT100/crocs.jpg",
 
-    category: "Shoes",
+    category: "Accessories",
 
     price: 89,
 gender: "Men",

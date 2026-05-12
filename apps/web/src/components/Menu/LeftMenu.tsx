@@ -53,24 +53,24 @@ export async function LeftMenu() {
               </Link>
 
               <Link
-                href="/price/50-100"
+                href="/price/From-50-100"
                 className="text-[#295F98] hover:text-black transition"
               >
                 $50 - $100
               </Link>
 
               <Link
-                href="/price/100-200"
+                href="/price/From-100-200"
                 className="text-[#295F98] hover:text-black transition"
               >
                 $100 - $200
               </Link>
 
               <Link
-                href="/price/200-plus"
-                className="text-[#295F98] hover:text-black transition"
+                href="/price/over-200"
+                className="text-[#b9b9b9] hover:text-black transition"
               >
-                $200+
+                Over $200
               </Link>
 
             </div>

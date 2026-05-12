@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
+import Link from "next/link";
+import { useRouter }
+from "next/navigation";
+import { L } from "vitest/dist/chunks/reporters.d.BFLkQcL6.js";
 
 type Order = {
   id: number;
@@ -14,9 +21,30 @@ type Order = {
 
 export default function HistoryPage() {
 
+  const router = useRouter();
+
   const [orders, setOrders] =
     useState<Order[]>([]);
 
+  // AUTH CHECK
+  useEffect(() => {
+
+    async function checkAuth() {
+
+      const res = await fetch(
+        "/api/auth/check"
+      );
+
+      if (!res.ok) {
+        router.push("/login");
+      }
+    }
+
+    checkAuth();
+
+  }, [router]);
+
+  // LOAD ORDERS
   useEffect(() => {
 
     const storedOrders =
@@ -31,82 +59,83 @@ export default function HistoryPage() {
 
   return (
 
-    <div className="max-w-6xl mx-auto px-8 py-12">
+    <div className="max-w-7xl mx-auto px-6 py-10">
+ <div>
+    <Link
+      href="/"
+      className="text-sm text-gray-500 hover:text-gray-700 transition"
+    >
+      ← Back to Home
+    </Link>
+  </div>
 
-      <h1 className="text-5xl font-bold mb-10">
-        Order History
-      </h1>
+      {/* Title */}
+      <div className="mb-8">
 
+        <h1 className="text-4xl font-bold">
+          Order History
+        </h1>
+
+        <p className="text-gray-500 mt-2">
+          Review your previous purchases
+        </p>
+
+      </div>
+
+      {/* Empty */}
       {orders.length === 0 ? (
 
-        <div
-          className="
-            border
-            rounded-3xl
-            p-20
-            text-center
-            bg-white
-          "
-        >
+        <div className="border rounded-2xl p-14 text-center bg-white shadow-sm">
 
-          <div className="text-6xl mb-6">
+          <div className="text-5xl mb-4">
             📦
           </div>
 
-          <h2 className="text-3xl font-bold mb-4">
+          <h2 className="text-2xl font-bold mb-2">
             No Orders Yet
           </h2>
 
           <p className="text-gray-500">
-            Your completed orders
-            will appear here
+            Your completed orders will appear here
           </p>
 
         </div>
 
       ) : (
 
-        <div className="space-y-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
           {orders.map((order) => (
 
             <div
               key={order.id}
-              className="
-                bg-white
-                border
-                rounded-3xl
-                p-8
-                shadow-sm
-              "
+              className="bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md transition flex flex-col"
             >
 
-              {/* Top */}
-              <div className="flex justify-between items-center mb-6">
+              {/* Header */}
+              <div className="flex justify-between items-start border-b pb-4 mb-4">
 
                 <div>
 
-                  <h2 className="text-2xl font-bold">
-                    Order #{order.id}
+                  <h2 className="text-lg font-bold">
+                    #{order.id}
                   </h2>
 
-                  <p className="text-gray-500 mt-1">
-
+                  <p className="text-xs text-gray-500 mt-1">
                     {new Date(
                       order.createdAt
-                    ).toLocaleString()}
-
+                    ).toLocaleDateString()}
                   </p>
 
                 </div>
 
                 <div className="text-right">
 
-                  <p className="text-gray-500">
+                  <p className="text-xs text-gray-400 uppercase">
                     Total
                   </p>
 
-                  <p className="text-3xl font-bold">
+                  <p className="text-xl font-bold">
                     ${order.total}
                   </p>
 
@@ -115,7 +144,7 @@ export default function HistoryPage() {
               </div>
 
               {/* Items */}
-              <div className="space-y-4">
+              <div className="space-y-3 flex-1 overflow-y-auto max-h-[350px] pr-1">
 
                 {order.items.map((item) => (
 
@@ -124,59 +153,40 @@ export default function HistoryPage() {
                       item.id +
                       item.selectedSize
                     }
-                    className="
-                      flex
-                      justify-between
-                      items-center
-                      border-t
-                      pt-4
-                    "
+                    className="flex items-center gap-3 bg-gray-50 rounded-xl p-3"
                   >
 
-                    <div className="flex items-center gap-4">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      className="w-14 h-14 object-cover rounded-lg shrink-0"
+                    />
 
-                      <img
-                        src={item.imageUrl}
-                        alt={item.name}
-                        className="
-                          w-20
-                          h-20
-                          object-cover
-                          rounded-xl
-                        "
-                      />
+                    <div className="flex-1 min-w-0">
 
-                      <div>
+                      <h3 className="font-semibold text-sm truncate">
+                        {item.name}
+                      </h3>
 
-                        <h3 className="font-semibold text-lg">
-                          {item.name}
-                        </h3>
+                      <div className="flex gap-2 mt-1 text-xs text-gray-500">
 
-                        <p className="text-gray-500 text-sm">
-                          Size:
-                          {" "}
+                        <span>
                           {item.selectedSize}
-                        </p>
+                        </span>
 
-                        <p className="text-gray-500 text-sm">
-                          Quantity:
-                          {" "}
-                          {item.quantity}
-                        </p>
+                        <span>
+                          ×{item.quantity}
+                        </span>
 
                       </div>
 
                     </div>
 
-                    <div className="text-right">
-
-                      <p className="font-bold text-xl">
-                        $
-                        {item.price *
-                          item.quantity}
-                      </p>
-
-                    </div>
+                    <p className="font-bold text-sm">
+                      $
+                      {item.price *
+                        item.quantity}
+                    </p>
 
                   </div>
 
