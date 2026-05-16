@@ -15,7 +15,7 @@ export function ProductListItem({
 
   const sizes =
     typeof product.size === "string"
-      ? product.size
+      ? (product.size as string)
           .split(",")
           .map((s) => s.trim())
       : [];
@@ -61,7 +61,7 @@ export function ProductListItem({
         {/* Sizes */}
         <div className="flex items-center mt-2 space-x-2">
 
-          {sizes.map((size) => (
+          {sizes.map((size: string) => (
 
             <span
               key={size}
