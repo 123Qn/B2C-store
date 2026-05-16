@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -69,7 +70,9 @@ export default function LoginPage() {
               setPassword(e.target.value)
             }
           />
-
+          <Link href="/SessionManagement/register" className="text-black hover:underline text-sm">
+            Don't have an account? Register
+          </Link>
           <button className="bg-black text-white w-full p-3 rounded-xl font-semibold hover:opacity-90 transition">
             Login
           </button>
