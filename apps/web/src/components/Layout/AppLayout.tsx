@@ -1,25 +1,59 @@
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren }
+from "react";
 
-import { LeftMenu } from "../Menu/LeftMenu";
-import { TopMenu } from "./TopMenu";
+import { LeftMenu }
+from "../Menu/LeftMenu";
+
+import { TopMenu }
+from "./TopMenu";
 
 export async function AppLayout({
   children,
 }: PropsWithChildren) {
+
   return (
+
     <div className="w-full min-h-screen">
 
-      {/* Navbar */}
+      {/* NAVBAR */}
       <TopMenu />
-      {/* Content Area */}
-      <main className="flex w-full">
-        {/* Sidebar */}
-        <LeftMenu />
-        {/* Main Content */}
-        <div className="flex-1 p-6">
+
+      {/* CONTENT */}
+      <main
+        className="
+          flex
+          flex-col
+          lg:flex-row
+          w-full
+        "
+      >
+
+        {/* SIDEBAR */}
+        <div
+          className="
+            w-full
+            lg:w-64
+            shrink-0
+          "
+        >
+          <LeftMenu />
+        </div>
+
+        {/* MAIN CONTENT */}
+        <div
+          className="
+            flex-1
+            p-4
+            md:p-6
+          "
+        >
           {children}
         </div>
+
       </main>
+
     </div>
+
   );
+
 }
