@@ -17,7 +17,6 @@ export async function POST(
     password,
   } = await req.json();
 
-  // FIND USER
   const user =
     await client.db.user.findFirst({
       where: {
@@ -40,36 +39,33 @@ export async function POST(
 
   }
 
-  // CREATE JWT TOKEN
-  const token = jwt.sign(
+  // JWT TOKEN
+  const token =
+    jwt.sign(
 
-    {
-      id: user.id,
-      email: user.email,
-      role: user.role,
-    },
+      {
+        id: user.id,
+        role: user.role,
+      },
 
-    JWT_SECRET,
+      JWT_SECRET,
 
-    {
-      expiresIn: "1h",
-    }
+      {
+        expiresIn: "30m",
+      }
 
-  );
+    );
 
-  // SET COOKIE
-  const cookieStore =
-    await cookies();
-
-  cookieStore.set(
+  // SAVE jwt TOcookie
+  (
+    await cookies()
+  ).set(
     "auth_token",
     token,
     {
       httpOnly: true,
       path: "/",
-      sameSite: "lax",
-      secure: false,
-      maxAge: 60 * 60,
+      maxAge: 30 * 60,
     }
   );
 
@@ -78,18 +74,15 @@ export async function POST(
     message:
       "Login successful",
 
-    user,
-
   });
 
 }
 
 export async function DELETE() {
 
-  const cookieStore =
-    await cookies();
-
-  cookieStore.delete(
+  (
+    await cookies()
+  ).delete(
     "auth_token"
   );
 
