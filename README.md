@@ -1,4 +1,5 @@
 # 🛍️ B2C Store Application (Fashion Shop)
+# Visit Store at https://qstore.ink/
 # ✨ Features
 
 ## 🎨 Frontend
@@ -64,7 +65,9 @@
 - AWS RDS
 <img width="1919" height="875" alt="image" src="https://github.com/user-attachments/assets/c6557b86-c8a4-4989-b8f5-67c23798c311" />
 
-- Vercel (Planned)
+- Vercel
+https://b2c-store-web-git-main-123qns-projects.vercel.app/
+<img width="1919" height="1022" alt="image" src="https://github.com/user-attachments/assets/bfaf05ed-dd03-4e87-8330-6292a553b87e" />
 
 ---
 
@@ -92,3 +95,5 @@ src/
 ├── assets/
 └── styles/
 ```
+#  Project problem
+-Page still Loading every Slow 
