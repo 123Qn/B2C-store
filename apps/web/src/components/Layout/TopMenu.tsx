@@ -12,7 +12,7 @@ import heroImage from "../../asset/image/hero.webp";
 
 import { useCart } from "../Cart/CartContext";
 import { SearchPopup } from "../Search/SearchPopup";
-import { handleLogout } from "@/app/utils/page";
+import { handleLogout } from "@/app/utils/logout";
 
 export function TopMenu() {
   const [search, setSearch] =
