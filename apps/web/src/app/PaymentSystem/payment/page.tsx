@@ -23,14 +23,14 @@ export default function PaymentPage() {
         const res = await fetch("/api/orders");
 
         if (!res.ok) {
-          router.push("/cart");
+          router.push("/PaymentSystem/cart");
           return;
         }
 
         const orders = await res.json();
 
         if (!orders || orders.length === 0) {
-          router.push("/cart");
+          router.push("/PaymentSystem/cart");
           return;
         }
 
@@ -39,7 +39,7 @@ export default function PaymentPage() {
       } catch (error) {
         console.log(error);
 
-        router.push("/cart");
+        router.push("/PaymentSystem/cart");
       }
     }
 
@@ -49,7 +49,7 @@ export default function PaymentPage() {
   function handlePayment() {
     clearCart();
 
-    router.push("/history");
+    router.push("/PaymentSystem/history");
   }
 
   if (!order) {

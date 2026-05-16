@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import type { Product } from "@prisma/client";
 
-import { ProductList}  from "./Product/List";
+import { ProductList } from "./Product/List";
 
 type MainProps = {
   className?: string;

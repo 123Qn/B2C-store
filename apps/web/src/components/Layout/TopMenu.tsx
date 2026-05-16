@@ -10,10 +10,9 @@ import type { Product } from "@prisma/client";
 import logo from "../../../public/wsulogo.png";
 import heroImage from "../../asset/image/hero.webp";
 
-import { handleLogout } from "@/app/logout/page";
-
 import { useCart } from "../Cart/CartContext";
 import { SearchPopup } from "../Search/SearchPopup";
+import { handleLogout } from "@/app/SessionManagement/logout/page";
 
 export function TopMenu() {
   const [search, setSearch] =
@@ -145,7 +144,7 @@ export function TopMenu() {
             </button>
           ) : (
             <Link
-              href="/login"
+              href="/SessionManagement/login"
               className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition"
             >
               Login
@@ -154,7 +153,7 @@ export function TopMenu() {
 
           {/* HISTORY */}
           <Link
-            href="/history"
+            href="/PaymentSystem/history"
             title="Order History"
             className="text-white text-3xl hover:text-gray-300 transition"
           >
@@ -163,7 +162,7 @@ export function TopMenu() {
 
           {/* CART */}
           <Link
-            href="/cart"
+            href="/PaymentSystem/cart"
             title="Cart"
             className="relative text-white text-3xl hover:text-gray-300 transition"
           >

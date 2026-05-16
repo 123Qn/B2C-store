@@ -1,3 +1,4 @@
+//get all products
 import { NextResponse } from "next/server";
 
 import { client } from "@repo/db/client";

@@ -106,16 +106,6 @@ export async function LeftMenu() {
               ))}
             </div>
           </li>
-
-          {/* ADMIN */}
-          <li>
-            <Link
-              href="http://localhost:3002"
-              className="font-semibold text-red-500 hover:text-red-700"
-            >
-              Admin Dashboard
-            </Link>
-          </li>
         </ul>
       </nav>
     </div>

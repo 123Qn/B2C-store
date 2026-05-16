@@ -52,7 +52,7 @@ export default function CartPage() {
         return;
       }
 
-      router.push("/payment");
+      router.push("/PaymentSystem/payment");
     } catch (error) {
       console.log(error);
       alert("Server error");

@@ -166,7 +166,7 @@ export function ProductDetail({
                   selectedSize
                 );
 
-                router.push("/cart");
+                router.push("/PaymentSystem/cart");
 
               }}
               className="

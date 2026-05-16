@@ -37,7 +37,7 @@ export default function HistoryPage() {
         const res = await fetch("/api/auth/check");
 
         if (!res.ok) {
-          router.push("/login");
+          router.push("/SessionManagement/login");
         }
       } catch (error) {
         console.log(error);
