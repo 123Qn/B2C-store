@@ -19,15 +19,15 @@
   "exports": {
     "./client": {
       "types": "./src/client.ts",
-      "default": "./src/client.js"
+      "default": "./src/client.ts"
     },
     "./data": {
       "types": "./src/data.ts",
-      "default": "./src/data.js"
+      "default": "./src/data.ts"
     },
     "./seed": {
       "types": "./src/seed.ts",
-      "default": "./src/seed.js"
+      "default": "./src/seed.ts"
     }
   },
   "dependencies": {
