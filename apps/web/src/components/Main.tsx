@@ -2,15 +2,19 @@
 
 import { useState } from "react";
 
-import { ProductList } from "./Product/List";
+import type { Product } from "@prisma/client";
 
-import { products } from "@repo/db/data";
+import { ProductList}  from "./Product/List";
+
+type MainProps = {
+  className?: string;
+  products: Product[];
+};
 
 export function Main({
   className,
-}: {
-  className?: string;
-}) {
+  products,
+}: MainProps) {
 
   const [gender, setGender] =
     useState("All");
@@ -28,6 +32,7 @@ export function Main({
         (product) => product.category
       )
     ),
+
   ];
 
   const filteredProducts =
@@ -53,6 +58,7 @@ export function Main({
         genderMatch &&
         categoryMatch
       );
+
     });
 
   return (
@@ -70,7 +76,14 @@ export function Main({
             onChange={(e) =>
               setGender(e.target.value)
             }
-            className="border rounded-xl px-4 py-2 bg-white"
+            className="
+              bg-[#FFF8F3]
+              border
+              border-[#B89B8A]
+              rounded-2xl
+              px-4 py-2
+              shadow-sm
+            "
           >
 
             <option value="All">
@@ -101,7 +114,14 @@ export function Main({
             onChange={(e) =>
               setCategory(e.target.value)
             }
-            className="border rounded-xl px-4 py-2 bg-white"
+            className="
+              bg-[#FFF8F3]
+              border
+              border-[#B89B8A]
+              rounded-2xl
+              px-4 py-2
+              shadow-sm
+            "
           >
 
             {categories.map((cat) => (
@@ -131,5 +151,7 @@ export function Main({
       </section>
 
     </main>
+
   );
+
 }

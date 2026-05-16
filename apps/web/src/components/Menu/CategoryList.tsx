@@ -1,16 +1,23 @@
 import Link from "next/link";
-import { products } from "@repo/db/data";
 
-export function CategoryList() {
+import { client } from "@repo/db/client";
+
+export async function CategoryList() {
+
+  const products = await client.db.product.findMany();
 
   const categories = [
-    ...new Set(products.map((product) => product.category)),
+    ...new Set(
+      products.map((product) => product.category)
+    ),
   ];
 
   return (
+
     <div className="flex flex-col gap-3">
 
       {categories.map((category) => (
+
         <Link
           key={category}
           href={`/category/${category.toLowerCase()}`}
@@ -22,8 +29,11 @@ export function CategoryList() {
         >
           {category}
         </Link>
+
       ))}
 
     </div>
+
   );
+
 }

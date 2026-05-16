@@ -5,7 +5,7 @@
 @config "../../tailwind.config.ts";
 
 :root {
-  --background: rgb(236,213,188);
+  --background: #E9D7C3;
   --foreground: #0a0a0a;
   --text: theme("colors.gray.900");
   --textHover: theme("colors.gray.700");

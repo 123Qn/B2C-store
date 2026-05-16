@@ -1,21 +1,21 @@
-import { products } from "@repo/db/data";
-
-import { FilteredProducts }
-from "@/components/Product/FilteredProducts";
+import { client } from "@repo/db/client";
+import { FilteredProducts } from "@/components/Product/FilteredProducts";
 
 export default async function CategoryPage({
   params,
 }: {
   params: Promise<{ category: string }>;
 }) {
-
   const { category } = await params;
 
-  const filteredProducts = products.filter(
-    (product) =>
-      product.category.toLowerCase() ===
-      category.toLowerCase()
-  );
+  const filteredProducts = await client.db.product.findMany({
+    where: {
+      category: {
+        equals: category,
+        mode: "insensitive",
+      },
+    },
+  });
 
   return (
     <FilteredProducts

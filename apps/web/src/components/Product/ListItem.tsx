@@ -1,7 +1,10 @@
 "use client";
-import type { Product } from "@repo/db/data";
+
+import type { Product } from "@prisma/client";
+
 import Link from "next/link";
 import { useState } from "react";
+
 export function ProductListItem({
   product,
 }: {
@@ -9,33 +12,34 @@ export function ProductListItem({
 }) {
 
   const [added, setAdded] = useState(false);
+
+  const sizes =
+    typeof product.size === "string"
+      ? product.size
+          .split(",")
+          .map((s) => s.trim())
+      : [];
+
+  const imageSrc =
+    product.imageUrl?.trim()
+      ? product.imageUrl
+      : "https://picsum.photos/500";
+
   return (
+
     <article
-      className="
-        bg-white
-        rounded-2xl
-        overflow-hidden
-        shadow-sm
-        hover:shadow-xl
-        transition
-        duration-300
-      "
+      className="rounded-3xl overflow-hidden bg-white shadow-lg hover:-translate-y-1 hover:shadow-2xl transition duration-300"
     >
 
       {/* Product Image */}
       <Link href={`/products/${product.urlId}`}>
+
         <img
-          src={product.imageUrl}
-          alt={product.name}
-          className="
-            w-full
-            h-80
-            object-cover
-            hover:scale-105
-            transition
-            duration-300
-          "
+          src={imageSrc}
+          alt={product.name || "Product"}
+          className="w-full h-80 object-cover hover:scale-105 transition duration-300"
         />
+
       </Link>
 
       {/* Product Content */}
@@ -49,35 +53,27 @@ export function ProductListItem({
         {/* Product Name */}
         <Link
           href={`/products/${product.urlId}`}
-          className="
-            text-lg
-            font-semibold
-            text-gray-900
-            hover:text-black
-            transition
-          "
+          className="text-lg font-semibold text-gray-900 hover:text-black transition"
         >
           {product.name}
         </Link>
-        {/*size*/}
+
+        {/* Sizes */}
         <div className="flex items-center mt-2 space-x-2">
-          {product.size.map((size) => (
+
+          {sizes.map((size) => (
+
             <span
               key={size}
-              className="
-                px-2
-                py-1
-                border
-                border-gray-300
-                rounded
-                text-sm
-                text-gray-600
-              "
+              className="px-2 py-1 border border-gray-300 rounded text-sm text-gray-600"
             >
               {size}
             </span>
+
           ))}
+
         </div>
+
         {/* Description */}
         <p className="text-gray-500 text-sm mt-2 line-clamp-2">
           {product.description}
@@ -99,5 +95,7 @@ export function ProductListItem({
       </div>
 
     </article>
+
   );
+
 }

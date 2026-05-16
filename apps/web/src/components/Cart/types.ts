@@ -1,5 +1,5 @@
 import type { Product }
-from "@repo/db/data";
+from "@prisma/client";
 
 export type CartItem =
   Product & {
@@ -7,6 +7,7 @@ export type CartItem =
     quantity: number;
 
     selectedSize: string;
+
   };
 
 export type CartContextType = {
@@ -36,4 +37,5 @@ export type CartContextType = {
   clearCart: () => void;
 
   totalPrice: number;
+
 };

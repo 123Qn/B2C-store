@@ -1,24 +1,25 @@
-export function savePendingOrder(
+export async function savePendingOrder(
   cart: any[],
   totalPrice: number
 ) {
-
   const pendingOrder = {
-
     id: Date.now(),
-
     items: cart,
-
     total: totalPrice,
-
-    createdAt:
-      new Date().toISOString(),
+    createdAt: new Date().toISOString(),
   };
 
-  localStorage.setItem(
+  await fetch("/api/orders", {
+    method: "POST",
 
-    "pendingOrder",
+    headers: {
+      "Content-Type": "application/json",
+    },
 
-    JSON.stringify(pendingOrder)
-  );
+    body: JSON.stringify({
+      cart,
+      totalPrice,
+      pendingOrder,
+    }),
+  });
 }

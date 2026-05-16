@@ -2,7 +2,6 @@
   "name": "assignment-cms",
   "private": true,
   "scripts": {
-    
     "build": "turbo build",
     "dev": "turbo dev",
     "start": "cd apps/web && pnpm start",
@@ -12,6 +11,7 @@
   "devDependencies": {
     "@playwright/test": "^1.50.0",
     "prettier": "^3.4.2",
+    "tsx": "^4.21.0",
     "turbo": "^2.3.4",
     "typescript": "5.7.3"
   },

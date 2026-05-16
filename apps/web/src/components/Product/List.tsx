@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 
-import type { Product } from "@repo/db/data";
+import type { Product }
+from "@prisma/client";
 
-import { ProductListItem } from "./ListItem";
+import { ProductListItem }
+from "./ListItem";
 
 export function ProductList({
   products,
@@ -14,24 +16,41 @@ export function ProductList({
 
   const ITEMS_PER_PAGE = 6;
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] =
+    useState(1);
 
-  const totalPages = Math.ceil(
-    products.length / ITEMS_PER_PAGE
-  );
+  const totalPages =
+    Math.ceil(
+      products.length /
+      ITEMS_PER_PAGE
+    );
 
-  const start = (page - 1) * ITEMS_PER_PAGE;
+  const start =
+    (page - 1) *
+    ITEMS_PER_PAGE;
 
-  const end = start + ITEMS_PER_PAGE;
+  const end =
+    start +
+    ITEMS_PER_PAGE;
 
   const currentProducts =
-    products.slice(start, end);
+    products.slice(
+      start,
+      end
+    );
 
   if (products.length === 0) {
-    return <div>0 Products</div>;
+
+    return (
+      <div>
+        0 Products
+      </div>
+    );
+
   }
 
   return (
+
     <div>
 
       {/* Grid */}
@@ -88,8 +107,11 @@ export function ProductList({
               px-4 py-2 rounded-xl border
 
               ${page === number
+
                 ? "bg-black text-white"
+
                 : "bg-white"
+
               }
             `}
           >
@@ -101,5 +123,7 @@ export function ProductList({
       </div>
 
     </div>
+
   );
+
 }

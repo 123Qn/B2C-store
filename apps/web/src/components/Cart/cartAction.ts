@@ -1,66 +1,91 @@
 import type { CartItem } from "./types";
-import type { Product } from "@repo/db/data";
+import type { Product } from "@prisma/client";
 
 // ADD
-export function addItemToCart(prev: CartItem[], product: Product, selectedSize: string) {
+export function addItemToCart(
+  prev: CartItem[],
+  product: Product,
+  selectedSize: string
+) {
+  const existing = prev.find(
+    (item) =>
+      item.id === product.id &&
+      item.selectedSize === selectedSize
+  );
 
-    const existing = prev.find(
-        (item) => (item.id === product.id) && (item.selectedSize === selectedSize)
+  // ALREADY EXISTS
+  if (existing) {
+    return prev.map((item) =>
+      item.id === product.id &&
+      item.selectedSize === selectedSize
+        ? {
+            ...item,
+            quantity: item.quantity + 1,
+          }
+        : item
     );
+  }
 
-    // already exists
-    if (existing) {
+  // NEW ITEM
+  return [
+    ...prev,
 
-        return prev.map((item) => (item.id === product.id) && (item.selectedSize === selectedSize)
-
-            ? {
-                ...item, quantity: item.quantity + 1,
-            }
-            : item
-        );
-    }
-
-    // new item
-    return [...prev,
     {
-        ...product, quantity: 1, selectedSize,
+      ...product,
+      quantity: 1,
+      selectedSize,
     },
-    ];
+  ];
 }
 
 // REMOVE
-export function removeItemFromCart(prev: CartItem[], id: number, selectedSize: string) {
-
-    return prev.filter(
-        (item) => !(item.id === id && item.selectedSize === selectedSize)
-    );
+export function removeItemFromCart(
+  prev: CartItem[],
+  id: number,
+  selectedSize: string
+) {
+  return prev.filter(
+    (item) =>
+      !(
+        item.id === id &&
+        item.selectedSize === selectedSize
+      )
+  );
 }
 
 // INCREASE
-export function increaseItemQuantity(prev: CartItem[], id: number, selectedSize: string) {
-
-    return prev.map((item) => item.id === id && item.selectedSize === selectedSize
-
-        ? {
-            ...item, quantity: item.quantity + 1,
+export function increaseItemQuantity(
+  prev: CartItem[],
+  id: number,
+  selectedSize: string
+) {
+  return prev.map((item) =>
+    item.id === id &&
+    item.selectedSize === selectedSize
+      ? {
+          ...item,
+          quantity: item.quantity + 1,
         }
-        : item
-    );
+      : item
+  );
 }
 
 // DECREASE
-export function decreaseItemQuantity(prev: CartItem[], id: number, selectedSize: string) {
+export function decreaseItemQuantity(
+  prev: CartItem[],
+  id: number,
+  selectedSize: string
+) {
+  return prev
+    .map((item) =>
+      item.id === id &&
+      item.selectedSize === selectedSize
+        ? {
+            ...item,
+            quantity: item.quantity - 1,
+          }
+        : item
+    )
 
-    return prev
-        .map((item) => item.id === id && item.selectedSize === selectedSize
-
-            ? {
-                ...item, quantity: item.quantity - 1,
-            }
-            : item
-        )
-
-        .filter(
-            (item) => item.quantity > 0
-        );
+    .filter((item) => item.quantity > 0);
 }

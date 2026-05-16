@@ -1,8 +1,9 @@
 import { AppLayout } from "../Layout/AppLayout";
 
-import { ProductList } from "./List";
+import {ProductList} from "./List";
 
-import type { Product } from "@repo/db/data";
+import type { Product }
+from "@prisma/client";
 
 export function FilteredProducts({
   title,
@@ -13,18 +14,30 @@ export function FilteredProducts({
 }) {
 
   return (
+
     <AppLayout>
 
       <div className="p-6">
 
-        <h1 className="text-4xl font-bold mb-8 capitalize">
+        <h1
+          className="
+            text-4xl
+            font-bold
+            mb-8
+            capitalize
+          "
+        >
           {title}
         </h1>
 
-        <ProductList products={products} />
+        <ProductList
+          products={products}
+        />
 
       </div>
 
     </AppLayout>
+
   );
+
 }

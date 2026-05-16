@@ -14,9 +14,11 @@ export default function LoginPage() {
 
     const res = await fetch("/api/auth", {
       method: "POST",
+
       headers: {
         "Content-Type": "application/json",
       },
+
       body: JSON.stringify({
         email,
         password,
@@ -25,38 +27,53 @@ export default function LoginPage() {
 
     if (res.ok) {
       router.push("/");
+      return;
     }
+
+    alert("Invalid email or password");
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-[#E9B63B]">
+    <main className="min-h-screen flex items-center justify-center bg-[#E9B63B] px-4">
       <form
         onSubmit={handleLogin}
-        className="bg-white p-8 rounded-xl w-96"
+        className="bg-white w-full max-w-md p-10 rounded-3xl shadow-xl border"
       >
-        <h1 className="text-2xl font-bold mb-2">
-          Buyer Login
-        </h1>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold">
+            Buyer Login
+          </h1>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="border w-full p-2 mb-4"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <p className="text-gray-500 mt-2">
+            Sign in to continue shopping
+          </p>
+        </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="border w-full p-2 mb-4"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="flex flex-col gap-4">
+          <input
+            type="email"
+            placeholder="Email"
+            className="border rounded-xl w-full p-3 outline-none focus:ring-2 focus:ring-black"
+            value={email}
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
+          />
 
-        <button className="bg-black text-white w-full p-2 rounded">
-          Login
-        </button>
+          <input
+            type="password"
+            placeholder="Password"
+            className="border rounded-xl w-full p-3 outline-none focus:ring-2 focus:ring-black"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+          />
+
+          <button className="bg-black text-white w-full p-3 rounded-xl font-semibold hover:opacity-90 transition">
+            Login
+          </button>
+        </div>
       </form>
     </main>
   );

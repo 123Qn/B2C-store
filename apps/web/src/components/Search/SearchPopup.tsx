@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import type { Product } from "@repo/db/data";
+import type { Product }
+from "@prisma/client";
 
 export function SearchPopup({
   products,
@@ -9,7 +10,9 @@ export function SearchPopup({
 }) {
 
   if (products.length === 0) {
+
     return (
+
       <div
         className="
           absolute top-16 left-0 w-full
@@ -19,14 +22,17 @@ export function SearchPopup({
       >
         No products found
       </div>
+
     );
+
   }
 
   return (
+
     <div
       className="
         absolute top-16 left-0 w-full
-        bg-white 
+        bg-white
         p-4 z-50
         max-h-[500px]
         overflow-y-auto
@@ -55,7 +61,12 @@ export function SearchPopup({
             <img
               src={product.imageUrl}
               alt={product.name}
-              className="w-20 h-20 object-cover rounded-lg"
+              className="
+                w-20
+                h-20
+                object-cover
+                rounded-lg
+              "
             />
 
             <div>
@@ -77,5 +88,7 @@ export function SearchPopup({
       </div>
 
     </div>
+
   );
+
 }

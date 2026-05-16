@@ -1,52 +1,28 @@
 "use client";
 
 import { useEffect } from "react";
-
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-import { useRouter }
-from "next/navigation";
-
-import { useCart }
-from "@/components/Cart/CartContext";
-
-import { EmptyCart }
-from "@/components/Cart/EmptyCart";
-
-import { CartItemCard }
-from "@/components/Cart/CartItemCard";
-
-import { CartSummary }
-from "@/components/Cart/CartSummary";
-
-import { savePendingOrder }
-from "@/components/Cart/checkout";
+import { useCart } from "@/components/Cart/CartContext";
+import { EmptyCart } from "@/components/Cart/EmptyCart";
+import { CartItemCard } from "@/components/Cart/CartItemCard";
+import { CartSummary } from "@/components/Cart/CartSummary";
 
 export default function CartPage() {
-
   const router = useRouter();
 
   const {
-
     cart,
-
     removeFromCart,
-
     increaseQuantity,
-
     decreaseQuantity,
-
     totalPrice,
-
   } = useCart();
 
   useEffect(() => {
-
     async function checkAuth() {
-
-      const res = await fetch(
-        "/api/auth/check"
-      );
+      const res = await fetch("/api/auth/check");
 
       if (!res.ok) {
         router.push("/login");
@@ -54,89 +30,72 @@ export default function CartPage() {
     }
 
     checkAuth();
+  }, [router]);
 
-  }, []);
+  async function handleCheckout() {
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
 
-  function handleCheckout() {
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-    savePendingOrder(
-      cart,
-      totalPrice
-    );
+        body: JSON.stringify({
+          cart,
+          totalPrice,
+        }),
+      });
 
-    router.push("/payment");
+      if (!res.ok) {
+        alert("Checkout failed");
+        return;
+      }
+
+      router.push("/payment");
+    } catch (error) {
+      console.log(error);
+      alert("Server error");
+    }
   }
 
   return (
-
     <div className="max-w-7xl mx-auto px-8 py-12">
-
-      {/* Header */}
+      {/* HEADER */}
       <div className="mb-10">
-
-        <Link
-          href="/"
-          className="text-gray-500"
-        >
+        <Link href="/" className="text-gray-500">
           ← Continue Shopping
         </Link>
 
         <h1 className="text-5xl font-bold mt-4">
           Shopping Cart
         </h1>
-
       </div>
 
       {cart.length === 0 ? (
-
         <EmptyCart />
-
       ) : (
-
         <div className="grid grid-cols-[1fr_380px] gap-8">
-
           {/* LEFT */}
           <div className="flex flex-col gap-5">
-
             {cart.map((item) => (
-
               <CartItemCard
-                key={
-                  item.id +
-                  item.selectedSize
-                }
-
+                key={item.id + item.selectedSize}
                 item={item}
-
-                removeFromCart={
-                  removeFromCart
-                }
-
-                increaseQuantity={
-                  increaseQuantity
-                }
-
-                decreaseQuantity={
-                  decreaseQuantity
-                }
+                removeFromCart={removeFromCart}
+                increaseQuantity={increaseQuantity}
+                decreaseQuantity={decreaseQuantity}
               />
-
             ))}
-
           </div>
 
           {/* RIGHT */}
           <CartSummary
             totalPrice={totalPrice}
-            handleCheckout={
-              handleCheckout
-            }
+            handleCheckout={handleCheckout}
           />
-
         </div>
-
       )}
-
     </div>
   );
 }
