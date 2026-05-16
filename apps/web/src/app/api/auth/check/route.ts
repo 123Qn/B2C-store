@@ -1,37 +1,64 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { client } from "@repo/db/client";
+
+import jwt from "jsonwebtoken";
+
+const JWT_SECRET =
+  process.env.JWT_SECRET || "secret";
 
 export async function GET() {
-  const cookieStore = await cookies();
 
-  const token = cookieStore.get("auth_token")?.value;
+  const cookieStore =
+    await cookies();
+
+  const token =
+    cookieStore.get(
+      "auth_token"
+    )?.value;
 
   // NO TOKEN
   if (!token) {
+
     return NextResponse.json(
-      { message: "Unauthorized" },
-      { status: 401 }
+      {
+        message: "Unauthorized",
+      },
+      {
+        status: 401,
+      }
     );
+
   }
 
-  // FIND USER
-  const user = await client.db.user.findUnique({
-    where: {
-      id: Number(token),
-    },
-  });
+  try {
 
-  // INVALID USER
-  if (!user) {
-    return NextResponse.json(
-      { message: "Unauthorized" },
-      { status: 401 }
-    );
+    const decoded =
+      jwt.verify(
+        token,
+        JWT_SECRET
+      );
+
+    return NextResponse.json({
+
+      message: "OK",
+
+      user: decoded,
+
+    });
+
   }
 
-  return NextResponse.json({
-    message: "OK",
-    user,
-  });
+  catch {
+
+    return NextResponse.json(
+      {
+        message: "Invalid token",
+      },
+      {
+        status: 401,
+      }
+    );
+
+  }
+
 }
