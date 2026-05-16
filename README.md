@@ -1,8 +1,92 @@
-#B2C Store Application (Fashion Shop)
-##Core Functionality:
- ###FrontEnd 
-  *Display a list of products with details (e.g., name, description, price, image).
-  *Allow users to browse products, filter by categories (clothing), and search by product name.
-  *Enable users to add products to a cart 
-  *Complete purchases (To be implemented later)
- ###BackEnd
+# 🛍️ B2C Store Application (Fashion Shop)
+# ✨ Features
+
+## 🎨 Frontend
+
+- Display a list of fashion products with:
+  - Product name
+  - Description
+  - Price
+  - Product image
+
+- Browse products by:
+  - Categories
+  - Brands
+  - Price ranges
+
+- Search products by name
+
+- Shopping cart system:
+  - Add products to cart
+  - Increase / decrease quantity
+  - Remove items from cart
+
+- Payment System ( NOT IMPLEMENT YET )
+ 
+- Product detail pages
+
+- Authentication system:
+  - Buyer(Clients) login
+  - Admin login
+
+- Order history page(Auth)
+
+---
+
+## ⚙️ Backend
+
+- REST API using Next.js Route Handlers
+
+- Database management using Prisma ORM
+
+- PostgreSQL database hosted on AWS RDS
+
+- Authentication with JWT
+
+- Persistent database storage
+
+---
+
+# 🧰 Tech Stack
+
+## Frontend
+- Next.js 15
+- React
+- TypeScript
+- Tailwind CSS
+
+## Backend
+- Next.js API Routes
+- Prisma ORM
+- PostgreSQL
+
+## Cloud / Deployment
+- AWS RDS
+- Vercel (Planned)
+
+---
+
+# 📂 Project Structure
+
+```txt
+src/
+├── app/
+│   ├── api/
+│   ├── products/
+│   ├── cart/
+│   ├── login/
+│   ├── payment/
+│   ├── category/
+│   ├── brand/
+│   └── search/
+│
+├── components/
+│   ├── Product/
+│   ├── Cart/
+│   ├── Layout/
+│   └── Search/
+│
+├
+├── assets/
+└── styles/
+```
