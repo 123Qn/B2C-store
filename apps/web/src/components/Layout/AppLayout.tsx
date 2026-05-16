@@ -11,22 +11,15 @@ export async function AppLayout({
 
       {/* Navbar */}
       <TopMenu />
-
-     
-
       {/* Content Area */}
       <main className="flex w-full">
-
         {/* Sidebar */}
         <LeftMenu />
-
         {/* Main Content */}
         <div className="flex-1 p-6">
           {children}
         </div>
-
       </main>
-
     </div>
   );
 }

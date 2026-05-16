@@ -30,9 +30,7 @@ export function FilteredProducts({
           {title}
         </h1>
 
-        <ProductList
-          products={products}
-        />
+        <ProductList products={products}/>
 
       </div>
 

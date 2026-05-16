@@ -29,7 +29,6 @@ export function ProductDetail({
           .split(",")
           .map((s) => s.trim())
       : [];
-
   const [selectedSize, setSelectedSize] =
     useState(sizes[0] || "M");
 

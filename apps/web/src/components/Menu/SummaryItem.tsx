@@ -1,4 +1,4 @@
-import Link from "next/link";
+/*import Link from "next/link";
 
 export function SummaryItem({
   name,
@@ -42,4 +42,4 @@ export function SummaryItem({
       </Link>
     </li>
   );
-}
+}*/
