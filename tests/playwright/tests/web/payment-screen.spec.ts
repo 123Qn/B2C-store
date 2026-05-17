@@ -1,16 +1,16 @@
-// history-screen.spec.ts
+// payment-screen.spec.ts
 
 import { seed } from "@repo/db/seed";
 import { expect, test } from "./fixtures";
 
-test.describe("HISTORY SCREEN", () => {
+test.describe("PAYMENT SCREEN", () => {
 
   test.beforeAll(async () => {
     await seed();
   });
 
   test(
-    "History Page",
+    "Payment Page",
     {
       tag: "@payment",
     },
@@ -18,12 +18,12 @@ test.describe("HISTORY SCREEN", () => {
     async ({ page }) => {
 
       await page.goto(
-        "/PaymentSystem/history"
+        "/PaymentSystem/payment"
       );
 
       await expect(page)
         .toHaveURL(
-          /history/,
+          /payment/,
         );
 
     },

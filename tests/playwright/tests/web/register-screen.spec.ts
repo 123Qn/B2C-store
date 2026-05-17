@@ -1,30 +1,29 @@
-// history-screen.spec.ts
+// register-screen.spec.ts
 
 import { seed } from "@repo/db/seed";
 import { expect, test } from "./fixtures";
 
-test.describe("HISTORY SCREEN", () => {
+test.describe("REGISTER SCREEN", () => {
 
   test.beforeAll(async () => {
     await seed();
   });
 
   test(
-    "History Page",
+    "Register Page",
     {
-      tag: "@payment",
+      tag: "@auth",
     },
 
     async ({ page }) => {
 
       await page.goto(
-        "/PaymentSystem/history"
+        "/SessionManagement/register"
       );
 
-      await expect(page)
-        .toHaveURL(
-          /history/,
-        );
+      await expect(
+        page.getByText("Register"),
+      ).toBeVisible();
 
     },
   );
