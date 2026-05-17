@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState }
+from "react";
 
 import type { Product }
 from "@prisma/client";
@@ -39,12 +40,17 @@ export function ProductList({
       end
     );
 
+  // NO PRODUCTS
   if (products.length === 0) {
 
     return (
-      <div>
+
+      <div className="text-center py-20 text-gray-500 text-xl">
+
         0 Products
+
       </div>
+
     );
 
   }
@@ -53,16 +59,8 @@ export function ProductList({
 
     <div>
 
-      {/* Grid */}
-      <div
-        className="
-          grid
-          grid-cols-1
-          md:grid-cols-2
-          lg:grid-cols-3
-          gap-8
-        "
-      >
+      {/* PRODUCT GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
         {currentProducts.map((product) => (
 
@@ -75,16 +73,8 @@ export function ProductList({
 
       </div>
 
-      {/* Pagination */}
-      <div
-        className="
-          flex
-          justify-center
-          items-center
-          gap-3
-          mt-12
-        "
-      >
+      {/* PAGINATION */}
+      <div className="flex justify-center items-center flex-wrap gap-3 mt-12">
 
         {Array.from(
           { length: totalPages },
@@ -104,18 +94,20 @@ export function ProductList({
 
             }}
             className={`
-              px-4 py-2 rounded-xl border
+              px-4 py-2 rounded-xl border transition
 
-              ${page === number
+              ${
+                page === number
 
-                ? "bg-black text-white"
+                  ? "bg-black text-white border-black"
 
-                : "bg-white"
-
+                  : "bg-white hover:bg-gray-100"
               }
             `}
           >
+
             {number}
+
           </button>
 
         ))}

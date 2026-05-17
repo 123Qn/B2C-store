@@ -1,14 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState }
+from "react";
 
-import type { Product } from "@prisma/client";
+import type { Product }
+from "@prisma/client";
 
-import { ProductList } from "./Product/List";
+import { ProductList }
+from "./Product/List";
 
 type MainProps = {
+
   className?: string;
+
   products: Product[];
+
 };
 
 export function Main({
@@ -22,19 +28,21 @@ export function Main({
   const [category, setCategory] =
     useState("All");
 
-  // Dynamic categories
+  // DYNAMIC CATEGORIES
   const categories = [
 
     "All",
 
     ...new Set(
       products.map(
-        (product) => product.category
+        (product) =>
+          product.category
       )
     ),
 
   ];
 
+  // FILTER PRODUCTS
   const filteredProducts =
     products.filter((product) => {
 
@@ -65,25 +73,20 @@ export function Main({
 
     <main className={className}>
 
-      {/* Filters */}
-      <section className="px-6 pt-8">
+      {/* FILTERS */}
+      <section className="px-4 md:px-6 pt-8">
 
-        <div className="flex justify-end gap-4">
+        <div className="flex flex-col sm:flex-row justify-end gap-4">
 
-          {/* Gender */}
+          {/* GENDER */}
           <select
             value={gender}
             onChange={(e) =>
-              setGender(e.target.value)
+              setGender(
+                e.target.value
+              )
             }
-            className="
-              bg-[#FFF8F3]
-              border
-              border-[#B89B8A]
-              rounded-2xl
-              px-4 py-2
-              shadow-sm
-            "
+            className="bg-[#FFF8F3] border border-[#B89B8A] rounded-2xl px-4 py-2 shadow-sm outline-none"
           >
 
             <option value="All">
@@ -108,20 +111,15 @@ export function Main({
 
           </select>
 
-          {/* Category */}
+          {/* CATEGORY */}
           <select
             value={category}
             onChange={(e) =>
-              setCategory(e.target.value)
+              setCategory(
+                e.target.value
+              )
             }
-            className="
-              bg-[#FFF8F3]
-              border
-              border-[#B89B8A]
-              rounded-2xl
-              px-4 py-2
-              shadow-sm
-            "
+            className="bg-[#FFF8F3] border border-[#B89B8A] rounded-2xl px-4 py-2 shadow-sm outline-none"
           >
 
             {categories.map((cat) => (
@@ -141,11 +139,13 @@ export function Main({
 
       </section>
 
-      {/* Products */}
-      <section className="px-6 py-12">
+      {/* PRODUCTS */}
+      <section className="px-4 md:px-6 py-12">
 
         <ProductList
-          products={filteredProducts}
+          products={
+            filteredProducts
+          }
         />
 
       </section>

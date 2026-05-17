@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState }
+from "react";
 
 export function MobileMenu({
   children,
@@ -16,26 +17,17 @@ export function MobileMenu({
     <div className="block lg:hidden">
 
       {/* TOP BAR */}
-      <div
-        className="
-          flex
-          items-center
-          justify-between
-          bg-[#B89B8A]
-          p-4
-        "
-      >
+      <div className="flex items-center justify-between bg-[#B89B8A] p-4 border-b border-gray-200">
 
         <h1 className="text-xl font-bold">
           Menu
         </h1>
 
         <button
-          onClick={() => setOpen(!open)}
-          className="
-            text-2xl
-            p-2
-          "
+          onClick={() =>
+            setOpen(!open)
+          }
+          className="text-2xl p-2 rounded-lg hover:bg-[#a88878] transition"
         >
           {open ? "✕" : "☰"}
         </button>
@@ -43,20 +35,15 @@ export function MobileMenu({
       </div>
 
       {/* MENU */}
-      {
-        open && (
+      {open && (
 
-          <div
-            className="
-              bg-[#B89B8A]
-              p-4
-            "
-          >
-            {children}
-          </div>
+        <div className="bg-[#B89B8A] p-4 border-b border-gray-200">
 
-        )
-      }
+          {children}
+
+        </div>
+
+      )}
 
     </div>
 

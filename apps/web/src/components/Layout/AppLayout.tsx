@@ -13,42 +13,27 @@ export async function AppLayout({
 
   return (
 
-    <div className="w-full min-h-screen">
+    <div className="w-full min-h-screen bg-[#FFF8F3]">
 
       {/* NAVBAR */}
       <TopMenu />
 
       {/* CONTENT */}
-      <main
-        className="
-          flex
-          flex-col
-          lg:flex-row
-          w-full
-        "
-      >
+      <main className="flex flex-col lg:flex-row w-full">
 
         {/* SIDEBAR */}
-        <div
-          className="
-            w-full
-            lg:w-64
-            shrink-0
-          "
-        >
+        <aside className="w-full lg:w-64 shrink-0">
+
           <LeftMenu />
-        </div>
+
+        </aside>
 
         {/* MAIN CONTENT */}
-        <div
-          className="
-            flex-1
-            p-4
-            md:p-6
-          "
-        >
+        <section className="flex-1 p-4 md:p-6 overflow-hidden">
+
           {children}
-        </div>
+
+        </section>
 
       </main>
 

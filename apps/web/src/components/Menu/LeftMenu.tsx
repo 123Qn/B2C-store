@@ -13,6 +13,7 @@ export async function LeftMenu() {
 
         <div className="flex flex-col gap-8">
 
+          {/* CATEGORIES */}
           <div>
 
             <h1 className="text-lg font-bold mb-4">
@@ -23,6 +24,7 @@ export async function LeftMenu() {
 
           </div>
 
+          {/* BRANDS */}
           <div>
 
             <h1 className="text-lg font-bold mb-4">
@@ -38,23 +40,11 @@ export async function LeftMenu() {
       </MobileMenu>
 
       {/* DESKTOP */}
-     <div
-  className="
-    hidden
-    lg:block
-    w-64
-    min-h-screen
-    sticky
-    top-0
-    bg-[#B89B8A]
-    border-r
-    border-gray-200
-    p-6
-  "
->
+      <aside className="hidden lg:block w-64 min-h-screen sticky top-0 bg-[#B89B8A] border-r border-gray-200 p-6">
 
         <div className="flex flex-col gap-8">
 
+          {/* CATEGORIES */}
           <div>
 
             <h1 className="text-xl font-bold mb-4">
@@ -65,6 +55,7 @@ export async function LeftMenu() {
 
           </div>
 
+          {/* BRANDS */}
           <div>
 
             <h1 className="text-xl font-bold mb-4">
@@ -77,7 +68,7 @@ export async function LeftMenu() {
 
         </div>
 
-      </div>
+      </aside>
 
     </>
 
