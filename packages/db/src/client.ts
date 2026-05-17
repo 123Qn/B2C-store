@@ -1,25 +1,34 @@
-import { PrismaClient } from "@prisma/client";
-import { env } from "@repo/env/web";
+import { PrismaClient }
+from "@prisma/client";
+
+import { env }
+from "@repo/env/web";
 
 declare global {
-  var prisma: PrismaClient | undefined;
+
+  var prisma:
+    PrismaClient | undefined;
+
 }
 
-export const createClient = () => {
-  if (globalThis.prisma) {
-    globalThis.prisma.$disconnect();
-    globalThis.prisma = undefined;
-  }
+// REUSE EXISTING CLIENT
+const prisma =
+  globalThis.prisma ||
 
-  const URL = env.DATABASE_URL;
-  const prisma = new PrismaClient({ datasourceUrl: URL });
-  
-  globalThis.prisma = prisma;
-  return prisma;
-};
+  new PrismaClient({
 
+    datasourceUrl:
+      env.DATABASE_URL,
+
+  });
+
+// SAVE TO GLOBAL
+globalThis.prisma =
+  prisma;
+
+// EXPORT CLIENT
 export const client = {
-  get db() {
-    return createClient();
-  },
+
+  db: prisma,
+
 };
