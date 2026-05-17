@@ -3,10 +3,12 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
-import type { Product } from "@prisma/client";
+import type { Product }
+from "@prisma/client";
 
 import type {
   CartItem,
@@ -28,14 +30,44 @@ export function CartProvider({
 }: {
   children: React.ReactNode;
 }) {
+
   const [cart, setCart] =
     useState<CartItem[]>([]);
+
+  // LOAD CART
+  useEffect(() => {
+
+    const savedCart =
+      localStorage.getItem(
+        "cart"
+      );
+
+    if (savedCart) {
+
+      setCart(
+        JSON.parse(savedCart)
+      );
+
+    }
+
+  }, []);
+
+  // SAVE CART
+  useEffect(() => {
+
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(cart)
+    );
+
+  }, [cart]);
 
   // ADD
   function addToCart(
     product: Product,
     selectedSize: string
   ) {
+
     setCart((prev) =>
       addItemToCart(
         prev,
@@ -43,6 +75,7 @@ export function CartProvider({
         selectedSize
       )
     );
+
   }
 
   // REMOVE
@@ -50,6 +83,7 @@ export function CartProvider({
     id: number,
     selectedSize: string
   ) {
+
     setCart((prev) =>
       removeItemFromCart(
         prev,
@@ -57,6 +91,7 @@ export function CartProvider({
         selectedSize
       )
     );
+
   }
 
   // INCREASE
@@ -64,6 +99,7 @@ export function CartProvider({
     id: number,
     selectedSize: string
   ) {
+
     setCart((prev) =>
       increaseItemQuantity(
         prev,
@@ -71,6 +107,7 @@ export function CartProvider({
         selectedSize
       )
     );
+
   }
 
   // DECREASE
@@ -78,6 +115,7 @@ export function CartProvider({
     id: number,
     selectedSize: string
   ) {
+
     setCart((prev) =>
       decreaseItemQuantity(
         prev,
@@ -85,47 +123,75 @@ export function CartProvider({
         selectedSize
       )
     );
+
   }
 
   // CLEAR
   function clearCart() {
+
     setCart([]);
+
+    localStorage.removeItem(
+      "cart"
+    );
+
   }
 
   // TOTAL
-  const totalPrice = cart.reduce(
-    (total, item) =>
-      total +
-      item.price * item.quantity,
-    0
-  );
+  const totalPrice =
+    cart.reduce(
+      (total, item) =>
+
+        total +
+        item.price *
+        item.quantity,
+
+      0
+    );
 
   return (
+
     <CartContext.Provider
       value={{
+
         cart,
+
         addToCart,
+
         removeFromCart,
+
         increaseQuantity,
+
         decreaseQuantity,
+
         clearCart,
+
         totalPrice,
+
       }}
     >
+
       {children}
+
     </CartContext.Provider>
+
   );
+
 }
 
 export function useCart() {
+
   const context =
     useContext(CartContext);
 
   if (!context) {
+
     throw new Error(
       "useCart must be inside CartProvider"
     );
+
   }
 
   return context;
+
 }

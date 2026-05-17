@@ -89,7 +89,7 @@ export function Main({
             className="bg-[#FFF8F3] border border-[#B89B8A] rounded-2xl px-4 py-2 shadow-sm outline-none"
           >
 
-            <option value="All">
+            <option value="Unisex">
               All Gender
             </option>
 

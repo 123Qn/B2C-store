@@ -241,10 +241,10 @@ export function ProductDetail({
                   selectedSize
                 );
 
-                router.push(
-                  "/PaymentSystem/cart"
-                );
-
+              
+ alert(
+    "Cart Added"
+  );
               }}
 
               className="
