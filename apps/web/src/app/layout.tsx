@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import { CartProvider } from "@/components/Cart/CartContext";
 
 import "./globals.css";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,7 +42,7 @@ export default function RootLayout({
         <CartProvider>
           {children}
         </CartProvider>
-
+<SpeedInsights/>
       </body>
 
     </html>
