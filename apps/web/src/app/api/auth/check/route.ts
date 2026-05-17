@@ -1,23 +1,13 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-
-import jwt from "jsonwebtoken";
-
-const JWT_SECRET =
-  process.env.JWT_SECRET || "secret";
+import { checkAuth } from "@/app/utils/auth";
 
 export async function GET() {
 
-  const cookieStore =
-    await cookies();
+  const user: any =
+    await checkAuth();
 
-  const token =
-    cookieStore.get(
-      "auth_token"
-    )?.value;
-
-  // NO TOKEN
-  if (!token) {
+  // NOT LOGIN
+  if (!user) {
 
     return NextResponse.json(
       {
@@ -30,35 +20,12 @@ export async function GET() {
 
   }
 
-  try {
+  return NextResponse.json({
 
-    const decoded =
-      jwt.verify(
-        token,
-        JWT_SECRET
-      );
+    message: "OK",
 
-    return NextResponse.json({
+    user,
 
-      message: "OK",
-
-      user: decoded,
-
-    });
-
-  }
-
-  catch {
-
-    return NextResponse.json(
-      {
-        message: "Invalid token",
-      },
-      {
-        status: 401,
-      }
-    );
-
-  }
+  });
 
 }

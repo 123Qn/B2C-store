@@ -1,47 +1,40 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
-
-import jwt from "jsonwebtoken";
-
 import { client } from "@repo/db/client";
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || "secret";
+import { checkAuth }
+from "@/app/utils/auth";
 
 // GET ORDERS
 export async function GET() {
 
   try {
 
-    const token =
-      (await cookies())
-        .get("auth_token")
-        ?.value;
+    const user: any =
+      await checkAuth();
 
-    if (!token) {
+    // NOT LOGIN
+    if (!user) {
       return NextResponse.json([]);
     }
 
-    // VERIFY JWT
-    const decoded: any =
-      jwt.verify(
-        token,
-        JWT_SECRET
-      );
-
+    // FETCH ORDERS
     const orders =
       await client.db.order.findMany({
 
         where: {
-          userId: decoded.id,
+          userId: user.id,
         },
 
         include: {
+
           items: {
+
             include: {
               product: true,
             },
+
           },
+
         },
 
         orderBy: {
@@ -71,6 +64,7 @@ export async function GET() {
 
 }
 
+
 // CREATE ORDER
 export async function POST(
   req: Request
@@ -78,12 +72,11 @@ export async function POST(
 
   try {
 
-    const token =
-      (await cookies())
-        .get("auth_token")
-        ?.value;
+    const user: any =
+      await checkAuth();
 
-    if (!token) {
+    // NOT LOGIN
+    if (!user) {
 
       return NextResponse.json(
         {
@@ -97,18 +90,12 @@ export async function POST(
 
     }
 
-    // VERIFY JWT
-    const decoded: any =
-      jwt.verify(
-        token,
-        JWT_SECRET
-      );
-
     const {
       cart,
       totalPrice,
     } = await req.json();
 
+    // CREATE ORDER
     const order =
       await client.db.order.create({
 
@@ -117,9 +104,11 @@ export async function POST(
           totalPrice,
 
           user: {
+
             connect: {
-              id: decoded.id,
+              id: user.id,
             },
+
           },
 
           items: {
