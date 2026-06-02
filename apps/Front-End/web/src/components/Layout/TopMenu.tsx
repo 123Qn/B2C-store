@@ -59,7 +59,7 @@ export function TopMenu() {
         p.brand.toLowerCase().includes(search.toLowerCase())
       )
     : [];
-
+console.log("API URL:", process.env.NEXT_PUBLIC_API_URL)
   return (
     <>
       {/* NAVBAR */}

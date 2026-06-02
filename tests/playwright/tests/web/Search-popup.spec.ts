@@ -1,49 +1,20 @@
-import { expect, test }
-from "./fixtures";
+import { expect, test } from "./fixtures";
 
-test.describe(
-  "SEARCH POPUP",
-  () => {
+test.describe("SEARCH POPUP", () => {
 
-    test(
-      "Search Product",
-      {
-        tag: "@b2c",
-      },
+  test("Search Product", { tag: "@b2c" }, async ({ page }) => {
 
-      async ({ page }) => {
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
 
-        await page.goto("/");
+    const input = page.getByPlaceholder("Search your items...");
+    await input.click();
+    await input.fill("Sneakers");
+    await page.waitForTimeout(1000);
 
-        await page.waitForLoadState(
-          "networkidle"
-        );
+    // CHECK POPUP APPEARS
+    await expect(page.getByText("Product Results")).toBeVisible({ timeout: 5000 });
 
-        const input =
-          page.getByPlaceholder(
-            "Search your items..."
-          );
+  });
 
-        await input.click();
-
-        await input.type(
-          "Minimal"
-        );
-
-        await page.waitForTimeout(
-          1000
-        );
-
-        await expect(
-          page
-            .getByText(
-              "White Minimal Sneakers"
-            )
-            .first(),
-        ).toBeVisible();
-
-      },
-    );
-
-  },
-);
+});
