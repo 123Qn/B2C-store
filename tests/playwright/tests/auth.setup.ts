@@ -8,7 +8,7 @@ setup(
     const authFile = ".auth/user.json";
 
     const apiContext = await playwright.request.newContext({
-      baseURL: "http://localhost:3002",  // ← add this
+      baseURL: "http://localhost:3001",  // ← add this
     });
 
     await apiContext.post("/api/auth", {
