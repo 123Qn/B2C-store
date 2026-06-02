@@ -43,10 +43,10 @@ export default function HistoryPage() {
         const token = localStorage.getItem("auth_token");
         if (!token) { router.push("/SessionManagement/login"); return; }
 
-        const authRes = await authFetch("/api/auth/check");
-        if (!authRes.ok) { router.push("/SessionManagement/login"); return; }
+        const checkRes = await authFetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/check`);
+        if (!checkRes.ok) { router.push("/SessionManagement/login"); return; }
 
-        const res = await authFetch("/api/orders");
+        const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`);
         if (!res.ok) { setOrders([]); setLoading(false); return; }
 
         const text = await res.text();

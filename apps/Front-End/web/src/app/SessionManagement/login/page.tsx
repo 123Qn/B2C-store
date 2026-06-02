@@ -13,7 +13,7 @@ export default function LoginPage() {
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     try {
-      const res = await fetch("/api/auth", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

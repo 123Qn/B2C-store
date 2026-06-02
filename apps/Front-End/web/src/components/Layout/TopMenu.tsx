@@ -23,7 +23,7 @@ export function TopMenu() {
     async function checkLogin() {
       const token = localStorage.getItem("auth_token");
       if (!token) { setLoggedIn(false); return; }
-      const res = await fetch("/api/auth/check", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/check`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setLoggedIn(res.ok);
@@ -33,7 +33,7 @@ export function TopMenu() {
 
   useEffect(() => {
     async function loadProducts() {
-      const res = await fetch("/api/products");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`);
       const data = await res.json();
       setProducts(data);
     }
