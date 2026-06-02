@@ -7,19 +7,19 @@ const __dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname, '../../'),
-  async headers() {
-    return [
-      {
-        source: '/api/:path*',
-        headers: [
-          { key: 'Access-Control-Allow-Origin', value: '*' },
-          { key: 'Access-Control-Allow-Methods', value: 'GET,POST,PUT,DELETE,OPTIONS,PATCH' },
-          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
-          { key: 'Access-Control-Allow-Credentials', value: 'true' },
-        ],
-      },
-    ]
-  },
+ async headers() {
+  return [
+    {
+      source: '/api/:path*',
+      headers: [
+        { key: 'Access-Control-Allow-Origin', value: 'https://b2-c-store-web.vercel.app' },
+        { key: 'Access-Control-Allow-Methods', value: 'GET,POST,PUT,PATCH,DELETE,OPTIONS' },
+        { key: 'Access-Control-Allow-Headers', value: 'Content-Type, Authorization' },
+        { key: 'Access-Control-Allow-Credentials', value: 'true' },
+      ],
+    },
+  ]
+},
 }
 
 export default nextConfig
