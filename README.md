@@ -298,3 +298,216 @@ GitHub Actions runs on every push to `Main` branch:
 - Run Playwright E2E tests
 
 ---
+
+# 📋 API Document — B2C Store
+
+---
+
+## Description
+This is an API for a B2C fashion store. It handles authentication, products, and orders.
+
+## Base URL
+The base URL for all API requests is:
+- **Dev:** `http://localhost:3000`
+- **Prod:** `https://b2-c-store-back-end.vercel.app`
+
+---
+
+## API Endpoints
+
+---
+
+### `[POST]` /api/auth — Login
+
+**Request Body:**
+- `email` (string)(required) — e.g., `"buyer@gmail.com"`
+- `password` (string)(required) — e.g., `"123"`
+
+**Response 200:**
+- `message` (string) — `"Login successful"`
+- `token` (string) — JWT token
+- `user` (object) — `{ id, email, role }`
+
+**Response 401:**
+- `message` (string) — `"Invalid email or password"`
+
+---
+
+### `[DELETE]` /api/auth — Logout
+
+**Response 200:**
+- `message` (string) — `"Logout successful"`
+
+---
+
+### `[GET]` /api/auth/check — Verify Token
+
+**Headers:**
+- `Authorization` (string)(required) — `Bearer <token>`
+
+**Response 200:**
+- `message` (string) — `"OK"`
+- `user` (object) — `{ id, role, iat, exp }`
+
+**Response 401:**
+- `message` (string) — `"Unauthorized"`
+
+---
+
+### `[POST]` /api/auth/register — Register
+
+**Request Body:**
+- `username` (string)(required) — e.g., `"john123"`
+- `email` (string)(required) — e.g., `"john@mail.com"`
+- `password` (string)(required) — e.g., `"123"`
+
+**Response 201:**
+- `message` (string) — `"User created successfully"`
+- `user` (object) — `{ id, username, email, role }`
+
+**Response 400:**
+- `error` (string) — `"Missing required fields"`
+
+**Response 409:**
+- `error` (string) — `"Email already exists"`
+
+---
+
+### `[GET]` /api/products — Get Active Products
+
+**Response 200:**
+- `id` (number) — e.g., `1`
+- `urlId` (string) — e.g., `"air-max-90"`
+- `name` (string) — e.g., `"Air Max 90"`
+- `brand` (string) — e.g., `"Nike"`
+- `category` (string) — e.g., `"Sneakers"`
+- `gender` (string) — e.g., `"Unisex"`
+- `price` (number) — e.g., `199`
+- `stock` (number) — e.g., `50`
+- `sold` (number) — e.g., `10`
+- `size` (array) — e.g., `["S", "M", "L", "XL"]`
+- `imageUrl` (string) — e.g., `"https://..."`
+- `active` (boolean) — `true`
+- `createdAt` (string) — e.g., `"2024-01-01T00:00:00.000Z"`
+
+---
+
+### `[GET]` /api/products/all — Get All Products (Admin)
+
+**Response 200:** Same as above but includes inactive products
+
+---
+
+### `[GET]` /api/products/[id] — Get Product by URL ID
+
+**Example:** `GET /api/products/air-max-90`
+
+**Response 200:** Single product object
+
+**Response 404:**
+- `message` (string) — `"Not found"`
+
+---
+
+### `[POST]` /api/products — Create Product (Admin)
+
+**Request Body:**
+- `name` (string)(required)
+- `brand` (string)(required)
+- `category` (string)(required)
+- `gender` (string)(required) — `"Unisex"` `"Men"` `"Women"` `"Teen"` `"Kids"`
+- `description` (string)(required)
+- `price` (number)(required)
+- `stock` (number)(required)
+- `size` (array)(required) — e.g., `["S", "M", "L"]`
+- `imageUrl` (string)(required)
+
+**Response 201:**
+- `message` (string) — `"Product created"`
+- `product` (object) — created product
+
+**Response 500:**
+- `message` (string) — `"Server error"`
+
+---
+
+### `[PATCH]` /api/products/[id] — Toggle Product Status (Admin)
+
+**Example:** `PATCH /api/products/1`
+
+**Request Body:**
+- `active` (boolean)(required) — `true` or `false`
+
+**Response 200:**
+- `message` (string) — `"Updated"`
+- `product` (object) — updated product
+
+---
+
+### `[GET]` /api/orders — Get User Orders
+
+**Headers:**
+- `Authorization` (string)(required) — `Bearer <token>`
+
+**Response 200:**
+- `id` (number)
+- `totalPrice` (number)
+- `status` (string) — `"PENDING"`
+- `createdAt` (string)
+- `items` (array) — `[{ id, quantity, size, price, product }]`
+
+**Response 401:**
+- `message` (string) — `"Unauthorized"`
+
+---
+
+### `[POST]` /api/orders — Create Order
+
+**Headers:**
+- `Authorization` (string)(required) — `Bearer <token>`
+
+**Request Body:**
+- `cart` (array)(required) — `[{ id, quantity, selectedSize, price }]`
+- `totalPrice` (number)(required)
+
+**Response 200:**
+- `message` (string) — `"Order created"`
+- `order` (object) — `{ id, totalPrice, status }`
+
+**Response 401:**
+- `message` (string) — `"Unauthorized"`
+
+---
+
+### `[GET]` /api/orders/all — Get All Orders (Admin)
+
+**Response 200:**
+- `id` (number)
+- `totalPrice` (number)
+- `status` (string)
+- `createdAt` (string)
+- `user` (object) — `{ id, email }`
+- `items` (array)
+
+---
+
+## Base Response
+- `message` (string)(required) — `"ok"` or description of error e.g., `"Unauthorized"`, `"Server error occurred"`
+- `data` (object)(optional) — Response data, `null` on failure
+
+---
+
+## Error Codes
+- `200` — Success
+- `201` — Created
+- `400` — Bad Request — missing or invalid fields
+- `401` — Unauthorized — invalid or missing token
+- `404` — Not Found
+- `409` — Conflict — email already exists
+- `500` — Internal Server Error
+
+---
+
+## Default Test Accounts
+- **Admin:** `admin@qfashion.com` / `123`
+- **Buyer:** `buyer@gmail.com` / `123`
