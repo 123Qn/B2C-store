@@ -79,12 +79,7 @@ test.describe(
           )
           .fill("123");
 
-        await page
-          .getByRole("button", {
-            name: "Login",
-          })
-          .click();
-
+       await page.getByTestId("login-btn").click();
         // WAIT LOGIN
         await page.waitForTimeout(
           3000

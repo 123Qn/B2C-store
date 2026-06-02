@@ -60,7 +60,13 @@ export default function LoginPage() {
           <Link href="/SessionManagement/register" className={s.loginRegisterLink}>
             Don't have an account? Register
           </Link>
-          <button type="submit" className={s.loginBtn}>Login</button>
+          <button
+            type="submit"
+            data-testid="login-btn"
+            className={s.loginBtn}
+          >
+            Sign In
+          </button>
         </div>
       </form>
     </main>
