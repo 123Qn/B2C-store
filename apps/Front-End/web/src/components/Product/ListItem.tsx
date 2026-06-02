@@ -1,97 +1,34 @@
 "use client";
 
 import type { Product } from "@prisma/client";
-
 import Link from "next/link";
+import { productStyles as s } from "@/styles/product";
 
-export function ProductListItem({
-  product,
-}: {
-  product: Product;
-}) {
-
-  const sizes =
-    typeof product.size === "string"
-      ? (product.size as string)
-          .split(",")
-          .map((s) => s.trim())
-      : [];
-
-  const imageSrc =
-    product.imageUrl?.trim()
-      ? product.imageUrl
-      : "/asset/image/wsulo.png";
+export function ProductListItem({ product }: { product: Product }) {
+  const sizes = typeof product.size === "string"
+    ? (product.size as string).split(",").map((s) => s.trim())
+    : [];
+  const imageSrc = product.imageUrl?.trim() ? product.imageUrl : "/asset/image/wsulo.png";
 
   return (
-
-    <article
-      className="rounded-3xl overflow-hidden bg-white shadow-lg hover:-translate-y-1 hover:shadow-2xl transition duration-300"
-    >
-
-      {/* Product Image */}
+    <article className={s.itemCard}>
       <Link href={`/products/${product.urlId}`}>
-
-        <img
-          src={imageSrc}
-          alt={product.name || "Product"}
-          className="w-full h-80 object-cover hover:scale-105 transition duration-300"
-        />
+        <img src={imageSrc} alt={product.name || "Product"} className={s.itemImage} />
       </Link>
-
-      {/* Product Content */}
-      <div className="p-5">
-
-        {/* Category */}
-        <p className="text-sm text-gray-500 mb-2">
-          {product.category}
-        </p>
-
-        {/* Product Name */}
-        <Link
-          href={`/products/${product.urlId}`}
-          className="text-lg font-semibold text-gray-900 hover:text-black transition"
-        >
-          {product.name}
-        </Link>
-
-        {/* Sizes */}
-        <div className="flex items-center mt-2 space-x-2">
-
-          {sizes.map((size: string) => (
-
-            <span
-              key={size}
-              className="px-2 py-1 border border-gray-300 rounded text-sm text-gray-600"
-            >
-              {size}
-            </span>
-
+      <div className={s.itemContent}>
+        <p className={s.itemCategory}>{product.category}</p>
+        <Link href={`/products/${product.urlId}`} className={s.itemName}>{product.name}</Link>
+        <div className={s.itemSizes}>
+          {sizes.map((size) => (
+            <span key={size} className={s.itemSize}>{size}</span>
           ))}
-
         </div>
-
-        {/* Description */}
-        <p className="text-gray-500 text-sm mt-2 line-clamp-2">
-          {product.description}
-        </p>
-
-        {/* Price + Sold */}
-        <div className="flex items-center justify-between mt-5">
-
-          <span className="text-2xl font-bold text-black">
-            ${product.price}
-          </span>
-
-          <span className="text-sm text-gray-500">
-            {product.sold} sold
-          </span>
-
+        <p className={s.itemDesc}>{product.description}</p>
+        <div className={s.itemFooter}>
+          <span className={s.itemPrice}>${product.price}</span>
+          <span className={s.itemSold}>{product.sold} sold</span>
         </div>
-
       </div>
-
     </article>
-
   );
-
 }
