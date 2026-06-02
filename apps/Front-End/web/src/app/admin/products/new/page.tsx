@@ -25,9 +25,9 @@ export default function NewProductPage() {
         .replace(/\s+/g, "-")
         .replace(/[^a-z0-9-]/g, "");
 
-      const res = await fetch("http://localhost:3000/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
           urlId,

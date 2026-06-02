@@ -8,7 +8,7 @@ export async function GET(
   try {
     const { id } = await context.params;
 
-    // TRY BY urlId FIRST
+    // TRY BY urlId 
     const product = await client.db.product.findUnique({
       where: { urlId: id },
     });

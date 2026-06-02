@@ -8,11 +8,11 @@ export function AdminProductList({ products: initialProducts }: { products: Prod
 
   async function toggleActive(id: number, current: boolean) {
     try {
-      const res = await fetch(`http://localhost:3000/api/products/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ active: !current }),
-      });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`, {
+  method: "PATCH",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ active: !current }),
+});
 
       if (!res.ok) { alert("Failed to update"); return; }
 
