@@ -1,24 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@repo/db/client";
-
 export async function POST(
   request: NextRequest
 ) {
   try {
     const body = await request.json();
-
-    const {
-      username,
-      email,
-      password,
-    } = body;
-
+    const {username,email,password,} = body;
     // VALIDATION
-    if (
-      !username ||
-      !email ||
-      !password
-    ) {
+    if (!username ||!email ||!password) {
       return NextResponse.json(
         {
           error:
@@ -29,15 +18,10 @@ export async function POST(
         }
       );
     }
-
     // CHECK EXISTING USER
     const existingUser =
       await client.db.user.findUnique({
-        where: {
-          email,
-        },
-      });
-
+        where: {email,},});
     if (existingUser) {
       return NextResponse.json(
         {
