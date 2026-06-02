@@ -19,7 +19,7 @@ export default function PaymentPage() {
     async function loadLatestOrder() {
       try {
         const token = localStorage.getItem("auth_token");
-        const res = await fetch("/api/orders", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

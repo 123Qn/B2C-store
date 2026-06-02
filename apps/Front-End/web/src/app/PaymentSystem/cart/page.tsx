@@ -22,7 +22,7 @@ export default function CartPage() {
   async function handleCheckout() {
     try {
       const token = localStorage.getItem("auth_token");
-      const res = await fetch("/api/orders", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
