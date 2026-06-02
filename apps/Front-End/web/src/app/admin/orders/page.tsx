@@ -1,7 +1,9 @@
 import Link from "next/link";
 
 async function getOrders() {
-  const res = await fetch("http://localhost:3000/api/orders/all", { cache: "no-store" });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/all`, {
+    cache: "no-store",
+  });
   return res.json();
 }
 
