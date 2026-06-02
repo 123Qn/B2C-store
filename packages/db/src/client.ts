@@ -14,18 +14,12 @@ declare global {
 // REUSE EXISTING CLIENT
 const prisma =
   globalThis.prisma ||
-
   new PrismaClient({
-
-    datasourceUrl:
-      env.DATABASE_URL,
-
+    datasourceUrl:env.DATABASE_URL,
   });
 
 // SAVE TO GLOBAL
-globalThis.prisma =
-  prisma;
-
+globalThis.prisma =prisma; 
 // EXPORT CLIENT
 export const client = {
 
