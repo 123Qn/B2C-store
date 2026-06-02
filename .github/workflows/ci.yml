@@ -10,6 +10,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -25,11 +29,25 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate Prisma Client
+        run: pnpm --filter @repo/db db:generate
+
+      - name: Build apps
+        run: |
+          pnpm --filter @repo/web build
+          pnpm --filter @repo/api build
+
+      - name: Start BE
+        run: pnpm --filter @repo/api start &
+
+      - name: Start FE
+        run: pnpm --filter @repo/web start &
+
+      - name: Wait for servers
+        run: sleep 10
+
       - name: Install Playwright
         run: cd tests/playwright && pnpm playwright install --with-deps chromium
 
       - name: Run tests
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: cd tests/playwright && pnpm playwright test --grep "@b2c|@cart|@admin"
