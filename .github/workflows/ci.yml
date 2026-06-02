@@ -50,4 +50,7 @@ jobs:
         run: cd tests/playwright && pnpm playwright install --with-deps chromium
 
       - name: Run tests
+        env:
+          BASE_URL: https://b2-c-store-web.vercel.app
+          API_URL: https://b2-c-store-back-end.vercel.app
         run: cd tests/playwright && pnpm playwright test --grep "@b2c|@cart|@admin"

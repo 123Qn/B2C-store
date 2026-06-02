@@ -9,6 +9,8 @@ if (!fs.existsSync(authDir)) {
   console.log(".auth directory created");
 }
 
+const BASE_URL = process.env.BASE_URL || "http://localhost:3001";
+
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: false,
@@ -18,7 +20,7 @@ export default defineConfig({
   reporter: [["list"]],
 
   use: {
-    baseURL: "http://localhost:3001",
+    baseURL: BASE_URL,
     trace: "on-first-retry",
     testIdAttribute: "data-testid",
     screenshot: "only-on-failure",
@@ -31,11 +33,9 @@ export default defineConfig({
       testDir: "./tests/web",
       use: {
         ...devices["Desktop Chrome"],
-        baseURL: "http://localhost:3001",
+        baseURL: BASE_URL,
       },
       dependencies: ["setup"],
     },
   ],
-
-  // webServer: [...] ← commented out, start servers manually
 });
