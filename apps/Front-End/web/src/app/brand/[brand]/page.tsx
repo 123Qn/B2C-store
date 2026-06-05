@@ -6,21 +6,27 @@ export default async function BrandPage({
 }: {
   params: Promise<{ brand: string }>;
 }) {
+
   const { brand } = await params;
 
-  const filteredProducts = await client.db.product.findMany({
-    where: {
-      brand: {
-        equals: brand,
-        mode: "insensitive",
+  const decodedBrand =
+    decodeURIComponent(brand);
+
+  const filteredProducts =
+    await client.db.product.findMany({
+      where: {
+        brand: {
+          equals: decodedBrand,
+          mode: "insensitive",
+        },
       },
-    },
-  });
+    });
 
   return (
     <FilteredProducts
-      title={brand}
+      title={decodedBrand}
       products={filteredProducts}
     />
   );
+
 }

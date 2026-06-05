@@ -7,6 +7,8 @@ export async function GET(request: NextRequest) {
   try {
     const user: any = await checkAuth(request);
 
+console.log("USER FROM TOKEN:", user);
+console.log("USER ID:", user?.id, typeof user?.id);
     if (!user) {
       return NextResponse.json([]);
     }
