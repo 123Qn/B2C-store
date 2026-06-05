@@ -37,7 +37,15 @@ export default function NewProductPage() {
         }),
       });
 
-      if (!res.ok) { alert("Failed to create product"); return; }
+      if (!res.ok) {
+  const data = await res.json();
+  if (res.status === 409) {
+    alert("A product with this name already exists. Please use a different name.");
+  } else {
+    alert(data.message || "Failed to create product");
+  }
+  return;
+}
       alert("Product created!");
       router.push("/admin/products");
     } catch (error) {
