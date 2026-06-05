@@ -34,33 +34,117 @@ export function CartProvider({
   const [cart, setCart] =
     useState<CartItem[]>([]);
 
+  const [isLoggedIn, setIsLoggedIn] =
+    useState(false);
+
+  const [status, setStatus] =
+    useState<"loading" | "done">("loading");
+
+  // CHECK AUTH
+  useEffect(() => {
+
+    const token =
+      localStorage.getItem("auth_token");
+
+    if (!token) {
+      setStatus("done");
+      return;
+    }
+
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/check`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((res) =>
+        res.ok ? res.json() : null
+      )
+      .then((data) => {
+        setIsLoggedIn(!!data?.user);
+      })
+      .catch(() => {
+        setIsLoggedIn(false);
+      })
+      .finally(() => {
+        setStatus("done");
+      });
+
+  }, []);
+
   // LOAD CART
   useEffect(() => {
 
-    const savedCart =
-      localStorage.getItem(
-        "cart"
-      );
+    if (status === "loading") return;
 
-    if (savedCart) {
+    if (isLoggedIn) {
 
-      setCart(
-        JSON.parse(savedCart)
-      );
+      // TODO: fetch cart from DB
+      // const token = localStorage.getItem("auth_token");
+      // const dbCart = await fetchCartFromDB(token)
+      // setCart(dbCart)
+
+      // MERGE GUEST CART
+      const guestCart =
+        localStorage.getItem("cart");
+
+      if (guestCart) {
+
+        const parsed: CartItem[] =
+          JSON.parse(guestCart);
+
+        if (parsed.length > 0) {
+
+          setCart((prev) =>
+            mergeGuestCart(prev, parsed)
+          );
+
+          localStorage.removeItem("cart");
+
+        }
+
+      }
+
+    } else {
+
+      const savedCart =
+        localStorage.getItem("cart");
+
+      if (savedCart) {
+
+        setCart(
+          JSON.parse(savedCart)
+        );
+
+      }
 
     }
 
-  }, []);
+  }, [status, isLoggedIn]);
 
   // SAVE CART
   useEffect(() => {
 
-    localStorage.setItem(
-      "cart",
-      JSON.stringify(cart)
-    );
+    if (status === "loading") return;
 
-  }, [cart]);
+    if (isLoggedIn) {
+
+      // TODO: sync cart to DB
+      // const token = localStorage.getItem("auth_token");
+      // syncCartToDB(token, cart)
+
+    } else {
+
+      localStorage.setItem(
+        "cart",
+        JSON.stringify(cart)
+      );
+
+    }
+
+  }, [cart, isLoggedIn, status]);
 
   // ADD
   function addToCart(
@@ -131,9 +215,7 @@ export function CartProvider({
 
     setCart([]);
 
-    localStorage.removeItem(
-      "cart"
-    );
+    localStorage.removeItem("cart");
 
   }
 
@@ -168,6 +250,8 @@ export function CartProvider({
 
         totalPrice,
 
+        isLoggedIn,
+
       }}
     >
 
@@ -176,6 +260,37 @@ export function CartProvider({
     </CartContext.Provider>
 
   );
+
+}
+
+function mergeGuestCart(
+  userCart: CartItem[],
+  guestCart: CartItem[]
+): CartItem[] {
+
+  const merged = [...userCart];
+
+  for (const guestItem of guestCart) {
+
+    const existing = merged.find(
+      (i) =>
+        i.id === guestItem.id &&
+        i.selectedSize === guestItem.selectedSize
+    );
+
+    if (existing) {
+
+      existing.quantity += guestItem.quantity;
+
+    } else {
+
+      merged.push(guestItem);
+
+    }
+
+  }
+
+  return merged;
 
 }
 

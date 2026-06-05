@@ -37,5 +37,5 @@ export type CartContextType = {
   clearCart: () => void;
 
   totalPrice: number;
-
+isLoggedIn: boolean;
 };
