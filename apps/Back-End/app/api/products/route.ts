@@ -34,10 +34,25 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ message: "Product created", product }, { status: 201 });
+    return NextResponse.json(
+      { message: "Product created", product },
+      { status: 201 }
+    );
 
-  } catch (error) {
+  } catch (error: any) {
+
+    if (error.code === "P2002") {
+      return NextResponse.json(
+        { message: "Product with this name already exists" },
+        { status: 409 }
+      );
+    }
+
     console.log(error);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Server error" },
+      { status: 500 }
+    );
+
   }
 }
