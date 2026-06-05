@@ -38,9 +38,10 @@ export function Main({ className, products }: MainProps) {
             onChange={(e) => setGender(e.target.value)}
             className={s.filterSelect}
           >
-            <option value="Unisex">All Gender</option>
+            <option value="All">All Gender</option>
             <option value="Men">Men</option>
             <option value="Women">Women</option>
+            <option value="Unisex">Unisex</option>
             <option value="Teen">Teen</option>
             <option value="Kids">Kids</option>
           </select>
