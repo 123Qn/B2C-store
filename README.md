@@ -1,5 +1,6 @@
 # 🛍️ B2C Store Application (Fashion Shop)
-# Visit Store at https://qstore.ink/(BrokenNow) https://b2-c-store-web.vercel.app/
+# Visit Store at
+https://b2-c-store-web.vercel.app/
 
 # ✨ Features
 
