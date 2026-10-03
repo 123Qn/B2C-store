@@ -1,6 +1,8 @@
 // One data API for the whole app.
 //
 // - DATABASE_URL set   -> Postgres via Prisma (data is permanent)
+//   If Postgres can't be reached, the server switches to the JSON store
+//   automatically. STORE=json forces the JSON store.
 // - DATABASE_URL unset -> JSON store: starts from the seed data in data.ts and
 //   saves changes to a JSON file (STORE_FILE, default: <tmpdir>/b2c-store.json).
 //   On Vercel that file is temporary, so new accounts / orders / admin edits
@@ -364,6 +366,53 @@ const jsonStore: Store = {
   },
 };
 
-export const store: Store = hasDatabase ? prismaStore : jsonStore;
+// ─────────────────────────────────────────────────────────────
+// PICK BACKEND
+// ─────────────────────────────────────────────────────────────
 
-export const storeMode: "postgres" | "json" = hasDatabase ? "postgres" : "json";
+// STORE=json forces the JSON store even when DATABASE_URL is set
+const forceJson = process.env.STORE?.toLowerCase() === "json";
+
+let databaseDown = false;
+
+// Prisma throws PrismaClientInitializationError when it can't connect
+// (server unreachable, expired, wrong credentials, ...)
+function isConnectionError(error: unknown) {
+  return (error as { name?: string })?.name === "PrismaClientInitializationError";
+}
+
+export function getStoreMode(): "postgres" | "json" {
+  return hasDatabase && !forceJson && !databaseDown ? "postgres" : "json";
+}
+
+// Runs a Postgres call; if the database can't be reached, logs once, switches this
+// server instance to the JSON store and retries the call there.
+function withFallback<T extends Record<string, (...args: never[]) => Promise<unknown>>>(
+  primary: T,
+  fallback: T
+): T {
+  const wrapped = {} as Record<string, unknown>;
+  for (const key of Object.keys(primary)) {
+    wrapped[key] = async (...args: never[]) => {
+      if (getStoreMode() === "json") return fallback[key]!(...args);
+      try {
+        return await primary[key]!(...args);
+      } catch (error) {
+        if (!isConnectionError(error)) throw error;
+        if (!databaseDown) {
+          console.error("[store] database unreachable — falling back to the JSON store", error);
+          databaseDown = true;
+        }
+        return fallback[key]!(...args);
+      }
+    };
+  }
+  return wrapped as T;
+}
+
+export const store: Store = {
+  products: withFallback(prismaStore.products, jsonStore.products),
+  users: withFallback(prismaStore.users, jsonStore.users),
+  orders: withFallback(prismaStore.orders, jsonStore.orders),
+  reset: withFallback({ reset: prismaStore.reset }, { reset: jsonStore.reset }).reset,
+};

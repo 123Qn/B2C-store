@@ -44,7 +44,7 @@ https://b2-c-store-web.vercel.app/
 
 - Data storage with automatic fallback:
   - **Postgres** (via Prisma) when `DATABASE_URL` is set — data is permanent
-  - **JSON store** when `DATABASE_URL` is not set — starts from the seed data in `packages/db/src/data.ts`; new accounts, orders and admin edits are temporary (they reset when the server restarts)
+  - **JSON store** when `DATABASE_URL` is not set, when the database can't be reached (automatic fallback), or when `STORE=json` — starts from the seed data in `packages/db/src/data.ts`; new accounts, orders and admin edits are temporary (they reset when the server restarts)
 
 - Authentication with JWT
 
