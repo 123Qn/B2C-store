@@ -1,37 +1,29 @@
 export const topMenuStyles = {
 
   // NAVBAR
-  navbar: "bg-[#D8C6C0] px-4 md:px-8 py-5",
-  navRow: "flex items-center justify-between gap-4 flex-wrap",
+  navbar: "sticky top-0 z-40 border-b border-stone-200/80 bg-cream/85 backdrop-blur-md",
+  navRow: "mx-auto flex max-w-screen-2xl items-center gap-3 px-4 py-3 md:gap-6 md:px-8",
 
   // LOGO
-  logoLink: "flex items-center gap-3",
-  logoImg: "rounded-full shadow-lg border-2 border-white",
-  logoText: "text-2xl md:text-4xl text-[#F7F2EF] font-semibold",
+  logoLink: "flex shrink-0 items-center gap-2.5",
+  logoImg: "h-9 w-9 rounded-full ring-1 ring-stone-200 md:h-10 md:w-10",
+  logoText: "hidden text-xl font-semibold tracking-tight text-ink sm:block md:text-2xl",
 
   // RIGHT SIDE
-  navRight: "flex items-center gap-3 md:gap-5",
+  navRight: "ml-auto flex shrink-0 items-center gap-1 md:gap-2",
 
   // AUTH BUTTONS
-  logoutBtn: "bg-[#8B6B61] text-white px-3 md:px-4 py-2 rounded-full hover:bg-gray-800 transition",
-  loginBtn: "bg-white text-black px-3 md:px-4 py-2 rounded-full hover:bg-gray-200 transition",
+  logoutBtn: "inline-flex h-10 items-center gap-1.5 rounded-full px-2.5 text-sm font-medium text-stone-600 transition hover:bg-stone-100 hover:text-ink sm:px-3",
+  loginBtn: "inline-flex items-center rounded-full bg-ink px-4 py-2 text-sm font-medium text-white transition hover:bg-stone-700",
 
   // NAV BUTTONS
-  navBtn: "text-white text-2xl md:text-3xl hover:text-gray-300 transition",
-  cartBtn: "relative text-white text-2xl md:text-3xl hover:text-gray-300 transition",
-  cartBadge: "absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-xs flex items-center justify-center text-white",
+  navBtn: "relative inline-flex h-10 w-10 items-center justify-center rounded-full text-stone-700 transition hover:bg-stone-100 hover:text-ink",
+  navIcon: "h-6 w-6",
+  cartBadge: "absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-semibold text-white",
 
   // SEARCH
-  searchWrapper: "relative mt-5 w-full lg:max-w-[500px] lg:mx-auto",
-  searchInput: "w-full rounded-full bg-[#F7F2EF] px-5 py-3 pl-12 text-black shadow-lg outline-none focus:ring-2 focus:ring-[#d192bd] transition",
-  searchIcon: "absolute left-4 top-1/2 -translate-y-1/2 text-gray-400",
-
-  // HERO
-  hero: "relative w-full h-[200px] md:h-[300px] overflow-hidden",
-  heroImg: "object-cover",
-  heroOverlay: "absolute inset-0 bg-black/50",
-  heroContent: "absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4",
-  heroTitle: "text-3xl md:text-5xl font-black uppercase tracking-[0.2em] drop-shadow-xl",
-  heroSubtitle: "mt-3 text-xs md:text-base tracking-widest uppercase text-gray-200",
-  heroText: "text-[10px] md:text-sm text-gray-300 mt-2",
+  searchWrapper: "relative flex-1 md:max-w-xl md:mx-auto",
+  searchInput: "w-full rounded-full border border-stone-200 bg-white py-2.5 pl-11 pr-10 text-sm text-ink placeholder:text-stone-400 shadow-sm outline-none transition focus:border-stone-400 focus:ring-4 focus:ring-stone-200/60",
+  searchIcon: "pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-stone-400",
+  searchClear: "absolute right-2 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-stone-400 transition hover:bg-stone-100 hover:text-stone-700",
 }

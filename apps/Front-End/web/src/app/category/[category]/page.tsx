@@ -1,5 +1,6 @@
 import { client } from "@repo/db/client";
 import { FilteredProducts } from "@/components/Product/FilteredProducts";
+import { safeDecode } from "@/lib/format";
 
 export default async function CategoryPage({
   params,
@@ -8,18 +9,23 @@ export default async function CategoryPage({
 }) {
   const { category } = await params;
 
+  const decodedCategory = safeDecode(category);
+
   const filteredProducts = await client.db.product.findMany({
     where: {
+      active: true,
       category: {
-        equals: category,
+        equals: decodedCategory,
         mode: "insensitive",
       },
     },
+    orderBy: { createdAt: "desc" },
   });
 
   return (
     <FilteredProducts
-      title={category}
+      eyebrow="Category"
+      title={decodedCategory}
       products={filteredProducts}
     />
   );

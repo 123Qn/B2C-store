@@ -1,41 +1,36 @@
 export const authStyles = {
 
-  // LOGIN PAGE
-  loginPage: "min-h-screen flex items-center justify-center bg-[#E9B63B] px-4",
-  loginForm: "bg-white w-full max-w-md p-10 rounded-3xl shadow-xl border",
-  loginHeader: "mb-8",
-  loginTitle: "text-3xl font-bold",
-  loginSubtitle: "text-gray-500 mt-2",
-  loginFields: "flex flex-col gap-4",
-  loginInput: "border rounded-xl w-full p-3 outline-none focus:ring-2 focus:ring-black",
-  loginRegisterLink: "text-black hover:underline text-sm",
-  loginBtn: "bg-black text-white w-full p-3 rounded-xl font-semibold hover:opacity-90 transition",
+  // SHARED SHELL
+  shell: "min-h-screen bg-cream text-ink lg:grid lg:grid-cols-2",
+  imagePanel: "relative hidden overflow-hidden lg:block",
+  imageOverlay: "absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10",
+  imageContent: "absolute inset-x-0 bottom-0 p-12 text-white",
+  imageTitle: "text-4xl font-semibold leading-tight",
+  imageDesc: "mt-4 max-w-md text-white/80",
+  imageFeatures: "mt-8 flex flex-wrap gap-2",
+  imageFeature: "rounded-full bg-white/15 px-4 py-2 text-sm backdrop-blur",
+  formPanel: "flex min-h-screen flex-col px-6 py-8 sm:px-12",
+  brand: "inline-flex items-center gap-2 text-lg font-semibold tracking-tight",
+  formWrapper: "m-auto w-full max-w-sm py-10",
 
-  // REGISTER PAGE
-  registerPage: "min-h-screen bg-[#FFF8F3] flex items-center justify-center px-4 py-10",
-  registerCard: "w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid lg:grid-cols-2",
+  // HEADER
+  header: "mb-8",
+  title: "text-3xl font-semibold tracking-tight",
+  subtitle: "mt-2 text-stone-500",
 
-  // LEFT PANEL
-  leftPanel: "hidden lg:flex flex-col justify-center bg-[#E9B63B] p-12 text-black",
-  leftTitle: "text-5xl font-bold leading-tight",
-  leftDesc: "mt-6 text-lg text-black/80 leading-relaxed",
-  leftFeatures: "mt-10 flex flex-col gap-4",
-  leftFeature: "bg-white/20 rounded-2xl p-4 backdrop-blur-sm",
-
-  // RIGHT PANEL
-  rightPanel: "p-8 sm:p-10 lg:p-12",
-  rightHeader: "mb-8",
-  rightTitle: "text-3xl font-bold text-black",
-  rightSubtitle: "text-gray-500 mt-2",
-  registerForm: "flex flex-col gap-5",
-
-  // FORM FIELDS
+  // FORM
+  form: "flex flex-col gap-4",
   fieldWrapper: "flex flex-col",
-  label: "text-sm font-medium text-gray-700 mb-2 block",
-  input: "border border-gray-300 rounded-2xl w-full p-4 outline-none focus:ring-2 focus:ring-black transition",
-  submitBtn: "bg-black text-white w-full p-4 rounded-2xl font-semibold text-lg hover:opacity-90 transition mt-2",
+  label: "mb-1.5 text-sm font-medium text-stone-700",
+  input: "w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-stone-400 focus:border-stone-500 focus:ring-4 focus:ring-stone-200/60",
+  hint: "mt-1.5 text-xs text-stone-400",
+  submitBtn: "mt-2 inline-flex w-full items-center justify-center rounded-full bg-ink py-3.5 text-sm font-semibold text-white transition hover:bg-stone-700 disabled:cursor-wait disabled:opacity-70",
 
-  // LOGIN LINK
-  loginLinkWrapper: "mt-8 text-center text-gray-600",
-  loginLink: "font-semibold text-black hover:underline",
+  // MESSAGES
+  error: "rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-200",
+  success: "rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700 ring-1 ring-emerald-200",
+
+  // FOOTER LINK
+  switchText: "mt-8 text-center text-sm text-stone-500",
+  switchLink: "font-semibold text-ink hover:underline",
 }

@@ -5,12 +5,12 @@
 @config "../../tailwind.config.ts";
 
 :root {
-  --background: #E9D7C3;
-  --foreground: #0a0a0a;
-  --text: theme("colors.gray.900");
-  --textHover: theme("colors.gray.700");
-  --text-secondary: theme("colors.gray.600");
-  --text-secondaryHover: theme("colors.gray.400");
+  --background: #faf7f2;
+  --foreground: #1c1917;
+  --text: theme("colors.stone.900");
+  --textHover: theme("colors.stone.700");
+  --text-secondary: theme("colors.stone.500");
+  --text-secondaryHover: theme("colors.stone.400");
   --wsu: #a31631;
   --wsu-light: #853846;
 }
@@ -37,8 +37,37 @@ html {
   --color-secondaryHover: var(--text-secondaryHover);
   --color-wsu: var(--wsu);
   --color-wsu-light: var(--wsu-light);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* STORE PALETTE */
+@theme {
+  --color-cream: #faf7f2;
+  --color-sand: #efe7dc;
+  --color-ink: #1c1917;
+  --color-accent: #9a4a32;
+  --color-accent-soft: #f4e4dc;
 }
 
 body {
   min-height: 100vh;
+  background: var(--background);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 200ms ease-out;
 }

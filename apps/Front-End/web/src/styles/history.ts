@@ -1,41 +1,62 @@
 export const historyStyles = {
 
   // LOADING
-  loading: "flex items-center justify-center h-[70vh] text-2xl font-semibold",
+  loading: "flex h-[70vh] items-center justify-center bg-cream text-stone-400",
 
   // PAGE
-  page: "max-w-7xl mx-auto px-6 py-10",
-  backLink: "text-sm text-gray-500 hover:text-gray-700 transition",
+  page: "min-h-screen bg-cream text-ink",
+  inner: "mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:py-12",
+  backLink: "inline-flex items-center gap-1.5 text-sm text-stone-500 transition hover:text-ink",
 
   // HEADER
-  header: "mb-8",
-  title: "text-4xl font-bold",
-  subtitle: "text-gray-500 mt-2",
+  header: "mb-8 mt-4 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between",
+  title: "text-3xl font-semibold tracking-tight sm:text-4xl",
+  subtitle: "mt-1 text-sm text-stone-500",
+  stats: "text-sm text-stone-500",
 
   // EMPTY
-  empty: "border rounded-2xl p-14 text-center bg-white shadow-sm",
-  emptyIcon: "text-5xl mb-4",
-  emptyTitle: "text-2xl font-bold mb-2",
-  emptyDesc: "text-gray-500",
+  empty: "flex flex-col items-center rounded-3xl border border-dashed border-stone-300 bg-white px-6 py-20 text-center",
+  emptyIcon: "mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-sand text-stone-600",
+  emptyTitle: "mb-2 text-2xl font-semibold",
+  emptyDesc: "mb-8 text-stone-500",
+  emptyBtn: "rounded-full bg-ink px-8 py-3 text-sm font-semibold text-white transition hover:bg-stone-700",
 
-  // ORDER GRID
-  grid: "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6",
-  orderCard: "bg-white border rounded-2xl p-5 shadow-sm hover:shadow-md transition flex flex-col",
+  // ORDER LIST
+  grid: "flex flex-col gap-5",
+  orderCard: "overflow-hidden rounded-3xl border border-stone-200 bg-white",
 
   // ORDER HEADER
-  orderHeader: "flex justify-between items-start border-b pb-4 mb-4",
-  orderId: "text-lg font-bold",
-  orderDate: "text-xs text-gray-500 mt-1",
-  orderTotalLabel: "text-xs text-gray-400 uppercase",
-  orderTotalPrice: "text-xl font-bold",
-  orderTotalRight: "text-right",
+  orderHeader: "flex flex-wrap items-center justify-between gap-4 border-b border-stone-100 bg-stone-50/60 px-5 py-4 sm:px-6",
+  orderHeaderLeft: "flex flex-wrap items-center gap-x-6 gap-y-1",
+  orderId: "font-semibold",
+  orderDate: "text-sm text-stone-500",
+  orderTotalRight: "flex items-center gap-3",
+  orderTotalLabel: "text-xs uppercase tracking-wider text-stone-400",
+  orderTotalPrice: "text-lg font-semibold tabular-nums",
+  status: "rounded-full px-2.5 py-0.5 text-xs font-medium",
 
   // ORDER ITEMS
-  itemsList: "space-y-3 flex-1 overflow-y-auto max-h-[350px] pr-1",
-  itemRow: "flex items-center gap-3 bg-gray-50 rounded-xl p-3",
-  itemImage: "w-14 h-14 object-cover rounded-lg shrink-0",
-  itemInfo: "flex-1 min-w-0",
-  itemName: "font-semibold text-sm truncate",
-  itemMeta: "flex gap-2 mt-1 text-xs text-gray-500",
-  itemPrice: "font-bold text-sm",
+  itemsList: "divide-y divide-stone-100 px-5 sm:px-6",
+  itemRow: "flex items-center gap-4 py-4",
+  itemImage: "h-16 w-14 shrink-0 rounded-xl bg-stone-100 object-cover",
+  itemInfo: "min-w-0 flex-1",
+  itemName: "truncate font-medium text-ink hover:text-accent",
+  itemMeta: "mt-1 flex gap-3 text-xs text-stone-500",
+  itemPrice: "font-semibold tabular-nums",
+}
+
+export function statusClass(status?: string) {
+  switch ((status ?? "").toUpperCase()) {
+    case "PAID":
+    case "COMPLETED":
+    case "DELIVERED":
+      return "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200";
+    case "CANCELLED":
+    case "FAILED":
+      return "bg-red-50 text-red-700 ring-1 ring-red-200";
+    case "SHIPPED":
+      return "bg-sky-50 text-sky-700 ring-1 ring-sky-200";
+    default:
+      return "bg-amber-50 text-amber-700 ring-1 ring-amber-200";
+  }
 }

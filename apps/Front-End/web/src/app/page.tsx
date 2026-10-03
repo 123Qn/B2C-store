@@ -1,23 +1,25 @@
 import { AppLayout } from "../components/Layout/AppLayout";
+import { Hero } from "../components/Layout/Hero";
 import { Main } from "../components/Main";
 import { client } from "@repo/db/client";
-import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
 
   const products =
-    await client.db.product.findMany();
+    await client.db.product.findMany({
+      where: { active: true },
+      orderBy: { createdAt: "desc" },
+    });
 
   return (
 
     <AppLayout>
 
-      <Main
-        className={styles.main}
-        products={products}
-      />
+      <Hero />
+
+      <Main products={products} />
 
     </AppLayout>
 

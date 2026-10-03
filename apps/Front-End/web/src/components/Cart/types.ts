@@ -37,5 +37,11 @@ export type CartContextType = {
   clearCart: () => void;
 
   totalPrice: number;
-isLoggedIn: boolean;
+
+  totalItems: number;
+
+  isLoggedIn: boolean;
+
+  // true once the saved cart has been read from storage
+  hydrated: boolean;
 };

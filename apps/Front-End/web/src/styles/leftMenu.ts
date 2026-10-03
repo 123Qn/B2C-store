@@ -1,24 +1,19 @@
 export const leftMenuStyles = {
 
-  // BRAND LIST
-  brandLink: "text-[#FFF8F3] hover:text-black transition",
-  brandList: "flex flex-col gap-3",
-
-  // CATEGORY LIST
-  categoryLink: "text-gray-700 hover:text-black transition",
-  categoryList: "flex flex-col gap-3",
+  // LINK LISTS
+  linkList: "flex flex-col gap-0.5",
+  link: "block rounded-lg px-3 py-2 text-sm capitalize text-stone-600 transition hover:bg-stone-100 hover:text-ink",
+  linkActive: "block rounded-lg px-3 py-2 text-sm font-medium capitalize bg-ink text-white",
 
   // LEFT MENU
   menuInner: "flex flex-col gap-8",
-  menuSection: "flex flex-col gap-8",
-  menuTitle: "text-xl font-bold mb-4",
-  menuTitleSm: "text-lg font-bold mb-4",
-  desktop: "hidden lg:block w-64 min-h-screen sticky top-0 bg-[#B89B8A] border-r border-gray-200 p-6",
+  menuSection: "flex flex-col gap-6",
+  menuTitle: "mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-stone-400",
+  desktop: "hidden lg:block sticky top-[67px] self-start max-h-[calc(100vh-67px)] w-64 shrink-0 overflow-y-auto border-r border-stone-200 px-4 py-8",
 
   // MOBILE MENU
-  mobileWrapper: "block lg:hidden",
-  mobileBar: "flex items-center justify-between bg-[#B89B8A] p-4 border-b border-gray-200",
-  mobileTitle: "text-xl font-bold",
-  mobileToggle: "text-2xl p-2 rounded-lg hover:bg-[#a88878] transition",
-  mobileContent: "bg-[#B89B8A] p-4 border-b border-gray-200",
+  mobileWrapper: "block border-b border-stone-200 lg:hidden",
+  mobileBar: "flex w-full items-center justify-between px-4 py-3 text-sm font-medium text-ink",
+  mobileToggle: "inline-flex items-center gap-2",
+  mobileContent: "px-2 pb-4",
 }

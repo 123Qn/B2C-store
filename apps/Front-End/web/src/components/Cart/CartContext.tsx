@@ -22,8 +22,20 @@ import {
   decreaseItemQuantity,
 } from "./cartAction";
 
+const CART_KEY = "cart";
+
 const CartContext =
   createContext<CartContextType | null>(null);
+
+function readStoredCart(): CartItem[] {
+  try {
+    const saved = localStorage.getItem(CART_KEY);
+    const parsed = saved ? JSON.parse(saved) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
 
 export function CartProvider({
   children,
@@ -37,19 +49,31 @@ export function CartProvider({
   const [isLoggedIn, setIsLoggedIn] =
     useState(false);
 
-  const [status, setStatus] =
-    useState<"loading" | "done">("loading");
+  // stops the first (empty) render from wiping the saved cart
+  const [hydrated, setHydrated] =
+    useState(false);
+
+  // LOAD CART
+  // There is no cart API yet, so the cart lives in localStorage for guests
+  // and logged-in users alike — it survives refreshes and the login redirect.
+  useEffect(() => {
+    setCart(readStoredCart());
+    setHydrated(true);
+
+    // KEEP TABS IN SYNC
+    function handleStorage(e: StorageEvent) {
+      if (e.key === CART_KEY) setCart(readStoredCart());
+    }
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
   // CHECK AUTH
   useEffect(() => {
-
     const token =
       localStorage.getItem("auth_token");
 
-    if (!token) {
-      setStatus("done");
-      return;
-    }
+    if (!token) return;
 
     fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/auth/check`,
@@ -59,107 +83,29 @@ export function CartProvider({
         },
       }
     )
-      .then((res) =>
-        res.ok ? res.json() : null
-      )
-      .then((data) => {
-        setIsLoggedIn(!!data?.user);
-      })
-      .catch(() => {
-        setIsLoggedIn(false);
-      })
-      .finally(() => {
-        setStatus("done");
-      });
-
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setIsLoggedIn(!!data?.user))
+      .catch(() => setIsLoggedIn(false));
   }, []);
-
-  // LOAD CART
-  useEffect(() => {
-
-    if (status === "loading") return;
-
-    if (isLoggedIn) {
-
-      // TODO: fetch cart from DB
-      // const token = localStorage.getItem("auth_token");
-      // const dbCart = await fetchCartFromDB(token)
-      // setCart(dbCart)
-
-      // MERGE GUEST CART
-      const guestCart =
-        localStorage.getItem("cart");
-
-      if (guestCart) {
-
-        const parsed: CartItem[] =
-          JSON.parse(guestCart);
-
-        if (parsed.length > 0) {
-
-          setCart((prev) =>
-            mergeGuestCart(prev, parsed)
-          );
-
-          localStorage.removeItem("cart");
-
-        }
-
-      }
-
-    } else {
-
-      const savedCart =
-        localStorage.getItem("cart");
-
-      if (savedCart) {
-
-        setCart(
-          JSON.parse(savedCart)
-        );
-
-      }
-
-    }
-
-  }, [status, isLoggedIn]);
 
   // SAVE CART
   useEffect(() => {
-
-    if (status === "loading") return;
-
-    if (isLoggedIn) {
-
-      // TODO: sync cart to DB
-      // const token = localStorage.getItem("auth_token");
-      // syncCartToDB(token, cart)
-
-    } else {
-
-      localStorage.setItem(
-        "cart",
-        JSON.stringify(cart)
-      );
-
+    if (!hydrated) return;
+    try {
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    } catch {
+      // storage full / blocked — cart still works for this session
     }
-
-  }, [cart, isLoggedIn, status]);
+  }, [cart, hydrated]);
 
   // ADD
   function addToCart(
     product: Product,
     selectedSize: string
   ) {
-
     setCart((prev) =>
-      addItemToCart(
-        prev,
-        product,
-        selectedSize
-      )
+      addItemToCart(prev, product, selectedSize)
     );
-
   }
 
   // REMOVE
@@ -167,15 +113,9 @@ export function CartProvider({
     id: number,
     selectedSize: string
   ) {
-
     setCart((prev) =>
-      removeItemFromCart(
-        prev,
-        id,
-        selectedSize
-      )
+      removeItemFromCart(prev, id, selectedSize)
     );
-
   }
 
   // INCREASE
@@ -183,15 +123,9 @@ export function CartProvider({
     id: number,
     selectedSize: string
   ) {
-
     setCart((prev) =>
-      increaseItemQuantity(
-        prev,
-        id,
-        selectedSize
-      )
+      increaseItemQuantity(prev, id, selectedSize)
     );
-
   }
 
   // DECREASE
@@ -199,98 +133,48 @@ export function CartProvider({
     id: number,
     selectedSize: string
   ) {
-
     setCart((prev) =>
-      decreaseItemQuantity(
-        prev,
-        id,
-        selectedSize
-      )
+      decreaseItemQuantity(prev, id, selectedSize)
     );
-
   }
 
   // CLEAR
   function clearCart() {
-
     setCart([]);
-
-    localStorage.removeItem("cart");
-
+    localStorage.removeItem(CART_KEY);
   }
 
-  // TOTAL
+  // TOTALS
   const totalPrice =
     cart.reduce(
-      (total, item) =>
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
 
-        total +
-        item.price *
-        item.quantity,
-
+  const totalItems =
+    cart.reduce(
+      (total, item) => total + item.quantity,
       0
     );
 
   return (
-
     <CartContext.Provider
       value={{
-
         cart,
-
         addToCart,
-
         removeFromCart,
-
         increaseQuantity,
-
         decreaseQuantity,
-
         clearCart,
-
         totalPrice,
-
+        totalItems,
         isLoggedIn,
-
+        hydrated,
       }}
     >
-
       {children}
-
     </CartContext.Provider>
-
   );
-
-}
-
-function mergeGuestCart(
-  userCart: CartItem[],
-  guestCart: CartItem[]
-): CartItem[] {
-
-  const merged = [...userCart];
-
-  for (const guestItem of guestCart) {
-
-    const existing = merged.find(
-      (i) =>
-        i.id === guestItem.id &&
-        i.selectedSize === guestItem.selectedSize
-    );
-
-    if (existing) {
-
-      existing.quantity += guestItem.quantity;
-
-    } else {
-
-      merged.push(guestItem);
-
-    }
-
-  }
-
-  return merged;
 
 }
 
@@ -300,11 +184,9 @@ export function useCart() {
     useContext(CartContext);
 
   if (!context) {
-
     throw new Error(
       "useCart must be inside CartProvider"
     );
-
   }
 
   return context;

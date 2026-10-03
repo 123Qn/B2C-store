@@ -3,19 +3,22 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { historyStyles as s } from "@/styles/history";
+import { ArchiveBoxIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { historyStyles as s, statusClass } from "@/styles/history";
+import { FALLBACK_IMAGE, formatDate, formatPrice } from "@/lib/format";
 
 type OrderItem = {
   id: number;
   quantity: number;
   size: string;
   price: number;
-  product: { id: number; name: string; imageUrl: string };
+  product: { id: number; name: string; imageUrl: string; urlId?: string };
 };
 
 type Order = {
   id: number;
   totalPrice: number;
+  status?: string;
   createdAt: string;
   items: OrderItem[];
 };
@@ -47,12 +50,11 @@ export default function HistoryPage() {
         if (!checkRes.ok) { router.push("/SessionManagement/login"); return; }
 
         const res = await authFetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`);
-        if (!res.ok) { setOrders([]); setLoading(false); return; }
+        if (!res.ok) { setOrders([]); return; }
 
         const text = await res.text();
-        if (!text) { setOrders([]); setLoading(false); return; }
-
-        setOrders(JSON.parse(text));
+        const data = text ? JSON.parse(text) : [];
+        setOrders(Array.isArray(data) ? data : []);
       } catch (error) {
         console.log(error);
         setOrders([]);
@@ -67,61 +69,87 @@ export default function HistoryPage() {
     return <div className={s.loading}>Loading Orders...</div>;
   }
 
+  const totalSpent = orders.reduce((total, order) => total + order.totalPrice, 0);
+
   return (
     <div className={s.page}>
-      <div>
-        <Link href="/" className={s.backLink}>← Back to Home</Link>
-      </div>
+      <div className={s.inner}>
+        <Link href="/" className={s.backLink}>
+          <ArrowLeftIcon className="h-4 w-4" /> Back to Home
+        </Link>
 
-      <div className={s.header}>
-        <h1 className={s.title}>Order History</h1>
-        <p className={s.subtitle}>Review your previous purchases</p>
-      </div>
-
-      {orders.length === 0 ? (
-        <div className={s.empty}>
-          <div className={s.emptyIcon}>📦</div>
-          <h2 className={s.emptyTitle}>No Orders Yet</h2>
-          <p className={s.emptyDesc}>Your completed orders will appear here</p>
+        <div className={s.header}>
+          <div>
+            <h1 className={s.title}>Order History</h1>
+            <p className={s.subtitle}>Review your previous purchases</p>
+          </div>
+          {orders.length > 0 && (
+            <p className={s.stats}>
+              {orders.length} order{orders.length !== 1 ? "s" : ""} · {formatPrice(totalSpent)} total
+            </p>
+          )}
         </div>
-      ) : (
-        <div className={s.grid}>
-          {orders.map((order) => (
-            <div key={order.id} className={s.orderCard}>
 
-              {/* ORDER HEADER */}
-              <div className={s.orderHeader}>
-                <div>
-                  <h2 className={s.orderId}>Order #{order.id}</h2>
-                  <p className={s.orderDate}>{new Date(order.createdAt).toLocaleDateString()}</p>
-                </div>
-                <div className={s.orderTotalRight}>
-                  <p className={s.orderTotalLabel}>Total</p>
-                  <p className={s.orderTotalPrice}>${order.totalPrice}</p>
-                </div>
-              </div>
-
-              {/* ORDER ITEMS */}
-              <div className={s.itemsList}>
-                {order.items.map((item) => (
-                  <div key={item.id} className={s.itemRow}>
-                    <img src={item.product.imageUrl} alt={item.product.name} className={s.itemImage} />
-                    <div className={s.itemInfo}>
-                      <h3 className={s.itemName}>{item.product.name}</h3>
-                      <div className={s.itemMeta}>
-                        <span>{item.size}</span>
-                        <span>× {item.quantity}</span>
-                      </div>
-                    </div>
-                    <p className={s.itemPrice}>${item.price * item.quantity}</p>
-                  </div>
-                ))}
-              </div>
-
+        {orders.length === 0 ? (
+          <div className={s.empty}>
+            <div className={s.emptyIcon}>
+              <ArchiveBoxIcon className="h-8 w-8" />
             </div>
-          ))}
-        </div>
-      )}
+            <h2 className={s.emptyTitle}>No Orders Yet</h2>
+            <p className={s.emptyDesc}>Your completed orders will appear here</p>
+            <Link href="/" className={s.emptyBtn}>Start Shopping</Link>
+          </div>
+        ) : (
+          <div className={s.grid}>
+            {orders.map((order) => (
+              <div key={order.id} className={s.orderCard}>
+
+                {/* ORDER HEADER */}
+                <div className={s.orderHeader}>
+                  <div className={s.orderHeaderLeft}>
+                    <h2 className={s.orderId}>Order #{order.id}</h2>
+                    <p className={s.orderDate}>{formatDate(order.createdAt)}</p>
+                    {order.status && (
+                      <span className={`${s.status} ${statusClass(order.status)}`}>
+                        {order.status.charAt(0) + order.status.slice(1).toLowerCase()}
+                      </span>
+                    )}
+                  </div>
+                  <div className={s.orderTotalRight}>
+                    <p className={s.orderTotalLabel}>Total</p>
+                    <p className={s.orderTotalPrice}>{formatPrice(order.totalPrice)}</p>
+                  </div>
+                </div>
+
+                {/* ORDER ITEMS */}
+                <div className={s.itemsList}>
+                  {order.items.map((item) => (
+                    <div key={item.id} className={s.itemRow}>
+                      <img src={item.product.imageUrl || FALLBACK_IMAGE} alt={item.product.name} className={s.itemImage} />
+                      <div className={s.itemInfo}>
+                        {item.product.urlId ? (
+                          <Link href={`/products/${item.product.urlId}`}>
+                            <h3 className={s.itemName}>{item.product.name}</h3>
+                          </Link>
+                        ) : (
+                          <h3 className={s.itemName}>{item.product.name}</h3>
+                        )}
+                        <div className={s.itemMeta}>
+                          {item.size && <span>Size {item.size}</span>}
+                          <span>Qty {item.quantity}</span>
+                          <span>{formatPrice(item.price)} each</span>
+                        </div>
+                      </div>
+                      <p className={s.itemPrice}>{formatPrice(item.price * item.quantity)}</p>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

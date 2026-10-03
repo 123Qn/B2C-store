@@ -2,17 +2,30 @@
 
 import { useState } from "react";
 import type { Product } from "@prisma/client";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { ProductListItem } from "./ListItem";
 import { productStyles as s } from "@/styles/product";
 
+const ITEMS_PER_PAGE = 9;
+
 export function ProductList({ products }: { products: Product[] }) {
-  const ITEMS_PER_PAGE = 6;
   const [page, setPage] = useState(1);
-  const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
-  const currentProducts = products.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
+  const totalPages = Math.max(1, Math.ceil(products.length / ITEMS_PER_PAGE));
+  const currentPage = Math.min(page, totalPages);
+  const currentProducts = products.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  function goTo(number: number) {
+    setPage(number);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   if (products.length === 0) {
-    return <div className={s.emptyList}>0 Products</div>;
+    return (
+      <div className={s.emptyList}>
+        <p className={s.emptyListTitle}>0 Products</p>
+        <p className={s.emptyListDesc}>Nothing matches here yet. Try another category or search.</p>
+      </div>
+    );
   }
 
   return (
@@ -23,17 +36,36 @@ export function ProductList({ products }: { products: Product[] }) {
         ))}
       </div>
 
-      <div className={s.pagination}>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+      {totalPages > 1 && (
+        <nav className={s.pagination} aria-label="Pagination">
           <button
-            key={number}
-            onClick={() => { setPage(number); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-            className={page === number ? s.pageActive : s.pageInactive}
+            onClick={() => goTo(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={s.pageArrow}
           >
-            {number}
+            <ChevronLeftIcon className="h-4 w-4" /> Prev
           </button>
-        ))}
-      </div>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+            <button
+              key={number}
+              onClick={() => goTo(number)}
+              className={currentPage === number ? s.pageActive : s.pageInactive}
+              aria-current={currentPage === number ? "page" : undefined}
+            >
+              {number}
+            </button>
+          ))}
+
+          <button
+            onClick={() => goTo(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={s.pageArrow}
+          >
+            Next <ChevronRightIcon className="h-4 w-4" />
+          </button>
+        </nav>
+      )}
     </div>
   );
 }

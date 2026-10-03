@@ -12,41 +12,27 @@ export default async function SearchPage({
 
   const { q = "" } =
     await searchParams;
+
+  const query = q.trim();
+
   const filteredProducts =
     await client.db.product.findMany({
       where: {
+        active: true,
         OR: [
-          {
-            name: {
-              contains: q,
-              mode: "insensitive",
-            },
-          },
-
-          {
-            category: {
-              contains: q,
-              mode: "insensitive",
-            },
-          },
-
-          {
-            brand: {
-              contains: q,
-              mode: "insensitive",
-            },
-          },
-
+          { name: { contains: query, mode: "insensitive" } },
+          { category: { contains: query, mode: "insensitive" } },
+          { brand: { contains: query, mode: "insensitive" } },
         ],
-
       },
-
+      orderBy: { createdAt: "desc" },
     });
 
   return (
 
     <FilteredProducts
-      title={`Search: ${q}`}
+      eyebrow={query ? "Search results for" : "Search"}
+      title={query ? `“${query}”` : "All products"}
       products={filteredProducts}
     />
 
