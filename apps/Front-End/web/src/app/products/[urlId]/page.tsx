@@ -3,7 +3,7 @@ import { ProductDetail } from "@/components/Product/Detail";
 import { AppLayout } from "@/components/Layout/AppLayout";
 import { productStyles as s } from "@/styles/product";
 
-import { client } from "@repo/db/client";
+import { store } from "@repo/db/store";
 
 export default async function Page({
   params,
@@ -12,11 +12,7 @@ export default async function Page({
 }) {
   const { urlId } = await params;
 
-  const product = await client.db.product.findUnique({
-    where: {
-      urlId,
-    },
-  });
+  const product = await store.products.byUrlId(urlId);
 
   if (!product || !product.active) {
     return (

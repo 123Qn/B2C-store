@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { client } from "@repo/db/client";
+import { store } from "@repo/db/store";
 import { checkAuth } from "../../../utils/auth";
 
 // GET ORDERS
@@ -7,21 +7,11 @@ export async function GET(request: NextRequest) {
   try {
     const user: any = await checkAuth(request);
 
-console.log("USER FROM TOKEN:", user);
-console.log("USER ID:", user?.id, typeof user?.id);
     if (!user) {
       return NextResponse.json([]);
     }
 
-    const orders = await client.db.order.findMany({
-      where: { userId: user.id },
-      include: {
-        items: {
-          include: { product: true },
-        },
-      },
-      orderBy: { createdAt: "desc" },
-    });
+    const orders = await store.orders.forUser(Number(user.id));
 
     return NextResponse.json(orders);
 
@@ -45,19 +35,19 @@ export async function POST(request: NextRequest) {
 
     const { cart, totalPrice } = await request.json();
 
-    const order = await client.db.order.create({
-      data: {
-        totalPrice,
-        user: { connect: { id: user.id } },
-        items: {
-          create: cart.map((item: any) => ({
-            productId: Number(item.id),
-            quantity: Number(item.quantity),
-            size: String(item.selectedSize),
-            price: Number(item.price),
-          })),
-        },
-      },
+    if (!Array.isArray(cart) || cart.length === 0) {
+      return NextResponse.json({ message: "Cart is empty" }, { status: 400 });
+    }
+
+    const order = await store.orders.create({
+      userId: Number(user.id),
+      totalPrice: Number(totalPrice),
+      items: cart.map((item: any) => ({
+        productId: Number(item.id),
+        quantity: Number(item.quantity),
+        size: String(item.selectedSize),
+        price: Number(item.price),
+      })),
     });
 
     return NextResponse.json({ message: "Order created", order });

@@ -175,3 +175,17 @@ export const products: Product[] = [
     active: true,
   },
 ];
+export type SeedUser = {
+  username: string;
+  email: string;
+  password: string;
+  role: "ADMIN" | "BUYER";
+};
+
+// demo accounts — always available, also in JSON mode
+export const users: SeedUser[] = [
+  { username: "admin", email: "admin@qfashion.com", password: "123", role: "ADMIN" },
+  { username: "buyer", email: "buyer@qfashion.com", password: "123", role: "BUYER" },
+  { username: "buyer-gmail", email: "buyer@gmail.com", password: "123", role: "BUYER" },
+  { username: "test", email: "test@mail.com", password: "123", role: "BUYER" },
+];

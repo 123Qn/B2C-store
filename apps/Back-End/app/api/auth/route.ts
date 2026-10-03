@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import { client } from "@repo/db/client";
+import { store } from "@repo/db/store";
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret";
 
@@ -8,9 +8,7 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { email, password } = body;
 
-  const user = await client.db.user.findFirst({
-    where: { email, password },
-  });
+  const user = await store.users.login(email, password);
 
   if (!user) {
     return NextResponse.json(

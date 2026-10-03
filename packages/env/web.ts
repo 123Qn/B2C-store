@@ -7,7 +7,8 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    DATABASE_URL: z.string().url(),
+    // optional: without it the app falls back to the JSON store
+    DATABASE_URL: z.string().url().optional(),
   },
 
   /**
