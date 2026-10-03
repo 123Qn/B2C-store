@@ -13,29 +13,33 @@ export async function AppLayout({
 
   return (
 
-    <div className="w-full min-h-screen bg-[#FFF8F3]">
+    <div className="min-h-screen w-full bg-cream text-ink">
 
       {/* NAVBAR */}
       <TopMenu />
 
       {/* CONTENT */}
-      <main className="flex flex-col lg:flex-row w-full">
+      <div className="mx-auto flex w-full max-w-screen-2xl flex-col lg:flex-row">
 
         {/* SIDEBAR */}
-        <aside className="w-full lg:w-64 shrink-0">
-
-          <LeftMenu />
-
-        </aside>
+        <LeftMenu />
 
         {/* MAIN CONTENT */}
-        <section className="flex-1 p-4 md:p-6 overflow-hidden">
+        <main className="min-w-0 flex-1 px-4 py-6 md:px-8 md:py-8">
 
           {children}
 
-        </section>
+        </main>
 
-      </main>
+      </div>
+
+      {/* FOOTER */}
+      <footer className="border-t border-stone-200">
+        <div className="mx-auto flex max-w-screen-2xl flex-col gap-2 px-4 py-8 text-sm text-stone-500 md:flex-row md:items-center md:justify-between md:px-8">
+          <span>© {new Date().getFullYear()} Quan Store</span>
+          <span>Free shipping · 30-day returns · Secure checkout</span>
+        </div>
+      </footer>
 
     </div>
 

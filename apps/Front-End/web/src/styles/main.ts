@@ -1,10 +1,14 @@
 export const mainStyles = {
 
-  // FILTERS
-  filterSection: "px-4 md:px-6 pt-8",
-  filterRow: "flex flex-col sm:flex-row justify-end gap-4",
-  filterSelect: "bg-[#FFF8F3] border border-[#B89B8A] rounded-2xl px-4 py-2 shadow-sm outline-none",
+  // HEADER
+  header: "mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between",
+  title: "text-2xl font-semibold tracking-tight text-ink md:text-3xl",
+  count: "mt-1 text-sm text-stone-500",
 
-  // PRODUCTS
-  productSection: "px-4 md:px-6 py-12",
+  // FILTERS
+  filterRow: "flex flex-wrap items-center gap-2",
+  chipRow: "mb-8 flex gap-2 overflow-x-auto pb-1",
+  chip: "shrink-0 rounded-full border border-stone-200 bg-white px-4 py-1.5 text-sm text-stone-600 transition hover:border-stone-400 hover:text-ink",
+  chipActive: "shrink-0 rounded-full border border-ink bg-ink px-4 py-1.5 text-sm font-medium text-white",
+  filterSelect: "rounded-full border border-stone-200 bg-white px-4 py-2 text-sm text-stone-700 shadow-sm outline-none transition hover:border-stone-400 focus:border-stone-400 focus:ring-4 focus:ring-stone-200/60",
 }

@@ -1,43 +1,80 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { Product } from "@prisma/client";
+import {
+  ArchiveBoxIcon,
+  ArrowRightStartOnRectangleIcon,
+  MagnifyingGlassIcon,
+  ShoppingBagIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 
 import logo from "../../../public/wsulogo.png";
-import heroImage from "../../asset/image/hero.webp";
 import { useCart } from "../Cart/CartContext";
 import { SearchPopup } from "../Search/SearchPopup";
 import { topMenuStyles as s } from "@/styles/topMenu";
 
+const MAX_SEARCH_RESULTS = 6;
+
 export function TopMenu() {
   const router = useRouter();
+  const pathname = usePathname();
   const [search, setSearch] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
-  const { cart } = useCart();
+  const searchRef = useRef<HTMLDivElement>(null);
+  const { totalItems: cartCount } = useCart();
 
   useEffect(() => {
     async function checkLogin() {
       const token = localStorage.getItem("auth_token");
       if (!token) { setLoggedIn(false); return; }
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/check`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setLoggedIn(res.ok);
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/check`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setLoggedIn(res.ok);
+      } catch {
+        setLoggedIn(false);
+      }
     }
     checkLogin();
   }, []);
 
   useEffect(() => {
     async function loadProducts() {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`);
-      const data = await res.json();
-      setProducts(data);
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (Array.isArray(data)) setProducts(data);
+      } catch (error) {
+        console.log(error);
+      }
     }
     loadProducts();
+  }, []);
+
+  // CLOSE SEARCH ON NAVIGATION
+  useEffect(() => {
+    setSearch("");
+    setSearchOpen(false);
+  }, [pathname]);
+
+  // CLOSE SEARCH ON OUTSIDE CLICK
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
   function handleLogout() {
@@ -52,72 +89,104 @@ export function TopMenu() {
     router.push(path);
   }
 
-  const filteredProducts = search
-    ? products.filter((p) =>
-        p.name.toLowerCase().includes(search.toLowerCase()) ||
-        p.category.toLowerCase().includes(search.toLowerCase()) ||
-        p.brand.toLowerCase().includes(search.toLowerCase())
-      )
-    : [];
-console.log("API URL:", process.env.NEXT_PUBLIC_API_URL)
+  function handleSearchSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const query = search.trim();
+    if (!query) return;
+    setSearchOpen(false);
+    router.push(`/search?q=${encodeURIComponent(query)}`);
+  }
+
+  const query = search.trim().toLowerCase();
+  const filteredProducts = useMemo(
+    () =>
+      query
+        ? products.filter((p) =>
+            p.name.toLowerCase().includes(query) ||
+            p.category.toLowerCase().includes(query) ||
+            p.brand.toLowerCase().includes(query)
+          )
+        : [],
+    [products, query]
+  );
+
   return (
-    <>
-      {/* NAVBAR */}
-      <div className={s.navbar}>
-        <div className={s.navRow}>
+    <header className={s.navbar}>
+      <div className={s.navRow}>
 
-          {/* LOGO */}
-          <Link href="/" className={s.logoLink}>
-            <Image className={s.logoImg} src={logo} alt="logo" width={50} height={50} priority />
-            <span className={s.logoText}>Q Fashion</span>
-          </Link>
-
-          {/* RIGHT SIDE */}
-          <div className={s.navRight}>
-            {loggedIn ? (
-              <button onClick={handleLogout} className={s.logoutBtn}>Logout</button>
-            ) : (
-              <Link href="/SessionManagement/login" className={s.loginBtn}>Login</Link>
-            )}
-
-            <button onClick={() => goToProtected("/PaymentSystem/history")} title="Order History" className={s.navBtn}>
-              📦
-            </button>
-
-            <button onClick={() => goToProtected("/PaymentSystem/cart")} title="Cart" className={s.cartBtn}>
-              🧺
-              {cart.length > 0 && (
-                <span className={s.cartBadge}>{cart.length}</span>
-              )}
-            </button>
-          </div>
-        </div>
+        {/* LOGO */}
+        <Link href="/" className={s.logoLink}>
+          <Image className={s.logoImg} src={logo} alt="logo" width={40} height={40} priority />
+          <span className={s.logoText}>Q Fashion</span>
+        </Link>
 
         {/* SEARCH */}
-        <div className={s.searchWrapper}>
-          <input
-            type="text"
-            placeholder="Search your items..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className={s.searchInput}
-          />
-          <span className={s.searchIcon}>🧵</span>
-          {search && <SearchPopup products={filteredProducts} />}
+        <div ref={searchRef} className={s.searchWrapper}>
+          <form role="search" onSubmit={handleSearchSubmit}>
+            <MagnifyingGlassIcon className={s.searchIcon} aria-hidden />
+            <input
+              type="text"
+              placeholder="Search your items..."
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setSearchOpen(true); }}
+              onFocus={() => setSearchOpen(true)}
+              onKeyDown={(e) => { if (e.key === "Escape") setSearchOpen(false); }}
+              className={s.searchInput}
+              aria-label="Search products"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => { setSearch(""); setSearchOpen(false); }}
+                className={s.searchClear}
+                aria-label="Clear search"
+              >
+                <XMarkIcon className="h-4 w-4" />
+              </button>
+            )}
+          </form>
+          {searchOpen && query && (
+            <SearchPopup
+              query={search.trim()}
+              products={filteredProducts.slice(0, MAX_SEARCH_RESULTS)}
+              total={filteredProducts.length}
+            />
+          )}
         </div>
-      </div>
 
-      {/* HERO */}
-      <section className={s.hero}>
-        <Image src={heroImage} alt="Hero" fill priority className={s.heroImg} />
-        <div className={s.heroOverlay} />
-        <div className={s.heroContent}>
-          <h1 className={s.heroTitle}>Timeless Fashion</h1>
-          <p className={s.heroSubtitle}>Modern • Elegant • Everyday</p>
-          <p className={s.heroText}>Click • Pay • Delivered</p>
-          <p className={s.heroText}>Returns accepted within 30 days</p>
-        </div>
-      </section>
-    </>
+        {/* RIGHT SIDE */}
+        <nav className={s.navRight}>
+          <button
+            onClick={() => goToProtected("/PaymentSystem/history")}
+            title="Order History"
+            aria-label="Order history"
+            className={s.navBtn}
+          >
+            <ArchiveBoxIcon className={s.navIcon} />
+          </button>
+
+          <button
+            onClick={() => goToProtected("/PaymentSystem/cart")}
+            title="Cart"
+            aria-label="Cart"
+            className={s.navBtn}
+          >
+            <ShoppingBagIcon className={s.navIcon} />
+            {cartCount > 0 && (
+              <span className={s.cartBadge}>{cartCount > 99 ? "99+" : cartCount}</span>
+            )}
+          </button>
+
+          {loggedIn ? (
+            <button onClick={handleLogout} className={s.logoutBtn} aria-label="Log out">
+              <ArrowRightStartOnRectangleIcon className="h-5 w-5" />
+              <span className="hidden sm:inline">Logout</span>
+            </button>
+          ) : (
+            <Link href="/SessionManagement/login" className={s.loginBtn}>Login</Link>
+          )}
+        </nav>
+      </div>
+    </header>
   );
 }
