@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { client } from "@repo/db/client";
+import { store, StoreConflictError } from "@repo/db/store";
 export async function POST(
   request: NextRequest
 ) {
@@ -20,8 +20,7 @@ export async function POST(
     }
     // CHECK EXISTING USER
     const existingUser =
-      await client.db.user.findUnique({
-        where: {email,},});
+      await store.users.byEmail(email);
     if (existingUser) {
       return NextResponse.json(
         {
@@ -36,13 +35,11 @@ export async function POST(
 
     // CREATE USER
     const user =
-      await client.db.user.create({
-        data: {
-          username,
-          email,
-          password,
-          role: "BUYER",
-        },
+      await store.users.create({
+        username,
+        email,
+        password,
+        role: "BUYER",
       });
 
     return NextResponse.json(
@@ -56,6 +53,13 @@ export async function POST(
       }
     );
   } catch (error) {
+    if (error instanceof StoreConflictError) {
+      return NextResponse.json(
+        { error: "Email or username already exists" },
+        { status: 409 }
+      );
+    }
+
     console.log(error);
 
     return NextResponse.json(

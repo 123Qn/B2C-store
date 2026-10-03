@@ -14,7 +14,8 @@
     "postinstall": "pnpm db:generate",
     "studio": "prisma studio",
     "dev": "tsc --watch",
-    "build": "tsc"
+    "build": "tsc",
+    "seed": "tsx src/seed-cli.ts"
   },
   "exports": {
     "./client": {
@@ -28,6 +29,10 @@
     "./seed": {
       "types": "./src/seed.ts",
       "default": "./src/seed.ts"
+    },
+    "./store": {
+      "types": "./src/store.ts",
+      "default": "./src/store.ts"
     }
   },
   "dependencies": {

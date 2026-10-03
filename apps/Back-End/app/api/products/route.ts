@@ -1,16 +1,12 @@
 //get all products
 import { NextResponse,NextRequest} from "next/server";
 
-import { client } from "@repo/db/client";
+import { store, StoreConflictError } from "@repo/db/store";
 
 export async function GET() {
 
   const products =
-    await client.db.product.findMany(
-      {
-        where: { active: true },
-      }
-    );
+    await store.products.list({ activeOnly: true });
 
   return NextResponse.json(products);
 
@@ -19,8 +15,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const product = await client.db.product.create({
-      data: {
+    const product = await store.products.create({
         name: body.name,
         urlId: body.urlId,
         brand: body.brand,
@@ -31,7 +26,6 @@ export async function POST(request: NextRequest) {
         stock: body.stock,
         size: body.size,
         imageUrl: body.imageUrl,
-      },
     });
 
     return NextResponse.json(
@@ -41,7 +35,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error: any) {
 
-    if (error.code === "P2002") {
+    if (error instanceof StoreConflictError) {
       return NextResponse.json(
         { message: "Product with this name already exists" },
         { status: 409 }

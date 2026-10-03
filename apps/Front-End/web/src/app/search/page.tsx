@@ -1,8 +1,8 @@
 import { FilteredProducts }
 from "@/components/Product/FilteredProducts";
 
-import { client }
-from "@repo/db/client";
+import { store }
+from "@repo/db/store";
 
 export default async function SearchPage({
   searchParams,
@@ -16,16 +16,9 @@ export default async function SearchPage({
   const query = q.trim();
 
   const filteredProducts =
-    await client.db.product.findMany({
-      where: {
-        active: true,
-        OR: [
-          { name: { contains: query, mode: "insensitive" } },
-          { category: { contains: query, mode: "insensitive" } },
-          { brand: { contains: query, mode: "insensitive" } },
-        ],
-      },
-      orderBy: { createdAt: "desc" },
+    await store.products.list({
+      activeOnly: true,
+      search: query,
     });
 
   return (

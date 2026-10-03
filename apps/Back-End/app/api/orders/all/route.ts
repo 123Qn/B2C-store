@@ -1,15 +1,9 @@
 import { NextResponse } from "next/server";
-import { client } from "@repo/db/client";
+import { store } from "@repo/db/store";
 
 export async function GET() {
   try {
-    const orders = await client.db.order.findMany({
-      include: {
-        user: true,
-        items: { include: { product: true } },
-      },
-      orderBy: { createdAt: "desc" },
-    });
+    const orders = await store.orders.all();
 
     return NextResponse.json(orders);
   } catch (error) {

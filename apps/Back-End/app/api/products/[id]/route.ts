@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { client } from "@repo/db/client";
+import { store } from "@repo/db/store";
 
 export async function GET(
   request: NextRequest,
@@ -9,9 +9,7 @@ export async function GET(
     const { id } = await context.params;
 
     // TRY BY urlId 
-    const product = await client.db.product.findUnique({
-      where: { urlId: id },
-    });
+    const product = await store.products.byUrlId(id);
 
     if (!product) {
       return NextResponse.json({ message: "Not found" }, { status: 404 });
@@ -32,10 +30,11 @@ export async function PATCH(
     const { id } = await context.params;
     const body = await request.json();
 
-    const product = await client.db.product.update({
-      where: { id: Number(id) },
-      data: { active: body.active },
-    });
+    const product = await store.products.setActive(Number(id), Boolean(body.active));
+
+    if (!product) {
+      return NextResponse.json({ message: "Not found" }, { status: 404 });
+    }
 
     return NextResponse.json({ message: "Updated", product });
   } catch (error) {

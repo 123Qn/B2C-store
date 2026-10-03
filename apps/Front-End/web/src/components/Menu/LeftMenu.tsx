@@ -1,4 +1,4 @@
-import { client } from "@repo/db/client";
+import { store } from "@repo/db/store";
 import { MenuLinks } from "./MenuLinks";
 import { MobileMenu } from "./Mobile";
 import { leftMenuStyles as s } from "@/styles/leftMenu";
@@ -8,11 +8,8 @@ function uniqueSorted(values: string[]) {
 }
 
 export async function LeftMenu() {
-  // ONE QUERY FOR BOTH LISTS
-  const products = await client.db.product.findMany({
-    where: { active: true },
-    select: { category: true, brand: true },
-  });
+  // ONE LOOKUP FOR BOTH LISTS
+  const products = await store.products.list({ activeOnly: true });
 
   const categories = uniqueSorted(products.map((p) => p.category)).map((category) => ({
     label: category,

@@ -42,7 +42,9 @@ https://b2-c-store-web.vercel.app/
 
 - Database management using Prisma ORM
 
-- PostgreSQL database hosted on AWS RDS
+- Data storage with automatic fallback:
+  - **Postgres** (via Prisma) when `DATABASE_URL` is set — data is permanent
+  - **JSON store** when `DATABASE_URL` is not set — starts from the seed data in `packages/db/src/data.ts`; new accounts, orders and admin edits are temporary (they reset when the server restarts)
 
 - Authentication with JWT
 
@@ -218,7 +220,7 @@ B2C-Store/
 ### Prerequisites
 - Node.js 
 - pnpm 
-- PostgreSQL database
+- PostgreSQL database (optional — without it the app runs on the built-in JSON store)
 
 ### Installation
 
@@ -256,9 +258,17 @@ pnpm --filter @repo/db db:generate
 # Push schema to database
 pnpm --filter @repo/db db:push
 
-# Seed database
-pnpm --filter @repo/db db:seed
+# Seed database (demo accounts + products, clears orders)
+pnpm --filter @repo/db seed
 ```
+
+### Running without a database (JSON store)
+
+Leave `DATABASE_URL` unset (locally and in Vercel) and the web app and API use a JSON store instead:
+
+- Products come from `packages/db/src/data.ts`
+- Demo accounts (password `123`): `admin@qfashion.com` (admin), `buyer@qfashion.com`, `buyer@gmail.com`, `test@mail.com`
+- Changes are saved to `STORE_FILE` (default: `<tmp>/b2c-store.json`). Locally both apps share that file. On Vercel the file is temporary and each project (web / API) has its own copy, so admin changes made through the API may not show on the storefront and everything resets on restart.
 
 ### Run Development
 

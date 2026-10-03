@@ -1,14 +1,12 @@
 import Link from "next/link";
 import { ArrowLeftIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { AdminProductList } from "@/components/Admin/ProductList";
-import { client } from "@repo/db/client";
+import { store } from "@repo/db/store";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminProductsPage() {
-  const products = await client.db.product.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  const products = await store.products.list();
 
   return (
     <div className="min-h-screen bg-cream text-ink">
