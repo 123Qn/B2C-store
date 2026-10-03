@@ -1,9 +1,12 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeftIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { statusClass } from "@/styles/history";
 import { FALLBACK_IMAGE, formatDate, formatPrice } from "@/lib/format";
-
-export const dynamic = "force-dynamic";
+import { authHeaders } from "@/lib/auth";
+import { AdminGuard } from "@/components/Admin/AdminGuard";
 
 type AdminOrder = {
   id: number;
@@ -20,22 +23,37 @@ type AdminOrder = {
   }[];
 };
 
+// the API only returns orders to admins, so the token is sent from the browser
 async function getOrders(): Promise<AdminOrder[]> {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/all`, {
-      cache: "no-store",
-    });
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/all`, {
+    cache: "no-store",
+    headers: authHeaders(),
+  });
+  if (res.status === 401 || res.status === 403) throw new Error("Your admin session has expired. Please log in again.");
+  if (!res.ok) throw new Error("Could not load orders.");
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
 }
 
-export default async function AdminOrdersPage() {
-  const orders = await getOrders();
+export default function AdminOrdersPage() {
+  return (
+    <AdminGuard>
+      <AdminOrders />
+    </AdminGuard>
+  );
+}
+
+function AdminOrders() {
+  const [orders, setOrders] = useState<AdminOrder[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    getOrders()
+      .then(setOrders)
+      .catch((e: Error) => setError(e.message))
+      .finally(() => setLoading(false));
+  }, []);
   const revenue = orders.reduce((total, order) => total + order.totalPrice, 0);
   const units = orders.reduce(
     (total, order) => total + order.items.reduce((sum, item) => sum + item.quantity, 0),
@@ -65,7 +83,13 @@ export default async function AdminOrdersPage() {
           ))}
         </div>
 
-        {orders.length === 0 ? (
+        {error && (
+          <p className="mb-6 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-200">{error}</p>
+        )}
+
+        {loading ? (
+          <div className="py-20 text-center text-stone-400">Loading…</div>
+        ) : orders.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-stone-300 bg-white px-6 py-20 text-center text-stone-500">
             No purchases yet
           </div>

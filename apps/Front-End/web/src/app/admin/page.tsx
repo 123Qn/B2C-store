@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { readToken } from "@/lib/auth";
 import {
   ArrowRightIcon,
   ArrowRightStartOnRectangleIcon,
@@ -30,15 +31,9 @@ export default function AdminDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    try {
-      const token = localStorage.getItem("auth_token");
-      if (!token) { router.push("/SessionManagement/login"); return; }
-
-      const payload = JSON.parse(atob(token.split(".")[1] ?? ""));
-      if (payload.role !== "ADMIN") { router.push("/"); }
-    } catch {
-      router.push("/SessionManagement/login");
-    }
+    const payload = readToken();
+    if (!payload) { router.push("/SessionManagement/login"); return; }
+    if (payload.role !== "ADMIN") { router.push("/"); }
   }, [router]);
 
   function handleLogout() {

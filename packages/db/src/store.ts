@@ -58,6 +58,7 @@ export type Store = {
   products: {
     list(filter?: ProductFilter): Promise<Product[]>;
     byUrlId(urlId: string): Promise<Product | null>;
+    byIds(ids: number[]): Promise<Product[]>;
     create(input: ProductInput): Promise<Product>;
     setActive(id: number, active: boolean): Promise<Product | null>;
   };
@@ -113,8 +114,12 @@ const prismaStore: Store = {
         orderBy: { createdAt: "desc" },
       });
     },
-    byUrlId(urlId) {
+    async byUrlId(urlId) {
+      if (typeof urlId !== "string") return null;
       return client.db.product.findUnique({ where: { urlId } });
+    },
+    byIds(ids) {
+      return client.db.product.findMany({ where: { id: { in: ids } } });
     },
     async create(input) {
       try {
@@ -133,10 +138,13 @@ const prismaStore: Store = {
     },
   },
   users: {
-    byEmail(email) {
+    async byEmail(email) {
+      if (typeof email !== "string") return null;
       return client.db.user.findUnique({ where: { email } });
     },
-    login(email, password) {
+    async login(email, password) {
+      // plain strings only — an object like {"not": "x"} would become a Prisma filter
+      if (typeof email !== "string" || typeof password !== "string") return null;
       return client.db.user.findFirst({ where: { email, password } });
     },
     async create(input) {
@@ -281,6 +289,9 @@ const jsonStore: Store = {
     },
     async byUrlId(urlId) {
       return load().products.find((p) => p.urlId === urlId) ?? null;
+    },
+    async byIds(ids) {
+      return load().products.filter((p) => ids.includes(p.id));
     },
     async create(input) {
       const data = load();

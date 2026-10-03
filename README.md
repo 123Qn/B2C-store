@@ -246,8 +246,19 @@ NEXT_PUBLIC_API_URL=http://localhost:3000
 Create `apps/Back-End/.env`:
 ```env
 DATABASE_URL=postgres_url
-JWT_SECRET=secret
+# required in production — the API refuses to sign or accept tokens without it
+JWT_SECRET=a-long-random-string
+# optional: comma-separated origins allowed by CORS
+# (default in production: https://b2-c-store-web.vercel.app; in dev: http://localhost:3001)
+ALLOWED_ORIGINS=https://b2-c-store-web.vercel.app
 ```
+
+### Security notes
+
+- API bodies are validated: every field must be a plain string / number / boolean, which blocks Prisma operator injection such as `{"password": {"not": "x"}}`. No raw SQL is used.
+- Admin endpoints (`POST /api/products`, `PATCH /api/products/:id`, `GET /api/orders/all`) require an admin JWT. Order prices are taken from the store, not from the client.
+- CORS only allows the origins in `ALLOWED_ORIGINS`. The web app sends a Content-Security-Policy and other security headers; React escapes all product text, and image URLs must be `http(s)`.
+- Known gap: passwords are still stored as plain text.
 
 ### Database Setup
 
