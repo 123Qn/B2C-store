@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeftIcon, PhotoIcon } from "@heroicons/react/24/outline";
 import { formatPrice, getSizes } from "@/lib/format";
+import { authHeaders } from "@/lib/auth";
+import { AdminGuard } from "@/components/Admin/AdminGuard";
 
 const inputClass =
   "w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-stone-400 focus:border-stone-500 focus:ring-4 focus:ring-stone-200/60";
@@ -51,7 +53,7 @@ export default function NewProductPage() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeaders() },
         body: JSON.stringify({
           ...form,
           name: form.name.trim(),
@@ -67,7 +69,9 @@ export default function NewProductPage() {
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setError(
-          res.status === 409
+          res.status === 401 || res.status === 403
+            ? "Your admin session has expired. Please log in again."
+            : res.status === 409
             ? "A product with this name already exists. Please use a different name."
             : data.message || "Failed to create product"
         );
@@ -85,6 +89,7 @@ export default function NewProductPage() {
   }
 
   return (
+    <AdminGuard>
     <div className="min-h-screen bg-cream text-ink">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <Link href="/admin/products" className="inline-flex items-center gap-1.5 text-sm text-stone-500 transition hover:text-ink">
@@ -192,5 +197,6 @@ export default function NewProductPage() {
         </div>
       </div>
     </div>
+    </AdminGuard>
   );
 }

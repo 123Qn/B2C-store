@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeftIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { AdminProductList } from "@/components/Admin/ProductList";
 import { store } from "@repo/db/store";
+import { AdminGuard } from "@/components/Admin/AdminGuard";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,7 @@ export default async function AdminProductsPage() {
   const products = await store.products.list();
 
   return (
+    <AdminGuard>
     <div className="min-h-screen bg-cream text-ink">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <Link href="/admin" className="inline-flex items-center gap-1.5 text-sm text-stone-500 transition hover:text-ink">
@@ -29,5 +31,6 @@ export default async function AdminProductsPage() {
         <AdminProductList products={products} />
       </div>
     </div>
+    </AdminGuard>
   );
 }

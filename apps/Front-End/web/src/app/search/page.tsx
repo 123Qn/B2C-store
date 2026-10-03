@@ -7,13 +7,14 @@ from "@repo/db/store";
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string | string[] }>;
 }) {
 
   const { q = "" } =
     await searchParams;
 
-  const query = q.trim();
+  // ?q=a&q=b arrives as an array
+  const query = (Array.isArray(q) ? q[0] ?? "" : q).trim().slice(0, 100);
 
   const filteredProducts =
     await store.products.list({

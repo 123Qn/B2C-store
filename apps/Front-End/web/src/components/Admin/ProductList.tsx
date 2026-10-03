@@ -4,6 +4,7 @@ import type { Product } from "@prisma/client";
 import { useMemo, useState } from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { FALLBACK_IMAGE, formatPrice } from "@/lib/format";
+import { authHeaders } from "@/lib/auth";
 
 export function AdminProductList({ products: initialProducts }: { products: Product[] }) {
   const [products, setProducts] = useState(initialProducts);
@@ -35,10 +36,11 @@ export function AdminProductList({ products: initialProducts }: { products: Prod
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeaders() },
         body: JSON.stringify({ active: !current }),
       });
 
+      if (res.status === 401 || res.status === 403) { setError("Your admin session has expired. Please log in again."); return; }
       if (!res.ok) { setError("Failed to update product status"); return; }
 
       // UPDATE LOCAL STATE
